@@ -2,19 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e96db8e5-d6cc-4905-887f-4b865dc39e87" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/de/leonlatsch/oliviabackend/util/ImageHelper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/images" afterDir="true" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/images/default_profile_pic.jpg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/de/leonlatsch/oliviabackend/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/leonlatsch/oliviabackend/controller/UserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/de/leonlatsch/oliviabackend/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/leonlatsch/oliviabackend/entity/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/de/leonlatsch/oliviabackend/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/leonlatsch/oliviabackend/service/UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/de/leonlatsch/oliviabackend/transfer/TransferUser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/leonlatsch/oliviabackend/transfer/TransferUser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/de/leonlatsch/oliviabackend/util/Mapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/leonlatsch/oliviabackend/util/Mapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/de/leonlatsch/oliviabackend/controller/UserController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/de/leonlatsch/oliviabackend/controller/UserController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/de/leonlatsch/oliviabackend/entity/User.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/de/leonlatsch/oliviabackend/entity/User.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/de/leonlatsch/oliviabackend/service/UserService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/de/leonlatsch/oliviabackend/service/UserService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/de/leonlatsch/oliviabackend/App.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/de/leonlatsch/oliviabackend/controller/UserController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/de/leonlatsch/oliviabackend/entity/User.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/de/leonlatsch/oliviabackend/service/UserService.class" beforeDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -32,12 +24,10 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/de/leonlatsch/oliviabackend/service/UserService.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3">
+            <state relative-caret-position="1278">
               <caret line="84" selection-start-line="84" selection-end-line="84" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#717#718#0" expanded="true" />
-                <element signature="e#786#787#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -58,8 +48,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/resources/security.properties">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="18">
-              <caret line="1" column="40" selection-start-line="1" selection-start-column="8" selection-end-line="1" selection-end-column="40" />
+            <state relative-caret-position="36">
+              <caret line="2" lean-forward="true" selection-start-line="2" selection-end-line="2" />
             </state>
           </provider>
         </entry>
@@ -77,7 +67,7 @@
         <entry file="file://$PROJECT_DIR$/src/main/java/de/leonlatsch/oliviabackend/util/Mapper.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="450">
-              <caret line="31" column="34" lean-forward="true" selection-start-line="31" selection-start-column="34" selection-end-line="31" selection-end-column="34" />
+              <caret line="31" column="34" selection-start-line="31" selection-start-column="34" selection-end-line="31" selection-end-column="34" />
             </state>
           </provider>
         </entry>
@@ -85,7 +75,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/de/leonlatsch/oliviabackend/controller/UserController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="265">
+            <state relative-caret-position="234">
               <caret line="22" column="56" selection-start-line="22" selection-start-column="56" selection-end-line="22" selection-end-column="56" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -117,6 +107,9 @@
         <option value="Class" />
       </list>
     </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -162,17 +155,18 @@
     </treeState>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="240" />
-    <option name="y" value="158" />
-    <option name="width" value="1440" />
-    <option name="height" value="791" />
+    <option name="x" value="1920" />
+    <option name="y" value="27" />
+    <option name="width" value="1920" />
+    <option name="height" value="1173" />
   </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -279,11 +273,13 @@
           <select />
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -320,28 +316,6 @@
   <component name="SvnConfiguration" cleanupOnStartRun="true">
     <configuration>$USER_HOME$/.subversion</configuration>
     <supportedVersion>125</supportedVersion>
-  </component>
-  <component name="SvnFileUrlMappingImpl">
-    <option name="myMappingRoots">
-      <list>
-        <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="$PROJECT_DIR$" />
-          <option name="myCopyRoot" value="$PROJECT_DIR$" />
-        </SvnCopyRootSimple>
-        <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="$PROJECT_DIR$/.idea" />
-          <option name="myCopyRoot" value="$PROJECT_DIR$/.idea" />
-        </SvnCopyRootSimple>
-      </list>
-    </option>
-    <option name="myMoreRealMappingRoots">
-      <list>
-        <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="$PROJECT_DIR$" />
-          <option name="myCopyRoot" value="$PROJECT_DIR$" />
-        </SvnCopyRootSimple>
-      </list>
-    </option>
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -432,19 +406,20 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="27" width="1920" height="1053" extended-state="6" />
+    <frame x="1920" y="27" width="1920" height="1173" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="Capture Tool" order="0" />
       <window_info id="Image Layers" order="1" />
       <window_info id="UI Designer" order="2" />
       <window_info id="Favorites" order="3" side_tool="true" />
       <window_info id="Designer" order="4" />
-      <window_info content_ui="combo" id="Project" order="5" visible="true" weight="0.20170757" />
+      <window_info content_ui="combo" id="Project" order="5" visible="true" weight="0.20384204" />
       <window_info id="Structure" order="6" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Terminal" order="0" weight="0.3297062" />
       <window_info anchor="bottom" id="Event Log" order="1" side_tool="true" />
       <window_info anchor="bottom" id="Messages" order="2" weight="0.32916266" />
-      <window_info active="true" anchor="bottom" id="Version Control" order="3" visible="true" weight="0.32752994" />
+      <window_info anchor="bottom" id="Version Control" order="3" weight="0.29740134" />
       <window_info anchor="bottom" id="Message" order="4" />
       <window_info anchor="bottom" id="Find" order="5" weight="0.3297062" />
       <window_info anchor="bottom" id="Run" order="6" weight="0.34167573" />
@@ -463,6 +438,9 @@
     </layout>
   </component>
   <component name="VcsManagerConfiguration">
+    <ignored-roots>
+      <path value="$PROJECT_DIR$" />
+    </ignored-roots>
     <MESSAGE value="Added base func for addUser" />
     <MESSAGE value="Added email to user entity" />
     <MESSAGE value="Added update user function. updated README" />
@@ -555,37 +533,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/de/leonlatsch/oliviabackend/App.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="6" column="13" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/resources/application.properties">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="180">
           <caret line="10" column="33" selection-start-line="10" selection-start-column="33" selection-end-line="10" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/de/leonlatsch/oliviabackend/util/ConfigParser.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="17" selection-start-line="17" selection-end-line="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/de/leonlatsch/oliviabackend/repository/UserRepository.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="10" column="17" selection-start-line="10" selection-start-column="17" selection-end-line="10" selection-end-column="17" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -606,9 +557,43 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/de/leonlatsch/oliviabackend/service/UserService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1278">
+          <caret line="84" selection-start-line="84" selection-end-line="84" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/de/leonlatsch/oliviabackend/App.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="6" column="13" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/de/leonlatsch/oliviabackend/util/ConfigParser.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="17" selection-start-line="17" selection-end-line="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/de/leonlatsch/oliviabackend/util/Mapper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="450">
+          <caret line="31" column="34" selection-start-line="31" selection-start-column="34" selection-end-line="31" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/de/leonlatsch/oliviabackend/controller/UserController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="265">
+        <state relative-caret-position="234">
           <caret line="22" column="56" selection-start-line="22" selection-start-column="56" selection-end-line="22" selection-end-column="56" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -618,29 +603,20 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/de/leonlatsch/oliviabackend/util/Mapper.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/de/leonlatsch/oliviabackend/repository/UserRepository.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="450">
-          <caret line="31" column="34" lean-forward="true" selection-start-line="31" selection-start-column="34" selection-end-line="31" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/de/leonlatsch/oliviabackend/service/UserService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3">
-          <caret line="84" selection-start-line="84" selection-end-line="84" />
+        <state relative-caret-position="90">
+          <caret line="10" column="17" selection-start-line="10" selection-start-column="17" selection-end-line="10" selection-end-column="17" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#717#718#0" expanded="true" />
-            <element signature="e#786#787#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/resources/security.properties">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="18">
-          <caret line="1" column="40" selection-start-line="1" selection-start-column="8" selection-end-line="1" selection-end-column="40" />
+        <state relative-caret-position="36">
+          <caret line="2" lean-forward="true" selection-start-line="2" selection-end-line="2" />
         </state>
       </provider>
     </entry>
