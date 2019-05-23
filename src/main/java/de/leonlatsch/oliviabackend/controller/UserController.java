@@ -64,7 +64,7 @@ public class UserController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/checkEmail/{email}")
-    public String chekcEmail(@PathVariable("email") String email) {
+    public String checkEmail(@PathVariable("email") String email) {
         return createJsonMessage(userService.isEmailFree(email));
     }
 
