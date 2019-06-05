@@ -2,7 +2,7 @@ package de.leonlatsch.oliviabackend.controller;
 
 import de.leonlatsch.oliviabackend.entity.User;
 import de.leonlatsch.oliviabackend.service.UserService;
-import de.leonlatsch.oliviabackend.transfer.TransferUser;
+import de.leonlatsch.oliviabackend.dto.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -19,8 +19,8 @@ public class UserController {
     private UserService userService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public Collection<TransferUser> getAllUsers() {
-        Collection<TransferUser> users = userService.getAllUsers();
+    public Collection<UserDTO> getAllUsers() {
+        Collection<UserDTO> users = userService.getAllUsers();
         if (users == null || users.isEmpty()) {
             throw new NoContentException();
         } else {
@@ -29,22 +29,22 @@ public class UserController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/getByUid/{uid}")
-    public TransferUser getUserByUid(@PathVariable("uid") int uid) {
-        TransferUser transferUser =  userService.getUserByUid(uid);
-        if (transferUser == null) {
+    public UserDTO getUserByUid(@PathVariable("uid") int uid) {
+        UserDTO userDTO =  userService.getUserByUid(uid);
+        if (userDTO == null) {
             throw new NoContentException();
         } else {
-            return transferUser;
+            return userDTO;
         }
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/getByEmail/{email}")
-    public TransferUser getUserByEmail(@PathVariable("email" ) String email) {
-        TransferUser transferUser =  userService.getUserByEmail(email);
-        if (transferUser == null) {
+    public UserDTO getUserByEmail(@PathVariable("email" ) String email) {
+        UserDTO userDTO =  userService.getUserByEmail(email);
+        if (userDTO == null) {
             throw new NoContentException();
         } else {
-            return transferUser;
+            return userDTO;
         }
     }
 
@@ -69,13 +69,13 @@ public class UserController {
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/update", produces = "application/json")
-    public String updateUser(@RequestBody TransferUser user) {
+    public String updateUser(@RequestBody UserDTO user) {
         return createJsonMessage(userService.updateUser(user));
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/search/{username}")
-    public Collection<TransferUser> searchUsersByUsername(@PathVariable("username") String username) {
-        Collection<TransferUser> users = userService.getUserByUsername(username);
+    public Collection<UserDTO> searchUsersByUsername(@PathVariable("username") String username) {
+        Collection<UserDTO> users = userService.getUserByUsername(username);
         if (users == null | users.isEmpty()) {
             throw new NoContentException();
         } else {
@@ -85,8 +85,8 @@ public class UserController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/auth", produces = "application/json")
     public String authUserByEmail(@RequestBody User user) {
-        // Special case because there is no passwordHash in a Transfer user
-        return createJsonMessage(userService.authUserByEmail(user.getEmail(), user.getPasswordHash()));
+        // Special case since there is no password in a UserDTO
+        return createJsonMessage(userService.authUserByEmail(user.getEmail(), user.getPassword()));
     }
 
     @ExceptionHandler
