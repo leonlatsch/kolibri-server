@@ -17,18 +17,18 @@ public class User {
     @Column(name = "email")
     private String email;
 
-    @Column(name = "passwordHash")
-    private String passwordHash;
+    @Column(name = "password")
+    private String password;
 
     @Lob
     @Column(name = "profilePic")
     private Blob profilePic;
 
-    public User(int uid, String username, String email, String passwordHash, Blob profilePic) {
+    public User(int uid, String username, String email, String password, Blob profilePic) {
         this.uid = uid;
         this.username = username;
         this.email = email;
-        this.passwordHash = passwordHash;
+        this.password = password;
         this.profilePic = profilePic;
     }
 
@@ -58,12 +58,12 @@ public class User {
         this.email = email;
     }
 
-    public String getPasswordHash() {
-        return passwordHash;
+    public String getPassword() {
+        return password;
     }
 
-    public void setPasswordHash(String passwordHash) {
-        this.passwordHash = passwordHash;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public Blob getProfilePic() {

@@ -2,7 +2,7 @@ package de.leonlatsch.oliviabackend.service;
 
 import de.leonlatsch.oliviabackend.entity.User;
 import de.leonlatsch.oliviabackend.repository.UserRepository;
-import de.leonlatsch.oliviabackend.transfer.TransferUser;
+import de.leonlatsch.oliviabackend.dto.UserDTO;
 import de.leonlatsch.oliviabackend.util.ImageHelper;
 import de.leonlatsch.oliviabackend.util.Mapper;
 import org.slf4j.Logger;
@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.SQLException;
 import java.util.*;
 
 @Service
@@ -23,16 +22,16 @@ public class UserService {
 
     private Mapper mapper = new Mapper();
 
-    public List<TransferUser> getAllUsers() {
+    public List<UserDTO> getAllUsers() {
         return mapToTransferObjects(userRepository.findAll());
     }
 
-    public TransferUser getUserByUid(int uid) {
+    public UserDTO getUserByUid(int uid) {
         Optional<User> user = userRepository.findById(uid);
         return user.isPresent() ? mapper.mapUserToTransferObject(user.get()) : null;
     }
 
-    public TransferUser getUserByEmail(String email) {
+    public UserDTO getUserByEmail(String email) {
         Optional<User> user = userRepository.findByEmail(email);
         return user.isPresent() ? mapper.mapUserToTransferObject(user.get()) : null;
     }
@@ -62,11 +61,11 @@ public class UserService {
         return user.isPresent() ? "TAKEN" : "FREE";
     }
 
-    public String updateUser(TransferUser transferUser) {
-        if (transferUser.getUid() < 10000000) {
+    public String updateUser(UserDTO userDTO) {
+        if (userDTO.getUid() < 10000000) {
             return "UID_IS_NULL";
         }
-        User user = mapper.mapToUserEntity(transferUser);
+        User user = mapper.mapToUserEntity(userDTO);
 
         Optional<User> dbUser = userRepository.findById(user.getUid());
         if (dbUser.isPresent()) {
@@ -76,8 +75,8 @@ public class UserService {
             if (user.getEmail() == null) {
                 user.setEmail(dbUser.get().getEmail());
             }
-            if (user.getPasswordHash() == null) {
-                user.setPasswordHash(dbUser.get().getPasswordHash());
+            if (user.getPassword() == null) {
+                user.setPassword(dbUser.get().getPassword());
             }
             if (user.getProfilePic() == null) {
                 user.setProfilePic(dbUser.get().getProfilePic());
@@ -89,7 +88,7 @@ public class UserService {
         }
     }
 
-    public List<TransferUser> getUserByUsername(String username) {
+    public List<UserDTO> getUserByUsername(String username) {
         List<User> users = userRepository.findByUsernameContaining(username);
         return mapToTransferObjects(users);
     }
@@ -101,7 +100,7 @@ public class UserService {
             return "ERROR";
         }
 
-        if (user.get().getPasswordHash().equals(hash)) {
+        if (user.get().getPassword().equals(hash)) {
             return "OK";
         } else {
             return "FAIL";
@@ -113,11 +112,11 @@ public class UserService {
         return 10000000 + rnd.nextInt(90000000);
     }
 
-    private List<TransferUser> mapToTransferObjects(Collection<User> entities) {
+    private List<UserDTO> mapToTransferObjects(Collection<User> entities) {
         if (entities == null) {
             return null;
         }
-        List<TransferUser> transferObjects = new ArrayList<>();
+        List<UserDTO> transferObjects = new ArrayList<>();
         for (User user : entities) {
             transferObjects.add(mapper.mapUserToTransferObject(user));
         }

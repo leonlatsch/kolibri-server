@@ -1,15 +1,13 @@
-package de.leonlatsch.oliviabackend.transfer;
+package de.leonlatsch.oliviabackend.dto;
 
-import java.sql.Blob;
-
-public class TransferUser {
+public class UserDTO {
 
     private int uid;
     private String username;
     private String email;
     private String profilePic;
 
-    public TransferUser(int uid, String username, String email, String profilePic) {
+    public UserDTO(int uid, String username, String email, String profilePic) {
         this.uid = uid;
         this.username = username;
         this.email = email;
