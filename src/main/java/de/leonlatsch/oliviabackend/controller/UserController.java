@@ -83,7 +83,7 @@ public class UserController {
         }
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/auth", produces = "application/json")
+    @RequestMapping(method = RequestMethod.POST, value = "/auth", produces = "application/json")
     public String authUserByEmail(@RequestBody User user) {
         // Special case since there is no password in a UserDTO
         return createJsonMessage(userService.authUserByEmail(user.getEmail(), user.getPassword()));
