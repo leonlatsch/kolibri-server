@@ -26,7 +26,11 @@ public class Mapper {
         }
 
         try {
-            Blob profilePic = new SerialBlob(ImageHelper.convertToBlob(userDTO.getProfilePic()));
+            Blob profilePic = null;
+
+            if (userDTO.getProfilePic() != null) {
+                profilePic = new SerialBlob(ImageHelper.convertToBlob(userDTO.getProfilePic()));
+            }
             return new User(userDTO.getUid(), userDTO.getUsername(), userDTO.getEmail(), null, profilePic);
         } catch (SQLException e) {
             return null;
