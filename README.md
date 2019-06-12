@@ -6,7 +6,7 @@ Spring boot Application. It is used to communicate between diffrent instances of
 
 
 
-Documentation is found in the **Wiki**.
+Documentation is found in the **Wiki**. 
 
 
 
