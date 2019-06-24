@@ -1,8 +1,8 @@
 package de.leonlatsch.oliviabackend.service;
 
+import de.leonlatsch.oliviabackend.dto.UserDTO;
 import de.leonlatsch.oliviabackend.entity.User;
 import de.leonlatsch.oliviabackend.repository.UserRepository;
-import de.leonlatsch.oliviabackend.dto.UserDTO;
 import de.leonlatsch.oliviabackend.util.ImageHelper;
 import de.leonlatsch.oliviabackend.util.Mapper;
 import org.slf4j.Logger;
@@ -10,15 +10,19 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.awt.*;
 import java.sql.Blob;
 import java.util.*;
-import java.util.List;
 
 @Service
 public class UserService {
 
     private static final Logger log = LoggerFactory.getLogger(UserService.class);
+
+    private static final String OK = "OK";
+    private static final String ERROR = "ERROR";
+    private static final String FAIL = "FAIL";
+    private static final String TAKEN = "TAKEN";
+    private static final String FREE = "FREE";
 
     @Autowired
     private UserRepository userRepository;
@@ -26,46 +30,55 @@ public class UserService {
     private Mapper mapper = new Mapper();
 
     public List<UserDTO> getAllUsers() {
-        return mapToTransferObjects(userRepository.findAll());
+        List<UserDTO> list = mapToTransferObjects(userRepository.findAll());
+
+        for (UserDTO user : list) {
+            rmPic(user);
+        }
+
+        return list;
     }
 
     public UserDTO getUserByUid(int uid) {
         Optional<User> user = userRepository.findById(uid);
+        rmPic(user);
         return user.isPresent() ? mapper.mapUserToTransferObject(user.get()) : null;
     }
 
     public UserDTO getUserByEmail(String email) {
         Optional<User> user = userRepository.findByEmail(email);
+        rmPic(user);
         return user.isPresent() ? mapper.mapUserToTransferObject(user.get()) : null;
     }
 
-    public String createUser(User user) {
+    public String createUser(UserDTO user) {
         Optional<User> checkUser = userRepository.findByUsername(user.getUsername());
         if (checkUser.isPresent()) {
-            return "ERROR";
+            return ERROR;
         }
 
         Blob profilePic = ImageHelper.loadDefaultProfilePic();
+        User entity = mapper.mapToUserEntity(user);
 
-        user.setUid(genUid());
-        user.setProfilePic(profilePic);
-        user.setProfilePicTn(ImageHelper.createThumbnail(profilePic));
-        return userRepository.saveAndFlush(user) != null ? "OK" : "ERROR";
+        entity.setUid(genUid());
+        entity.setProfilePic(profilePic);
+        entity.setProfilePicTn(ImageHelper.createThumbnail(profilePic));
+        return userRepository.saveAndFlush(entity) != null ? OK : ERROR;
     }
 
     public String deleteUser(int uid) {
         userRepository.deleteById(uid);
-        return "OK";
+        return OK;
     }
 
     public String isUsernameFree(String username) {
         Optional<User> user = userRepository.findByUsername(username);
-        return user.isPresent() ? "TAKEN" : "FREE";
+        return user.isPresent() ? TAKEN : FREE;
     }
 
     public String isEmailFree(String email) {
         Optional<User> user = userRepository.findByEmail(email);
-        return user.isPresent() ? "TAKEN" : "FREE";
+        return user.isPresent() ? TAKEN : FREE;
     }
 
     public String updateUser(UserDTO userDTO) {
@@ -92,14 +105,17 @@ public class UserService {
                 user.setProfilePicTn(dbUser.get().getProfilePicTn());
             }
             userRepository.saveAndFlush(user);
-            return "OK";
+            return OK;
         } else {
-            return "ERROR";
+            return ERROR;
         }
     }
 
     public List<UserDTO> getUserByUsername(String username) {
         List<User> users = userRepository.findByUsernameContaining(username);
+        for (User user : users) {
+            rmPic(user);
+        }
         return mapToTransferObjects(users);
     }
 
@@ -107,19 +123,21 @@ public class UserService {
         Optional<User> user = userRepository.findByEmail(email);
 
         if (hash == null || !user.isPresent()) {
-            return "ERROR";
+            return ERROR;
         }
 
         if (user.get().getPassword().equals(hash)) {
-            return "OK";
+            return OK;
         } else {
-            return "FAIL";
+            return FAIL;
         }
     }
 
+
+
     private int genUid() {
         Random rnd = new Random();
-        return 10000000 + rnd.nextInt(90000000);
+        return 10000000 + rnd.nextInt(99999999);
     }
 
     private List<UserDTO> mapToTransferObjects(Collection<User> entities) {
@@ -131,5 +149,19 @@ public class UserService {
             transferObjects.add(mapper.mapUserToTransferObject(user));
         }
         return transferObjects;
+    }
+
+    private void rmPic(UserDTO dto) {
+        dto.setProfilePic(null);
+    }
+
+    private void rmPic(Optional<User> dto) {
+        if (dto.isPresent()) {
+            dto.get().setProfilePic(null);
+        }
+    }
+
+    private void rmPic(User user) {
+        user.setProfilePic(null);
     }
 }

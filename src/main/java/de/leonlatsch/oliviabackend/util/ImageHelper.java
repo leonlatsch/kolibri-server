@@ -1,6 +1,5 @@
 package de.leonlatsch.oliviabackend.util;
 
-import net.coobird.thumbnailator.Thumbnailator;
 import net.coobird.thumbnailator.Thumbnails;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.output.ByteArrayOutputStream;
@@ -48,7 +47,7 @@ public class ImageHelper {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
             Thumbnails.of(inputStream)
-                    .size(64, 64)
+                    .size(30, 30)
                     .toOutputStream(outputStream);
             outputStream.write(bytes);
 

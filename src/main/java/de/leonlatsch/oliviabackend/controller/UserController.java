@@ -1,8 +1,7 @@
 package de.leonlatsch.oliviabackend.controller;
 
-import de.leonlatsch.oliviabackend.entity.User;
-import de.leonlatsch.oliviabackend.service.UserService;
 import de.leonlatsch.oliviabackend.dto.UserDTO;
+import de.leonlatsch.oliviabackend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -49,7 +48,7 @@ public class UserController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/register", produces = "application/json")
-    public String createUser(@RequestBody User user) {
+    public String createUser(@RequestBody UserDTO user) {
         return createJsonMessage(userService.createUser(user));
     }
 
@@ -84,8 +83,7 @@ public class UserController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/auth", produces = "application/json")
-    public String authUserByEmail(@RequestBody User user) {
-        // Special case since there is no password in a UserDTO
+    public String authUserByEmail(@RequestBody UserDTO user) {
         return createJsonMessage(userService.authUserByEmail(user.getEmail(), user.getPassword()));
     }
 
