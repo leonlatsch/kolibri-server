@@ -33,7 +33,7 @@ public class UserService {
         List<UserDTO> list = mapToTransferObjects(userRepository.findAll());
 
         for (UserDTO user : list) {
-            user.setProfilePic(null);
+            rmPic(user);
         }
 
         return list;
@@ -41,11 +41,13 @@ public class UserService {
 
     public UserDTO getUserByUid(int uid) {
         Optional<User> user = userRepository.findById(uid);
+        rmPic(user);
         return user.isPresent() ? mapper.mapUserToTransferObject(user.get()) : null;
     }
 
     public UserDTO getUserByEmail(String email) {
         Optional<User> user = userRepository.findByEmail(email);
+        rmPic(user);
         return user.isPresent() ? mapper.mapUserToTransferObject(user.get()) : null;
     }
 
@@ -111,6 +113,9 @@ public class UserService {
 
     public List<UserDTO> getUserByUsername(String username) {
         List<User> users = userRepository.findByUsernameContaining(username);
+        for (User user : users) {
+            rmPic(user);
+        }
         return mapToTransferObjects(users);
     }
 
@@ -150,9 +155,13 @@ public class UserService {
         dto.setProfilePic(null);
     }
 
-    private void rmPic(Optional<UserDTO> dto) {
+    private void rmPic(Optional<User> dto) {
         if (dto.isPresent()) {
             dto.get().setProfilePic(null);
         }
+    }
+
+    private void rmPic(User user) {
+        user.setProfilePic(null);
     }
 }
