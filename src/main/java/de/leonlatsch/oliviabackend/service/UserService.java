@@ -10,7 +10,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.awt.*;
+import java.sql.Blob;
 import java.util.*;
+import java.util.List;
 
 @Service
 public class UserService {
@@ -41,8 +44,12 @@ public class UserService {
         if (checkUser.isPresent()) {
             return "ERROR";
         }
+
+        Blob profilePic = ImageHelper.loadDefaultProfilePic();
+
         user.setUid(genUid());
-        user.setProfilePic(ImageHelper.loadDefaultProfilePic());
+        user.setProfilePic(profilePic);
+        user.setProfilePicTn(ImageHelper.createThumbnail(profilePic));
         return userRepository.saveAndFlush(user) != null ? "OK" : "ERROR";
     }
 
@@ -80,6 +87,9 @@ public class UserService {
             }
             if (user.getProfilePic() == null) {
                 user.setProfilePic(dbUser.get().getProfilePic());
+            }
+            if (user.getProfilePicTn() == null) {
+                user.setProfilePicTn(dbUser.get().getProfilePicTn());
             }
             userRepository.saveAndFlush(user);
             return "OK";

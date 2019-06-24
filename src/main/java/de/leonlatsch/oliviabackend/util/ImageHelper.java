@@ -1,11 +1,15 @@
 package de.leonlatsch.oliviabackend.util;
 
+import net.coobird.thumbnailator.Thumbnailator;
+import net.coobird.thumbnailator.Thumbnails;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.sql.rowset.serial.SerialBlob;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Blob;
@@ -33,6 +37,25 @@ public class ImageHelper {
         } catch (IOException | SQLException e) {
             log.error("Error loading standard profile pic");
             throw new RuntimeException(e);
+        }
+    }
+
+    public static Blob createThumbnail(Blob original) {
+        try {
+            byte[] bytes = original.getBytes(1L, (int) original.length());
+
+            ByteArrayInputStream inputStream = new ByteArrayInputStream(bytes);
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
+            Thumbnails.of(inputStream)
+                    .size(64, 64)
+                    .toOutputStream(outputStream);
+            outputStream.write(bytes);
+
+            return new SerialBlob(bytes);
+        } catch (SQLException | IOException e) {
+            log.error("" + e);
+            return null;
         }
     }
 }
