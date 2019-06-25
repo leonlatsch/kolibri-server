@@ -87,15 +87,26 @@ public class UserController {
         return createJsonMessage(userService.authUserByEmail(user.getEmail(), user.getPassword()));
     }
 
+    @RequestMapping(method = RequestMethod.GET, value = "/getProfilePic/{uid}")
+    public String loadProfilePic(@PathVariable int uid) {
+        return createJsonMessage(userService.loadProfilePic(uid), "profilePic");
+    }
+
     @ExceptionHandler
     public void handleIllegalArgumentException(IllegalArgumentException e, HttpServletResponse response) throws IOException {
         response.sendError(HttpStatus.BAD_REQUEST.value());
     }
 
-    private String createJsonMessage(String message) {
-        String jsonMessage = "{\"message\": \"${message}\"}";
+    private String createJsonMessage(String message, String key) {
+        String jsonMessage = "{\"${key}\": \"${message}\"}";
         jsonMessage = jsonMessage.replace("${message}", message);
+        jsonMessage = jsonMessage.replace("${key}", key);
         return jsonMessage;
+    }
+
+    private String createJsonMessage(String message) {
+        String defaultKey = "message";
+        return createJsonMessage(message, defaultKey);
     }
 
     @ResponseStatus(value = HttpStatus.NO_CONTENT, reason = "No content to return")

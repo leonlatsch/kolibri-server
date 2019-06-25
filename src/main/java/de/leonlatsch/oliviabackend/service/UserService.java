@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Blob;
+import java.sql.SQLException;
 import java.util.*;
 
 @Service
@@ -133,6 +134,20 @@ public class UserService {
         }
     }
 
+    public String loadProfilePic(int uid) {
+        Optional<User> user = userRepository.findById(uid);
+        if (user.isPresent()) {
+            try {
+                return ImageHelper.convertToBase64(user.get().getProfilePic());
+            } catch (SQLException e) {
+                log.error("" + e);
+                return null;
+            }
+        } else {
+            return null;
+        }
+
+    }
 
 
     private int genUid() {
