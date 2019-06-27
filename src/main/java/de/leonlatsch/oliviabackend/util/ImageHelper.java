@@ -7,7 +7,9 @@ import org.apache.tomcat.util.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.imageio.ImageIO;
 import javax.sql.rowset.serial.SerialBlob;
+import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -47,9 +49,9 @@ public class ImageHelper {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
             Thumbnails.of(inputStream)
-                    .size(30, 30)
+                    .size(256, 256)
                     .toOutputStream(outputStream);
-            outputStream.write(bytes);
+            bytes = outputStream.toByteArray();
 
             return new SerialBlob(bytes);
         } catch (SQLException | IOException e) {
