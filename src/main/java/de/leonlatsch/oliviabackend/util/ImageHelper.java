@@ -55,7 +55,7 @@ public class ImageHelper {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
             Thumbnails.of(inputStream)
-                    .size(64, 64)
+                    .size(92, 92)
                     .toOutputStream(outputStream);
             bytes = outputStream.toByteArray();
 
