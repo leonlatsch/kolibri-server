@@ -90,7 +90,7 @@ public class UserController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/getProfilePic/{uid}")
     public ProfilePicDTO loadProfilePic(@PathVariable int uid) {
-        return userService.loadProfilePic();
+        return userService.loadProfilePic(uid);
     }
 
     @ExceptionHandler
