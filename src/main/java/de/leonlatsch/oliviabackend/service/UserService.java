@@ -146,7 +146,7 @@ public class UserService {
                 profilePicDto.setProfilePic(null);
             }
         } else {
-            pofilePicDto.setProfilePic(null);
+            profilePicDto.setProfilePic(null);
         }
 
         return profilePicDto;
