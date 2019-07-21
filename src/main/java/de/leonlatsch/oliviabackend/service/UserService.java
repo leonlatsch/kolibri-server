@@ -136,14 +136,14 @@ public class UserService {
     }
 
     public ProfilePicDTO loadProfilePic(int uid) {
-        ProfilePicDTO pofilePicDto = new ProfilePicDTO();
+        ProfilePicDTO profilePicDto = new ProfilePicDTO();
         Optional<User> user = userRepository.findById(uid);
         if (user.isPresent()) {
             try {
                 profilePicDto.setProfilePic(ImageHelper.convertToBase64(user.get().getProfilePic()));
             } catch (SQLException e) {
                 log.error("" + e);
-                pofilePicDto.setProfilePic(null);
+                profilePicDto.setProfilePic(null);
             }
         } else {
             pofilePicDto.setProfilePic(null);
