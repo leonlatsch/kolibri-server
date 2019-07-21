@@ -1,5 +1,6 @@
 package de.leonlatsch.oliviabackend.service;
 
+import de.leonlatsch.oliviabackend.dto.ProfilePicDTO;
 import de.leonlatsch.oliviabackend.dto.UserDTO;
 import de.leonlatsch.oliviabackend.entity.User;
 import de.leonlatsch.oliviabackend.repository.UserRepository;
@@ -134,19 +135,21 @@ public class UserService {
         }
     }
 
-    public String loadProfilePic(int uid) {
+    public ProfilePicDTO loadProfilePic(int uid) {
+        ProfilePicDTO pofilePicDto = new ProfilePicDTO();
         Optional<User> user = userRepository.findById(uid);
         if (user.isPresent()) {
             try {
-                return ImageHelper.convertToBase64(user.get().getProfilePic());
+                profilePicDto.setProfilePic(ImageHelper.convertToBase64(user.get().getProfilePic()));
             } catch (SQLException e) {
                 log.error("" + e);
-                return null;
+                pofilePicDto.setProfilePic(null);
             }
         } else {
-            return null;
+            pofilePicDto.setProfilePic(null);
         }
 
+        return profilePicDto;
     }
 
 

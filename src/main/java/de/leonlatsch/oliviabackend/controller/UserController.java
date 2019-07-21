@@ -1,6 +1,7 @@
 package de.leonlatsch.oliviabackend.controller;
 
 import de.leonlatsch.oliviabackend.dto.UserDTO;
+import de.leonlatsch.oliviabackend.dto.ProfilePicDTO;
 import de.leonlatsch.oliviabackend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -88,8 +89,8 @@ public class UserController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/getProfilePic/{uid}")
-    public String loadProfilePic(@PathVariable int uid) {
-        return createJsonMessage(userService.loadProfilePic(uid), "profilePic");
+    public ProfilePicDTO loadProfilePic(@PathVariable int uid) {
+        return userService.loadProfilePic();
     }
 
     @ExceptionHandler
