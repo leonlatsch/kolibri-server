@@ -155,7 +155,7 @@ public class UserService {
 
     private int genUid() {
         Random rnd = new Random();
-        return 10000000 + rnd.nextInt(99999999);
+        return 10000000 + rnd.nextInt(90000000);
     }
 
     private List<UserDTO> mapToTransferObjects(Collection<User> entities) {
