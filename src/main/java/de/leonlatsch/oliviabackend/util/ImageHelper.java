@@ -37,7 +37,7 @@ public class ImageHelper {
     }
 
     public static Blob loadDefaultProfilePic() {
-        InputStream inputStream = ImageHelper.class.getClassLoader().getResourceAsStream("images/default_profile_pic.jpg");
+        InputStream inputStream = ImageHelper.class.getClassLoader().getResourceAsStream("images/default_profile_pic.png");
         try {
             byte[] bytes = IOUtils.toByteArray(inputStream);
             return new SerialBlob(bytes);
