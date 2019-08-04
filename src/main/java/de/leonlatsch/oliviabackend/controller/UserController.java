@@ -83,6 +83,16 @@ public class UserController {
         }
     }
 
+    @RequestMapping(method = RequestMethod.GET, value = "/search/top100/{username}")
+    public Collection<UserDTO> searchUsersTop100ByUsername(@PathVariable("username") String username) {
+        Collection<UserDTO> users = userService.getUserTop100(username);
+        if (users == null | users.isEmpty()) {
+            throw new NoContentException();
+        } else {
+            return users;
+        }
+    }
+
     @RequestMapping(method = RequestMethod.POST, value = "/auth", produces = "application/json")
     public String authUserByEmail(@RequestBody UserDTO user) {
         return createJsonMessage(userService.authUserByEmail(user.getEmail(), user.getPassword()));

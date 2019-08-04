@@ -121,6 +121,15 @@ public class UserService {
         return mapToTransferObjects(users);
     }
 
+    public List<UserDTO> getUserTop100(String username) {
+        List<User> users = userRepository.findTop100ByUsernameContaining(username);
+        for (User user : users) {
+            rmPic(user);
+        }
+
+        return mapToTransferObjects(users);
+    }
+
     public String authUserByEmail(String email, String hash) {
         Optional<User> user = userRepository.findByEmail(email);
 
