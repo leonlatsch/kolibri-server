@@ -1,6 +1,7 @@
-package de.leonlatsch.oliviabackend.security;
+package de.leonlatsch.oliviabackend.config;
 
 import de.leonlatsch.oliviabackend.constants.Values;
+import de.leonlatsch.oliviabackend.security.CredManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
