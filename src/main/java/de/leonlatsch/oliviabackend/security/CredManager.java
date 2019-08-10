@@ -44,7 +44,7 @@ public class CredManager {
                 Properties properties = new Properties();
                 properties.setProperty(Values.KEY_API_TOKEN, token);
                 properties.setProperty(Values.KEY_API_KEY, key);
-                properties.store(new FileOutputStream(file), null);
+                properties.store(new FileOutputStream(file), Values.API_CRED_COMMENT);
 
             } catch (IOException e) {
                 log.error(e.getMessage());
