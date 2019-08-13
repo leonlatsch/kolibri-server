@@ -10,23 +10,22 @@ stages:
   - deploy
 
 variables:
-  MAVEN_CLI_OPTS: "-s --batch-mode"
   MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
 
 build:
   stage: build
   script:
-    - mvn $MAVEN_CLI_OPTS compile
+    - mvn compile
 
 test:
   stage: test
   script:
-    - mvn $MAVEN_CLI_OPTS test
+    - mvn test
 
 deploy:
   stage: deploy
   script:
-    - mvn $MAVEN_CLI_OPTS package
+    - mvn package
   artifacts:
     paths:
       - target/*.jar
