@@ -42,6 +42,6 @@ CREATE TABLE message (
 
 CREATE TABLE chat (
     cid VARCHAR(36) PRIMARY KEY NOT NULL,
-    member_1 INT(11) NOT NULL,
-    member_2 INT(11) NOT NULL
+    first_member INT(11) NOT NULL,
+    second_member INT(11) NOT NULL
 );
