@@ -1,6 +1,6 @@
 package de.leonlatsch.oliviabackend.controller;
 
-import de.leonlatsch.oliviabackend.dto.Message;
+import de.leonlatsch.oliviabackend.dto.MessageDTO;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
@@ -10,7 +10,7 @@ public class MessageController {
 
     @MessageMapping("/chat")
     @SendTo("/topic/messages")
-    public Message send(Message message) throws Exception {
-        return new Message(message.getFrom(), message.getText());
+    public MessageDTO send(MessageDTO message) throws Exception {
+        return message; //TODO: save the message to database
     }
 }
