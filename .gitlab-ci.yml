@@ -7,7 +7,7 @@ cache:
 stages:
   - build
   - test
-  - deploy
+  - package
 
 variables:
   MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
@@ -22,8 +22,8 @@ test:
   script:
     - mvn test
 
-deploy:
-  stage: deploy
+package:
+  stage: package
   script:
     - mvn package
   artifacts:
