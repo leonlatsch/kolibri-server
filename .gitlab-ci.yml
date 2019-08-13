@@ -1,0 +1,31 @@
+image: maven:latest
+
+cache:
+  paths:
+    - .m2/repository/
+    - target/
+stages:
+  - build
+  - test
+  - package
+
+variables:
+  MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
+
+build:
+  stage: build
+  script:
+    - mvn compile
+
+test:
+  stage: test
+  script:
+    - mvn test
+
+package:
+  stage: package
+  script:
+    - mvn package
+  artifacts:
+    paths:
+      - target/*.jar
