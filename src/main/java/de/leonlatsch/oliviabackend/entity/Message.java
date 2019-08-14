@@ -35,6 +35,8 @@ public class Message {
     @Column(name = "cid")
     private String cid;
 
+    public Message() {}
+
     public Message(String mid, int from, int to, Blob content, int type, Date timestamp, String cid) {
         this.mid = mid;
         this.from = from;

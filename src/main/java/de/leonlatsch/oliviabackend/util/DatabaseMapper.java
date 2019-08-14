@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.sql.rowset.serial.SerialBlob;
 import java.sql.Blob;
+import java.sql.Date;
 import java.sql.SQLException;
 
 public class DatabaseMapper {
@@ -67,6 +68,33 @@ public class DatabaseMapper {
         dto.setContent(Base64.convertToBase64(message.getContent()));
         dto.setType(message.getType());
         dto.setTimestamp(message.getTimestamp().toString()); // May need to reformat this
+        dto.setCid(message.getCid());
         return dto;
+    }
+
+    public Message mapToEntity(MessageDTO dto) {
+        if (dto == null) {
+            return null;
+        }
+
+        try {
+            Blob content = null;
+
+            if (dto.getContent() != null) {
+                content = new SerialBlob(Base64.convertToBlob(dto.getContent()));
+            }
+            Message message = new Message();
+            message.setMid(dto.getMid());
+            message.setFrom(dto.getFrom());
+            message.setTo(dto.getTo());
+            message.setContent(content);
+            message.setType(dto.getType().getValue());
+            message.setTimestamp(null); // TODO: fron String to Date
+            message.setCid(dto.getCid());
+            return message;
+        } catch (SQLException e) {
+            log.error("" + e);
+            return null;
+        }
     }
 }
