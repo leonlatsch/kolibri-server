@@ -20,22 +20,6 @@ public class ImageHelper {
 
     private static final Logger log = LoggerFactory.getLogger(ImageHelper.class);
 
-    public static Blob convertToBlob(String base64String) throws SQLException {
-        if (base64String == null) {
-            return null;
-        }
-        byte[] bytes = Base64.decodeBase64(base64String);
-        return new SerialBlob(bytes);
-    }
-
-    public static String convertToBase64(Blob blob) throws SQLException {
-        if (blob == null) {
-            return null;
-        }
-        byte[] bytes = blob.getBytes(1L, (int) blob.length());
-        return Base64.encodeBase64String(bytes);
-    }
-
     public static Blob loadDefaultProfilePic() {
         InputStream inputStream = ImageHelper.class.getClassLoader().getResourceAsStream("images/default_profile_pic.png");
         try {

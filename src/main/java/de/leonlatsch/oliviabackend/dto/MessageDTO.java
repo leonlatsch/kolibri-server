@@ -11,6 +11,8 @@ public class MessageDTO {
     private MessageType type; // The type of the message, used for mapping the content
     private String timestamp; // The timestamp the message was sent
 
+    public MessageDTO() {}
+
     public MessageDTO(String mid, int from, int to, String content, MessageType type, String timestamp) {
         this.mid = mid;
         this.from = from;

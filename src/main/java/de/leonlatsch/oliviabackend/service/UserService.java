@@ -4,9 +4,10 @@ import de.leonlatsch.oliviabackend.dto.ProfilePicDTO;
 import de.leonlatsch.oliviabackend.dto.UserDTO;
 import de.leonlatsch.oliviabackend.entity.User;
 import de.leonlatsch.oliviabackend.repository.UserRepository;
+import de.leonlatsch.oliviabackend.util.Base64;
 import de.leonlatsch.oliviabackend.util.CommonUtils;
 import de.leonlatsch.oliviabackend.util.ImageHelper;
-import de.leonlatsch.oliviabackend.util.Mapper;
+import de.leonlatsch.oliviabackend.util.DatabaseMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,7 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    private Mapper mapper = new Mapper();
+    private DatabaseMapper mapper = new DatabaseMapper();
 
     public List<UserDTO> getAllUsers() {
         List<UserDTO> list = mapToTransferObjects(userRepository.findAll());
@@ -43,13 +44,13 @@ public class UserService {
     public UserDTO getUserByUid(int uid) {
         Optional<User> user = userRepository.findById(uid);
         rmPic(user);
-        return user.isPresent() ? mapper.mapUserToTransferObject(user.get()) : null;
+        return user.isPresent() ? mapper.mapToTransferObject(user.get()) : null;
     }
 
     public UserDTO getUserByEmail(String email) {
         Optional<User> user = userRepository.findByEmail(email);
         rmPic(user);
-        return user.isPresent() ? mapper.mapUserToTransferObject(user.get()) : null;
+        return user.isPresent() ? mapper.mapToTransferObject(user.get()) : null;
     }
 
     public String createUser(UserDTO user) {
@@ -59,7 +60,7 @@ public class UserService {
         }
 
         Blob profilePic = ImageHelper.loadDefaultProfilePic();
-        User entity = mapper.mapToUserEntity(user);
+        User entity = mapper.mapToEntity(user);
 
         entity.setUid(CommonUtils.genUid());
         entity.setProfilePic(profilePic);
@@ -86,7 +87,7 @@ public class UserService {
         if (userDTO.getUid() < 10000000) {
             return "UID_IS_NULL";
         }
-        User user = mapper.mapToUserEntity(userDTO);
+        User user = mapper.mapToEntity(userDTO);
 
         Optional<User> dbUser = userRepository.findById(user.getUid());
         if (dbUser.isPresent()) {
@@ -148,7 +149,7 @@ public class UserService {
         Optional<User> user = userRepository.findById(uid);
         if (user.isPresent()) {
             try {
-                profilePicDto.setProfilePic(ImageHelper.convertToBase64(user.get().getProfilePic()));
+                profilePicDto.setProfilePic(Base64.convertToBase64(user.get().getProfilePic()));
             } catch (SQLException e) {
                 log.error("" + e);
                 profilePicDto.setProfilePic(null);
@@ -169,7 +170,7 @@ public class UserService {
         }
         List<UserDTO> transferObjects = new ArrayList<>();
         for (User user : entities) {
-            transferObjects.add(mapper.mapUserToTransferObject(user));
+            transferObjects.add(mapper.mapToTransferObject(user));
         }
         return transferObjects;
     }
