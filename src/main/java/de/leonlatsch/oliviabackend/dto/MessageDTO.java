@@ -10,14 +10,18 @@ public class MessageDTO {
     private String content; // base64 encoded binary content
     private MessageType type; // The type of the message, used for mapping the content
     private String timestamp; // The timestamp the message was sent
+    private String cid; // Chat FK to the chat
 
-    public MessageDTO(String mid, int from, int to, String content, MessageType type, String timestamp) {
+    public MessageDTO() {}
+
+    public MessageDTO(String mid, int from, int to, String content, MessageType type, String timestamp, String cid) {
         this.mid = mid;
         this.from = from;
         this.to = to;
         this.content = content;
         this.type = type;
         this.timestamp = timestamp;
+        this.cid = cid;
     }
 
     public String getMid() {
@@ -66,5 +70,13 @@ public class MessageDTO {
 
     public void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public String getCid() {
+        return cid;
+    }
+
+    public void setCid(String cid) {
+        this.cid = cid;
     }
 }

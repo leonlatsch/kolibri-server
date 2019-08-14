@@ -4,32 +4,31 @@ import de.leonlatsch.oliviabackend.dto.ProfilePicDTO;
 import de.leonlatsch.oliviabackend.dto.UserDTO;
 import de.leonlatsch.oliviabackend.entity.User;
 import de.leonlatsch.oliviabackend.repository.UserRepository;
+import de.leonlatsch.oliviabackend.util.Base64;
+import de.leonlatsch.oliviabackend.util.CommonUtils;
 import de.leonlatsch.oliviabackend.util.ImageHelper;
-import de.leonlatsch.oliviabackend.util.Mapper;
+import de.leonlatsch.oliviabackend.util.DatabaseMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Blob;
-import java.sql.SQLException;
 import java.util.*;
+
+import static de.leonlatsch.oliviabackend.constants.JsonResponse.*;
 
 @Service
 public class UserService {
 
     private static final Logger log = LoggerFactory.getLogger(UserService.class);
 
-    private static final String OK = "OK";
-    private static final String ERROR = "ERROR";
-    private static final String FAIL = "FAIL";
-    private static final String TAKEN = "TAKEN";
-    private static final String FREE = "FREE";
+
 
     @Autowired
     private UserRepository userRepository;
 
-    private Mapper mapper = new Mapper();
+    private DatabaseMapper mapper = DatabaseMapper.getInstance();
 
     public List<UserDTO> getAllUsers() {
         List<UserDTO> list = mapToTransferObjects(userRepository.findAll());
@@ -44,13 +43,13 @@ public class UserService {
     public UserDTO getUserByUid(int uid) {
         Optional<User> user = userRepository.findById(uid);
         rmPic(user);
-        return user.isPresent() ? mapper.mapUserToTransferObject(user.get()) : null;
+        return user.isPresent() ? mapper.mapToTransferObject(user.get()) : null;
     }
 
     public UserDTO getUserByEmail(String email) {
         Optional<User> user = userRepository.findByEmail(email);
         rmPic(user);
-        return user.isPresent() ? mapper.mapUserToTransferObject(user.get()) : null;
+        return user.isPresent() ? mapper.mapToTransferObject(user.get()) : null;
     }
 
     public String createUser(UserDTO user) {
@@ -60,9 +59,9 @@ public class UserService {
         }
 
         Blob profilePic = ImageHelper.loadDefaultProfilePic();
-        User entity = mapper.mapToUserEntity(user);
+        User entity = mapper.mapToEntity(user);
 
-        entity.setUid(genUid());
+        entity.setUid(CommonUtils.genUid());
         entity.setProfilePic(profilePic);
         entity.setProfilePicTn(ImageHelper.createThumbnail(profilePic));
         return userRepository.saveAndFlush(entity) != null ? OK : ERROR;
@@ -87,7 +86,7 @@ public class UserService {
         if (userDTO.getUid() < 10000000) {
             return "UID_IS_NULL";
         }
-        User user = mapper.mapToUserEntity(userDTO);
+        User user = mapper.mapToEntity(userDTO);
 
         Optional<User> dbUser = userRepository.findById(user.getUid());
         if (dbUser.isPresent()) {
@@ -148,12 +147,7 @@ public class UserService {
         ProfilePicDTO profilePicDto = new ProfilePicDTO();
         Optional<User> user = userRepository.findById(uid);
         if (user.isPresent()) {
-            try {
-                profilePicDto.setProfilePic(ImageHelper.convertToBase64(user.get().getProfilePic()));
-            } catch (SQLException e) {
-                log.error("" + e);
-                profilePicDto.setProfilePic(null);
-            }
+            profilePicDto.setProfilePic(Base64.convertToBase64(user.get().getProfilePic()));
         } else {
             profilePicDto.setProfilePic(null);
         }
@@ -162,10 +156,7 @@ public class UserService {
     }
 
 
-    private int genUid() {
-        Random rnd = new Random();
-        return 10000000 + rnd.nextInt(90000000);
-    }
+
 
     private List<UserDTO> mapToTransferObjects(Collection<User> entities) {
         if (entities == null) {
@@ -173,7 +164,7 @@ public class UserService {
         }
         List<UserDTO> transferObjects = new ArrayList<>();
         for (User user : entities) {
-            transferObjects.add(mapper.mapUserToTransferObject(user));
+            transferObjects.add(mapper.mapToTransferObject(user));
         }
         return transferObjects;
     }
