@@ -16,16 +16,14 @@ import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.*;
 
+import static de.leonlatsch.oliviabackend.constants.JsonResponse.*;
+
 @Service
 public class UserService {
 
     private static final Logger log = LoggerFactory.getLogger(UserService.class);
 
-    private static final String OK = "OK";
-    private static final String ERROR = "ERROR";
-    private static final String FAIL = "FAIL";
-    private static final String TAKEN = "TAKEN";
-    private static final String FREE = "FREE";
+
 
     @Autowired
     private UserRepository userRepository;
