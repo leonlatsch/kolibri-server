@@ -36,7 +36,7 @@ CREATE TABLE message (
     uid_to INT(11) NOT NULL,
     content LONGBLOB NOT NULL,
     type INT(11) NOT NULL,
-    timestamp DATE NOT NULL,
+    timestamp VARCHAR(20) NOT NULL,
     cid VARCHAR(36) NOT NULL
 );
 

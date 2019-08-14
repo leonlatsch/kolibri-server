@@ -11,6 +11,9 @@ import javax.sql.rowset.serial.SerialBlob;
 import java.sql.Blob;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.util.Locale;
 
 public class DatabaseMapper {
 
@@ -67,7 +70,7 @@ public class DatabaseMapper {
         dto.setTo(message.getTo());
         dto.setContent(Base64.convertToBase64(message.getContent()));
         dto.setType(message.getType());
-        dto.setTimestamp(message.getTimestamp().toString()); // May need to reformat this
+        dto.setTimestamp(message.getTimestamp());
         dto.setCid(message.getCid());
         return dto;
     }
@@ -89,7 +92,7 @@ public class DatabaseMapper {
             message.setTo(dto.getTo());
             message.setContent(content);
             message.setType(dto.getType().getValue());
-            message.setTimestamp(null); // TODO: fron String to Date
+            message.setTimestamp(dto.getTimestamp());
             message.setCid(dto.getCid());
             return message;
         } catch (SQLException e) {
