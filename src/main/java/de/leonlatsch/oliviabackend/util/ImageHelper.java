@@ -3,13 +3,10 @@ package de.leonlatsch.oliviabackend.util;
 import net.coobird.thumbnailator.Thumbnails;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.output.ByteArrayOutputStream;
-import org.apache.tomcat.util.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.imageio.ImageIO;
 import javax.sql.rowset.serial.SerialBlob;
-import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;

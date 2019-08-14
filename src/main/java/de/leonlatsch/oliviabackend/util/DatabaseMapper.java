@@ -9,13 +9,11 @@ import org.slf4j.LoggerFactory;
 
 import javax.sql.rowset.serial.SerialBlob;
 import java.sql.Blob;
-import java.sql.Date;
 import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.util.Locale;
 
 public class DatabaseMapper {
+
+    private static DatabaseMapper databaseMapper; // Singleton
 
     private static final Logger log = LoggerFactory.getLogger(DatabaseMapper.class);
 
@@ -99,5 +97,13 @@ public class DatabaseMapper {
             log.error("" + e);
             return null;
         }
+    }
+
+    public static DatabaseMapper getInstance() {
+        if (databaseMapper == null) {
+            databaseMapper = new DatabaseMapper();
+        }
+
+        return databaseMapper;
     }
 }

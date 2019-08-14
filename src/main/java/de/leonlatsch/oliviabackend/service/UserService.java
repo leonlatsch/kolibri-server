@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Blob;
-import java.sql.SQLException;
 import java.util.*;
 
 import static de.leonlatsch.oliviabackend.constants.JsonResponse.*;
@@ -29,7 +28,7 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    private DatabaseMapper mapper = new DatabaseMapper();
+    private DatabaseMapper mapper = DatabaseMapper.getInstance();
 
     public List<UserDTO> getAllUsers() {
         List<UserDTO> list = mapToTransferObjects(userRepository.findAll());
@@ -148,12 +147,7 @@ public class UserService {
         ProfilePicDTO profilePicDto = new ProfilePicDTO();
         Optional<User> user = userRepository.findById(uid);
         if (user.isPresent()) {
-            try {
-                profilePicDto.setProfilePic(Base64.convertToBase64(user.get().getProfilePic()));
-            } catch (SQLException e) {
-                log.error("" + e);
-                profilePicDto.setProfilePic(null);
-            }
+            profilePicDto.setProfilePic(Base64.convertToBase64(user.get().getProfilePic()));
         } else {
             profilePicDto.setProfilePic(null);
         }

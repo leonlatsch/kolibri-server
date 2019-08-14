@@ -7,7 +7,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.sql.Blob;
-import java.sql.Date;
 
 @Entity
 @Table(name = "message")
