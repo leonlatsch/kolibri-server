@@ -4,6 +4,7 @@ import de.leonlatsch.oliviabackend.dto.ProfilePicDTO;
 import de.leonlatsch.oliviabackend.dto.UserDTO;
 import de.leonlatsch.oliviabackend.entity.User;
 import de.leonlatsch.oliviabackend.repository.UserRepository;
+import de.leonlatsch.oliviabackend.util.CommonUtils;
 import de.leonlatsch.oliviabackend.util.ImageHelper;
 import de.leonlatsch.oliviabackend.util.Mapper;
 import org.slf4j.Logger;
@@ -62,7 +63,7 @@ public class UserService {
         Blob profilePic = ImageHelper.loadDefaultProfilePic();
         User entity = mapper.mapToUserEntity(user);
 
-        entity.setUid(genUid());
+        entity.setUid(CommonUtils.genUid());
         entity.setProfilePic(profilePic);
         entity.setProfilePicTn(ImageHelper.createThumbnail(profilePic));
         return userRepository.saveAndFlush(entity) != null ? OK : ERROR;
@@ -162,10 +163,7 @@ public class UserService {
     }
 
 
-    private int genUid() {
-        Random rnd = new Random();
-        return 10000000 + rnd.nextInt(90000000);
-    }
+
 
     private List<UserDTO> mapToTransferObjects(Collection<User> entities) {
         if (entities == null) {
