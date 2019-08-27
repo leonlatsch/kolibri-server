@@ -1,8 +1,8 @@
 package de.leonlatsch.oliviabackend.controller;
 
-import de.leonlatsch.oliviabackend.entity.User;
-import de.leonlatsch.oliviabackend.service.UserService;
 import de.leonlatsch.oliviabackend.dto.UserDTO;
+import de.leonlatsch.oliviabackend.dto.ProfilePicDTO;
+import de.leonlatsch.oliviabackend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -49,7 +49,7 @@ public class UserController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/register", produces = "application/json")
-    public String createUser(@RequestBody User user) {
+    public String createUser(@RequestBody UserDTO user) {
         return createJsonMessage(userService.createUser(user));
     }
 
@@ -83,10 +83,24 @@ public class UserController {
         }
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/auth", produces = "application/json")
-    public String authUserByEmail(@RequestBody User user) {
-        // Special case since there is no password in a UserDTO
+    @RequestMapping(method = RequestMethod.GET, value = "/search/top100/{username}")
+    public Collection<UserDTO> searchUsersTop100ByUsername(@PathVariable("username") String username) {
+        Collection<UserDTO> users = userService.getUserTop100(username);
+        if (users == null | users.isEmpty()) {
+            throw new NoContentException();
+        } else {
+            return users;
+        }
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/auth", produces = "application/json")
+    public String authUserByEmail(@RequestBody UserDTO user) {
         return createJsonMessage(userService.authUserByEmail(user.getEmail(), user.getPassword()));
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/getProfilePic/{uid}")
+    public ProfilePicDTO loadProfilePic(@PathVariable int uid) {
+        return userService.loadProfilePic(uid);
     }
 
     @ExceptionHandler
@@ -94,10 +108,16 @@ public class UserController {
         response.sendError(HttpStatus.BAD_REQUEST.value());
     }
 
-    private String createJsonMessage(String message) {
-        String jsonMessage = "{\"message\": \"${message}\"}";
+    private String createJsonMessage(String message, String key) {
+        String jsonMessage = "{\"${key}\": \"${message}\"}";
         jsonMessage = jsonMessage.replace("${message}", message);
+        jsonMessage = jsonMessage.replace("${key}", key);
         return jsonMessage;
+    }
+
+    private String createJsonMessage(String message) {
+        String defaultKey = "message";
+        return createJsonMessage(message, defaultKey);
     }
 
     @ResponseStatus(value = HttpStatus.NO_CONTENT, reason = "No content to return")

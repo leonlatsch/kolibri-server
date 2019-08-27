@@ -1,6 +1,7 @@
-package de.leonlatsch.oliviabackend.security;
+package de.leonlatsch.oliviabackend.config;
 
-import de.leonlatsch.oliviabackend.util.ConfigParser;
+import de.leonlatsch.oliviabackend.constants.Values;
+import de.leonlatsch.oliviabackend.security.CredManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -25,9 +26,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        Properties properties = ConfigParser.loadSecurityProperties();
-        String user = properties.getProperty("api.token");
-        String password = properties.getProperty("api.key");
+        Properties properties = CredManager.loadApiCredentials();
+        String user = properties.getProperty(Values.KEY_API_TOKEN);
+        String password = properties.getProperty(Values.KEY_API_KEY);
         PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
         auth.inMemoryAuthentication()
                 .withUser(user)

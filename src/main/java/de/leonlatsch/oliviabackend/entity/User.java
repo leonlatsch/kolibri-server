@@ -21,15 +21,20 @@ public class User {
     private String password;
 
     @Lob
-    @Column(name = "profilePic")
+    @Column(name = "profile_pic")
     private Blob profilePic;
 
-    public User(int uid, String username, String email, String password, Blob profilePic) {
+    @Lob
+    @Column(name = "profile_pic_tn")
+    private Blob profilePicTn;
+
+    public User(int uid, String username, String email, String password, Blob profilePic, Blob profilePicTn) {
         this.uid = uid;
         this.username = username;
         this.email = email;
         this.password = password;
         this.profilePic = profilePic;
+        this.profilePicTn = profilePicTn;
     }
 
     public User() {}
@@ -72,5 +77,13 @@ public class User {
 
     public void setProfilePic(Blob profilePic) {
         this.profilePic = profilePic;
+    }
+
+    public Blob getProfilePicTn() {
+        return profilePicTn;
+    }
+
+    public void setProfilePicTn(Blob profilePicTn) {
+        this.profilePicTn = profilePicTn;
     }
 }
