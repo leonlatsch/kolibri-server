@@ -16,16 +16,22 @@ build:
   stage: build
   script:
     - mvn compile
+  only:
+    - master
 
 test:
   stage: test
   script:
     - mvn test
+  only:
+    - master
 
 package:
   stage: package
   script:
     - mvn package
+  only:
+    - master
   artifacts:
     paths:
       - target/*.jar
