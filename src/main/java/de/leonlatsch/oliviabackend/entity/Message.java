@@ -13,7 +13,7 @@ import java.sql.Blob;
 public class Message {
 
     @Id
-    @Column(name = "mid")
+    @Column(name = "mid", length = 36)
     private String mid;
 
     @Column(name = "uid_from")

@@ -10,7 +10,7 @@ import javax.persistence.Id;
 public class Chat {
 
     @Id
-    @Column(name = "cid")
+    @Column(name = "cid", length = 36)
     private String cid;
 
     @Column(name = "first_member")
