@@ -56,19 +56,46 @@ public class UserService {
         return user.isPresent() ? mapper.mapToTransferObject(user.get()) : null;
     }
 
-    public String createUser(UserDTO user) {
+    public AuthResponse createUser(UserDTO user) {
+        AuthResponse response = new AuthResponse();
         Optional<User> checkUser = userRepository.findByUsername(user.getUsername());
         if (checkUser.isPresent()) {
-            return ERROR;
+            response.setMessage(ERROR);
+            response.setAccessToken(null);
+            response.setSuccess(false);
+            return response;
         }
 
         Blob profilePic = ImageHelper.loadDefaultProfilePic();
         User entity = mapper.mapToEntity(user);
 
-        entity.setUid(CommonUtils.genUid());
+        int uid = CommonUtils.genUid();
+        entity.setUid(uid);
         entity.setProfilePic(profilePic);
         entity.setProfilePicTn(ImageHelper.createThumbnail(profilePic));
-        return userRepository.saveAndFlush(entity) != null ? OK : ERROR;
+        if (userRepository.saveAndFlush(entity) == null) {
+            response.setMessage(ERROR);
+            response.setAccessToken(null);
+            response.setSuccess(false);
+            return response;
+        }
+
+        AccessToken token = new AccessToken();
+        String rawToken = CommonUtils.genAccessToken(11);
+        token.setUid(uid);
+        token.setValid(true);
+        token.setToken(rawToken);
+        if (accessTokenRepository.saveAndFlush(token) == null) {
+            response.setMessage(ERROR);
+            response.setAccessToken(null);
+            response.setSuccess(false);
+            return response;
+        }
+
+        response.setMessage(OK);
+        response.setAccessToken(rawToken);
+        response.setSuccess(true);
+        return response;
     }
 
     public String deleteUser(int uid) {

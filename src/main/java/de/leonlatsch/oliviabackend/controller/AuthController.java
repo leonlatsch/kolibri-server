@@ -22,15 +22,21 @@ public class AuthController {
     public ResponseEntity<AuthResponse> login(@RequestBody UserDTO dto) {
         AuthResponse response = userService.authUserByEmail(dto.getEmail(), dto.getPassword());
 
+        return genResponse(response);
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/register")
+    public ResponseEntity<AuthResponse> register(@RequestBody UserDTO dto) {
+        AuthResponse response = userService.createUser(dto);
+
+        return genResponse(response);
+    }
+
+    private ResponseEntity<AuthResponse> genResponse(AuthResponse response) {
         if (response.isSuccess()) {
             return new ResponseEntity<>(response, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
         }
-    }
-
-    @RequestMapping(method = RequestMethod.POST, value = "/register")
-    public AuthResponse register() {
-        return null;
     }
 }

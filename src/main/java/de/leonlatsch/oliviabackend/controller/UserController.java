@@ -48,11 +48,6 @@ public class UserController {
         }
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/register", produces = "application/json")
-    public String createUser(@RequestBody UserDTO user) {
-        return createJsonMessage(userService.createUser(user));
-    }
-
     @RequestMapping(method = RequestMethod.DELETE, value = "/delete/{uid}")
     public String deleteUser(@PathVariable("uid") int uid) {
         return createJsonMessage(userService.deleteUser(uid));
