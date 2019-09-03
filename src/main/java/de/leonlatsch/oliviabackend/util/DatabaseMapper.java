@@ -1,6 +1,7 @@
 package de.leonlatsch.oliviabackend.util;
 
 import de.leonlatsch.oliviabackend.dto.MessageDTO;
+import de.leonlatsch.oliviabackend.dto.PublicUserDTO;
 import de.leonlatsch.oliviabackend.entity.Message;
 import de.leonlatsch.oliviabackend.entity.User;
 import de.leonlatsch.oliviabackend.dto.UserDTO;
@@ -97,6 +98,19 @@ public class DatabaseMapper {
             log.error("" + e);
             return null;
         }
+    }
+
+    public PublicUserDTO mapToPublicUser(UserDTO dto) {
+        if (dto == null) {
+            return null;
+        }
+
+        PublicUserDTO publicUserDTO = new PublicUserDTO();
+        publicUserDTO.setUid(dto.getUid());
+        publicUserDTO.setUsername(dto.getUsername());
+        publicUserDTO.setProfilePicTn(dto.getProfilePicTn());
+
+        return publicUserDTO;
     }
 
     public static DatabaseMapper getInstance() {

@@ -49,4 +49,4 @@ buildNumber.properties
 
 \.idea/*
 
-api-credentials.properties
+admin-access-token.properties

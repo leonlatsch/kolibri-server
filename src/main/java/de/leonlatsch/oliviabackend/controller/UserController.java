@@ -1,5 +1,7 @@
 package de.leonlatsch.oliviabackend.controller;
 
+import de.leonlatsch.oliviabackend.constants.Headers;
+import de.leonlatsch.oliviabackend.dto.PublicUserDTO;
 import de.leonlatsch.oliviabackend.dto.UserDTO;
 import de.leonlatsch.oliviabackend.dto.ProfilePicDTO;
 import de.leonlatsch.oliviabackend.service.UserService;
@@ -12,15 +14,15 @@ import java.io.IOException;
 import java.util.Collection;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/user")
 public class UserController {
 
     @Autowired
     private UserService userService;
 
-    @RequestMapping(method = RequestMethod.GET)
-    public Collection<UserDTO> getAllUsers() {
-        Collection<UserDTO> users = userService.getAllUsers();
+    @RequestMapping(method = RequestMethod.GET, value = "get/all")
+    public Collection<UserDTO> getAllUsers(@RequestHeader(value = Headers.ACCESS_TOKEN) String accessToken) {
+        Collection<UserDTO> users = userService.getAllUsers(accessToken);
         if (users == null || users.isEmpty()) {
             throw new NoContentException();
         } else {
@@ -28,9 +30,9 @@ public class UserController {
         }
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/getByUid/{uid}")
-    public UserDTO getUserByUid(@PathVariable("uid") int uid) {
-        UserDTO userDTO =  userService.getUserByUid(uid);
+    @RequestMapping(method = RequestMethod.GET, value = "/get")
+    public UserDTO get(@RequestHeader(value = Headers.ACCESS_TOKEN) String accessToken) {
+        UserDTO userDTO =  userService.get(accessToken);
         if (userDTO == null) {
             throw new NoContentException();
         } else {
@@ -38,19 +40,9 @@ public class UserController {
         }
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/getByEmail/{email}")
-    public UserDTO getUserByEmail(@PathVariable("email" ) String email) {
-        UserDTO userDTO =  userService.getUserByEmail(email);
-        if (userDTO == null) {
-            throw new NoContentException();
-        } else {
-            return userDTO;
-        }
-    }
-
-    @RequestMapping(method = RequestMethod.DELETE, value = "/delete/{uid}")
-    public String deleteUser(@PathVariable("uid") int uid) {
-        return createJsonMessage(userService.deleteUser(uid));
+    @RequestMapping(method = RequestMethod.DELETE, value = "/delete")
+    public String delete(@RequestHeader(value = Headers.ACCESS_TOKEN) String accessToken) {
+        return createJsonMessage(userService.deleteUser(accessToken));
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/checkUsername/{username}")
@@ -64,13 +56,13 @@ public class UserController {
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/update", produces = "application/json")
-    public String updateUser(@RequestBody UserDTO user) {
-        return createJsonMessage(userService.updateUser(user));
+    public String update(@RequestHeader(value = Headers.ACCESS_TOKEN) String accessToken, @RequestBody UserDTO user) {
+        return createJsonMessage(userService.updateUser(accessToken, user));
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/search/{username}")
-    public Collection<UserDTO> searchUsersByUsername(@PathVariable("username") String username) {
-        Collection<UserDTO> users = userService.getUserByUsername(username);
+    public Collection<PublicUserDTO> searchUsersByUsername(@PathVariable("username") String username) {
+        Collection<PublicUserDTO> users = userService.search(username);
         if (users == null | users.isEmpty()) {
             throw new NoContentException();
         } else {
@@ -79,8 +71,8 @@ public class UserController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/search/top100/{username}")
-    public Collection<UserDTO> searchUsersTop100ByUsername(@PathVariable("username") String username) {
-        Collection<UserDTO> users = userService.getUserTop100(username);
+    public Collection<PublicUserDTO> searchUsersTop100ByUsername(@PathVariable("username") String username) {
+        Collection<PublicUserDTO> users = userService.searchTop100(username);
         if (users == null | users.isEmpty()) {
             throw new NoContentException();
         } else {
@@ -88,9 +80,9 @@ public class UserController {
         }
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/getProfilePic/{uid}")
-    public ProfilePicDTO loadProfilePic(@PathVariable int uid) {
-        return userService.loadProfilePic(uid);
+    @RequestMapping(method = RequestMethod.GET, value = "/get/profilePic")
+    public ProfilePicDTO loadProfilePic(@RequestHeader(Headers.ACCESS_TOKEN) String accessToken) {
+        return userService.loadProfilePic(accessToken);
     }
 
     @ExceptionHandler
