@@ -1,9 +1,6 @@
 package de.leonlatsch.oliviabackend.service;
 
-import de.leonlatsch.oliviabackend.dto.AuthResponse;
-import de.leonlatsch.oliviabackend.dto.ProfilePicDTO;
-import de.leonlatsch.oliviabackend.dto.PublicUserDTO;
-import de.leonlatsch.oliviabackend.dto.UserDTO;
+import de.leonlatsch.oliviabackend.dto.*;
 import de.leonlatsch.oliviabackend.entity.AccessToken;
 import de.leonlatsch.oliviabackend.entity.User;
 import de.leonlatsch.oliviabackend.repository.AccessTokenRepository;
@@ -176,19 +173,19 @@ public class UserService {
         AuthResponse response = new AuthResponse();
 
         if (hash == null || !user.isPresent()) {
-            response.setMessage(UNAUTORIZED);
+            response.setMessage(UNAUTHORIZED);
             response.setSuccess(false);
             return response;
         }
 
         String token = accessTokenService.getTokenForUser(user.get().getUid());
         if (user.get().getPassword().equals(hash) && token != null) {
-            response.setMessage(AUTORIZED);
+            response.setMessage(AUTHORIZED);
             response.setAccessToken(token);
             response.setSuccess(true);
             return response;
         } else {
-            response.setMessage(UNAUTORIZED);
+            response.setMessage(UNAUTHORIZED);
             response.setAccessToken(null);
             response.setSuccess(false);
             return response;

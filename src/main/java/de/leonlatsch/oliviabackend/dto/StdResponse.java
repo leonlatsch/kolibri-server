@@ -1,22 +1,20 @@
 package de.leonlatsch.oliviabackend.dto;
 
-public enum StdResponse {
-
-    OK("OK"),
-    ERROR("ERROR"),
-    TAKEN("TAKEN"),
-    FREE("FREE"),
-    FAIL("FAIL"),
-    AUTORIZED("AUTORIZED"),
-    UNAUTORIZED("UNAUTORIZED");
+public class StdResponse {
 
     private String message;
 
-    private StdResponse(String message) {
+    public StdResponse() {}
+
+    public StdResponse(String message) {
         this.message = message;
     }
 
     public String getMessage() {
         return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 }

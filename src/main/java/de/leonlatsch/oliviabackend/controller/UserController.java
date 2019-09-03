@@ -1,12 +1,15 @@
 package de.leonlatsch.oliviabackend.controller;
 
+import com.fasterxml.jackson.databind.BeanProperty;
 import de.leonlatsch.oliviabackend.constants.Headers;
 import de.leonlatsch.oliviabackend.dto.PublicUserDTO;
+import de.leonlatsch.oliviabackend.dto.StdResponse;
 import de.leonlatsch.oliviabackend.dto.UserDTO;
 import de.leonlatsch.oliviabackend.dto.ProfilePicDTO;
 import de.leonlatsch.oliviabackend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -41,23 +44,23 @@ public class UserController {
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/delete")
-    public String delete(@RequestHeader(value = Headers.ACCESS_TOKEN) String accessToken) {
-        return createJsonMessage(userService.deleteUser(accessToken));
+    public ResponseEntity<StdResponse> delete(@RequestHeader(value = Headers.ACCESS_TOKEN) String accessToken) {
+        return createStdResponse(userService.deleteUser(accessToken));
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/check/username/{username}")
-    public String checkUsername(@PathVariable("username") String username) {
-        return createJsonMessage(userService.isUsernameFree(username));
+    public ResponseEntity<StdResponse> checkUsername(@PathVariable("username") String username) {
+        return createStdResponse(userService.isUsernameFree(username));
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/check/email/{email}")
-    public String checkEmail(@PathVariable("email") String email) {
-        return createJsonMessage(userService.isEmailFree(email));
+    public ResponseEntity<StdResponse> checkEmail(@PathVariable("email") String email) {
+        return createStdResponse(userService.isEmailFree(email));
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/update", produces = "application/json")
-    public String update(@RequestHeader(value = Headers.ACCESS_TOKEN) String accessToken, @RequestBody UserDTO user) {
-        return createJsonMessage(userService.updateUser(accessToken, user));
+    public ResponseEntity<StdResponse> update(@RequestHeader(value = Headers.ACCESS_TOKEN) String accessToken, @RequestBody UserDTO user) {
+        return createStdResponse(userService.updateUser(accessToken, user));
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/search/{username}")
@@ -90,16 +93,12 @@ public class UserController {
         response.sendError(HttpStatus.BAD_REQUEST.value());
     }
 
-    private String createJsonMessage(String message, String key) {
-        String jsonMessage = "{\"${key}\": \"${message}\"}";
-        jsonMessage = jsonMessage.replace("${message}", message);
-        jsonMessage = jsonMessage.replace("${key}", key);
-        return jsonMessage;
+    private ResponseEntity<StdResponse> createStdResponse(String message, HttpStatus httpStatus) {
+        return new ResponseEntity<StdResponse>(new StdResponse(message), httpStatus);
     }
 
-    private String createJsonMessage(String message) {
-        String defaultKey = "message";
-        return createJsonMessage(message, defaultKey);
+    private ResponseEntity<StdResponse> createStdResponse(String message) {
+        return createStdResponse(message, HttpStatus.OK);
     }
 
     @ResponseStatus(value = HttpStatus.NO_CONTENT, reason = "No content to return")
