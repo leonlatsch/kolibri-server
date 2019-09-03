@@ -128,6 +128,7 @@ public class UserService {
             return ERROR;
         }
         User user = mapper.mapToEntity(userDTO);
+        user.setUid(uid);
 
         Optional<User> dbUser = userRepository.findById(uid);
         if (dbUser.isPresent()) {

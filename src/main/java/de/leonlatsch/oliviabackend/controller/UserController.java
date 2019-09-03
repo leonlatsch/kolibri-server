@@ -45,12 +45,12 @@ public class UserController {
         return createJsonMessage(userService.deleteUser(accessToken));
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/checkUsername/{username}")
+    @RequestMapping(method = RequestMethod.GET, value = "/check/username/{username}")
     public String checkUsername(@PathVariable("username") String username) {
         return createJsonMessage(userService.isUsernameFree(username));
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/checkEmail/{email}")
+    @RequestMapping(method = RequestMethod.GET, value = "/check/email/{email}")
     public String checkEmail(@PathVariable("email") String email) {
         return createJsonMessage(userService.isEmailFree(email));
     }
