@@ -84,7 +84,7 @@ public class UserService {
         }
 
         AccessToken token = new AccessToken();
-        String rawToken = CommonUtils.genAccessToken(11);
+        String rawToken = CommonUtils.genAccessToken(24);
         token.setUid(uid);
         token.setValid(true);
         token.setToken(rawToken);

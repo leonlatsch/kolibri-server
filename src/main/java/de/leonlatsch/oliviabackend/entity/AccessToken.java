@@ -10,7 +10,7 @@ import javax.persistence.Table;
 public class AccessToken {
 
     @Id
-    @Column(name = "token", length = 11)
+    @Column(name = "token", length = 24)
     private String token;
 
     @Column(name = "uid")

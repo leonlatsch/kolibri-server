@@ -40,7 +40,7 @@ public class AdminManager {
                 file.createNewFile();
 
                 Properties properties = new Properties();
-                properties.setProperty(PROPERTY_KEY, CommonUtils.genAccessToken(11));
+                properties.setProperty(PROPERTY_KEY, CommonUtils.genAccessToken(24));
                 properties.store(new FileOutputStream(AAT_FILE), PROPERTY_COMMENT);
                 log.info("Generated new admin credentials");
                 ADMIN_ACCESS_TOKEN = properties.getProperty(PROPERTY_KEY);
