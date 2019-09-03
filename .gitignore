@@ -48,3 +48,5 @@ buildNumber.properties
 .mvn/timing.properties
 
 \.idea/*
+
+api-credentials.properties
