@@ -3,6 +3,7 @@ package de.leonlatsch.oliviabackend.service;
 import de.leonlatsch.oliviabackend.dto.ProfilePicDTO;
 import de.leonlatsch.oliviabackend.dto.UserDTO;
 import de.leonlatsch.oliviabackend.entity.User;
+import de.leonlatsch.oliviabackend.repository.AccessTokenRepository;
 import de.leonlatsch.oliviabackend.repository.UserRepository;
 import de.leonlatsch.oliviabackend.util.Base64;
 import de.leonlatsch.oliviabackend.util.CommonUtils;
@@ -23,7 +24,8 @@ public class UserService {
 
     private static final Logger log = LoggerFactory.getLogger(UserService.class);
 
-
+    @Autowired
+    private AccessTokenRepository accessTokenRepository;
 
     @Autowired
     private UserRepository userRepository;
