@@ -24,22 +24,22 @@ public class UserController {
     private UserService userService;
 
     @RequestMapping(method = RequestMethod.GET, value = "get/all")
-    public Collection<UserDTO> getAllUsers(@RequestHeader(value = Headers.ACCESS_TOKEN) String accessToken) {
+    public ResponseEntity<Collection<UserDTO>> getAllUsers(@RequestHeader(value = Headers.ACCESS_TOKEN) String accessToken) {
         Collection<UserDTO> users = userService.getAllUsers(accessToken);
         if (users == null || users.isEmpty()) {
-            throw new NoContentException();
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {
-            return users;
+            return new ResponseEntity<>(users, HttpStatus.OK);
         }
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/get")
-    public UserDTO get(@RequestHeader(value = Headers.ACCESS_TOKEN) String accessToken) {
+    public ResponseEntity<UserDTO> get(@RequestHeader(value = Headers.ACCESS_TOKEN) String accessToken) {
         UserDTO userDTO =  userService.get(accessToken);
         if (userDTO == null) {
-            throw new NoContentException();
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {
-            return userDTO;
+            return new ResponseEntity<>(userDTO, HttpStatus.OK);
         }
     }
 
@@ -64,28 +64,28 @@ public class UserController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/search/{username}")
-    public Collection<PublicUserDTO> searchUsersByUsername(@PathVariable("username") String username) {
+    public ResponseEntity<Collection<PublicUserDTO>> searchUsersByUsername(@PathVariable("username") String username) {
         Collection<PublicUserDTO> users = userService.search(username);
         if (users == null | users.isEmpty()) {
-            throw new NoContentException();
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {
-            return users;
+            return new ResponseEntity<>(users, HttpStatus.OK);
         }
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/search/top100/{username}")
-    public Collection<PublicUserDTO> searchUsersTop100ByUsername(@PathVariable("username") String username) {
+    public ResponseEntity<Collection<PublicUserDTO>> searchUsersTop100ByUsername(@PathVariable("username") String username) {
         Collection<PublicUserDTO> users = userService.searchTop100(username);
         if (users == null | users.isEmpty()) {
-            throw new NoContentException();
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {
-            return users;
+            return new ResponseEntity<>(users, HttpStatus.OK);
         }
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/get/profilePic")
-    public ProfilePicDTO loadProfilePic(@RequestHeader(Headers.ACCESS_TOKEN) String accessToken) {
-        return userService.loadProfilePic(accessToken);
+    public ResponseEntity<ProfilePicDTO> loadProfilePic(@RequestHeader(Headers.ACCESS_TOKEN) String accessToken) {
+        return new ResponseEntity<>(userService.loadProfilePic(accessToken), HttpStatus.OK);
     }
 
     @ExceptionHandler
@@ -100,7 +100,4 @@ public class UserController {
     private ResponseEntity<StdResponse> createStdResponse(String message) {
         return createStdResponse(message, HttpStatus.OK);
     }
-
-    @ResponseStatus(value = HttpStatus.NO_CONTENT, reason = "No content to return")
-    private class NoContentException extends RuntimeException {}
 }
