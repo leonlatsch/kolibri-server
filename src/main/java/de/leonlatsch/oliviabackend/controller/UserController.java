@@ -93,11 +93,6 @@ public class UserController {
         }
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/auth", produces = "application/json")
-    public String authUserByEmail(@RequestBody UserDTO user) {
-        return createJsonMessage(userService.authUserByEmail(user.getEmail(), user.getPassword()));
-    }
-
     @RequestMapping(method = RequestMethod.GET, value = "/getProfilePic/{uid}")
     public ProfilePicDTO loadProfilePic(@PathVariable int uid) {
         return userService.loadProfilePic(uid);

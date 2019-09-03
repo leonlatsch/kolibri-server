@@ -1,7 +1,9 @@
 package de.leonlatsch.oliviabackend.service;
 
+import de.leonlatsch.oliviabackend.dto.AuthResponse;
 import de.leonlatsch.oliviabackend.dto.ProfilePicDTO;
 import de.leonlatsch.oliviabackend.dto.UserDTO;
+import de.leonlatsch.oliviabackend.entity.AccessToken;
 import de.leonlatsch.oliviabackend.entity.User;
 import de.leonlatsch.oliviabackend.repository.AccessTokenRepository;
 import de.leonlatsch.oliviabackend.repository.UserRepository;
@@ -131,18 +133,32 @@ public class UserService {
         return mapToTransferObjects(users);
     }
 
-    public String authUserByEmail(String email, String hash) {
+    public AuthResponse authUserByEmail(String email, String hash) {
         Optional<User> user = userRepository.findByEmail(email);
 
         if (hash == null || !user.isPresent()) {
-            return ERROR;
+            return null;
         }
 
-        if (user.get().getPassword().equals(hash)) {
-            return OK;
+        AuthResponse response = new AuthResponse();
+        String token = loadAccessToken(user.get().getUid());
+        if (user.get().getPassword().equals(hash) && token != null) {
+            response.setMessage(AUTORIZED);
+            response.setAccessToken(token);
+            response.setSuccess(true);
+            return response;
         } else {
-            return FAIL;
+            response.setMessage(UNAUTORIZED);
+            response.setAccessToken(null);
+            response.setSuccess(false);
+            return response;
         }
+    }
+
+    private String loadAccessToken(int uid) {
+        Optional<AccessToken> token = accessTokenRepository.findByUid(uid);
+
+        return token.isPresent() && token.get().isValid() ? token.get().getToken() : null;
     }
 
     public ProfilePicDTO loadProfilePic(int uid) {
@@ -156,9 +172,6 @@ public class UserService {
 
         return profilePicDto;
     }
-
-
-
 
     private List<UserDTO> mapToTransferObjects(Collection<User> entities) {
         if (entities == null) {
