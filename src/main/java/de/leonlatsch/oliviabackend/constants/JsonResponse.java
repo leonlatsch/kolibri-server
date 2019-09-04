@@ -7,6 +7,8 @@ public class JsonResponse {
     public static final String FAIL = "FAIL";
     public static final String TAKEN = "TAKEN";
     public static final String FREE = "FREE";
+    public static final String AUTHORIZED = "AUTHORIZED";
+    public static final String UNAUTHORIZED = "UNAUTHORIZED";
 
     private JsonResponse() {}
 }
