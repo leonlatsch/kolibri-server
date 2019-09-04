@@ -6,6 +6,8 @@ public class ChatDTO {
     private int first_member;
     private int secondMember;
 
+    public ChatDTO() {}
+
     public ChatDTO(String cid, int first_member, int secondMember) {
         this.cid = cid;
         this.first_member = first_member;

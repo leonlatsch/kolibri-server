@@ -19,6 +19,8 @@ public class Chat {
     @Column(name = "second_member")
     private int secondMember;
 
+    public Chat() {}
+
     public Chat(String cid, int firstMember, int secondMember) {
         this.cid = cid;
         this.firstMember = firstMember;
