@@ -1,19 +1,23 @@
 package de.leonlatsch.oliviabackend.service;
 
-import de.leonlatsch.oliviabackend.dto.*;
+import de.leonlatsch.oliviabackend.dto.AuthResponse;
+import de.leonlatsch.oliviabackend.dto.ProfilePicDTO;
+import de.leonlatsch.oliviabackend.dto.PublicUserDTO;
+import de.leonlatsch.oliviabackend.dto.UserDTO;
 import de.leonlatsch.oliviabackend.entity.AccessToken;
 import de.leonlatsch.oliviabackend.entity.User;
-import de.leonlatsch.oliviabackend.repository.AccessTokenRepository;
 import de.leonlatsch.oliviabackend.repository.UserRepository;
 import de.leonlatsch.oliviabackend.util.*;
-import de.leonlatsch.oliviabackend.util.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Blob;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
 
 import static de.leonlatsch.oliviabackend.constants.JsonResponse.*;
 
@@ -21,9 +25,6 @@ import static de.leonlatsch.oliviabackend.constants.JsonResponse.*;
 public class UserService {
 
     private static final Logger log = LoggerFactory.getLogger(UserService.class);
-
-    @Autowired
-    private AccessTokenRepository accessTokenRepository;
 
     @Autowired
     private UserRepository userRepository;
@@ -85,7 +86,7 @@ public class UserService {
         token.setUid(uid);
         token.setValid(true);
         token.setToken(rawToken);
-        if (accessTokenRepository.saveAndFlush(token) == null) {
+        if (accessTokenService.saveAccessToken(token) == null) {
             response.setMessage(ERROR);
             response.setAccessToken(null);
             response.setSuccess(false);

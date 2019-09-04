@@ -16,7 +16,7 @@ public class AccessTokenService {
     public String getTokenForUser(int uid) {
         Optional<AccessToken> token = accessTokenRepository.findByUidAndValidTrue(uid);
 
-        return token.isPresent() ? token.get().getToken() : null;
+        return token.isPresent() && token.get().isValid() ? token.get().getToken() : null;
     }
 
     public int getUserForToken(String token) {
@@ -31,5 +31,9 @@ public class AccessTokenService {
             token.get().setValid(false);
             accessTokenRepository.saveAndFlush(token.get());
         }
+    }
+
+    public AccessToken saveAccessToken(AccessToken accessToken) {
+        return accessTokenRepository.saveAndFlush(accessToken);
     }
 }
