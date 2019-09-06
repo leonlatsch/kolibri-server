@@ -1,7 +1,9 @@
 package de.leonlatsch.oliviabackend.util;
 
+import de.leonlatsch.oliviabackend.dto.ChatDTO;
 import de.leonlatsch.oliviabackend.dto.MessageDTO;
 import de.leonlatsch.oliviabackend.dto.PublicUserDTO;
+import de.leonlatsch.oliviabackend.entity.Chat;
 import de.leonlatsch.oliviabackend.entity.Message;
 import de.leonlatsch.oliviabackend.entity.User;
 import de.leonlatsch.oliviabackend.dto.UserDTO;
@@ -98,6 +100,30 @@ public class DatabaseMapper {
             log.error("" + e);
             return null;
         }
+    }
+
+    public ChatDTO mapToTransferObject(Chat chat) {
+        if (chat == null) {
+            return null;
+        }
+
+        ChatDTO dto = new ChatDTO();
+        dto.setCid(chat.getCid());
+        dto.setFirst_member(chat.getFirstMember());
+        dto.setSecondMember(chat.getSecondMember());
+        return dto;
+    }
+
+    public Chat mapToEntity(ChatDTO dto) {
+        if (dto == null) {
+            return null;
+        }
+
+        Chat chat = new Chat();
+        chat.setCid(dto.getCid());
+        chat.setFirstMember(dto.getFirst_member());
+        chat.setSecondMember(dto.getSecondMember());
+        return chat;
     }
 
     public PublicUserDTO mapToPublicUser(UserDTO dto) {

@@ -39,7 +39,7 @@ public class MessageService {
         Optional<Message> message = repository.findById(mid);
 
         if (message.isPresent()) {
-            repository.deleteById(mid);
+            repository.delete(message.get());
             return OK;
         } else {
             return ERROR;
