@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.sql.Blob;
+import java.sql.Timestamp;
 
 @Entity
 @Table(name = "message")
@@ -29,14 +30,14 @@ public class Message {
     private MessageType type;
 
     @Column(name = "timestamp")
-    private String timestamp;
+    private Timestamp timestamp;
 
     @Column(name = "cid")
     private String cid;
 
     public Message() {}
 
-    public Message(String mid, int from, int to, Blob content, int type, String timestamp, String cid) {
+    public Message(String mid, int from, int to, Blob content, int type, Timestamp timestamp, String cid) {
         this.mid = mid;
         this.from = from;
         this.to = to;
@@ -86,11 +87,11 @@ public class Message {
         this.type = MessageType.valueOf(type);
     }
 
-    public String getTimestamp() {
+    public Timestamp getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(String timestamp) {
+    public void setTimestamp(Timestamp timestamp) {
         this.timestamp = timestamp;
     }
 

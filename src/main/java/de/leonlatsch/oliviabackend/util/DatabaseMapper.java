@@ -1,5 +1,6 @@
 package de.leonlatsch.oliviabackend.util;
 
+import de.leonlatsch.oliviabackend.constants.Formats;
 import de.leonlatsch.oliviabackend.dto.ChatDTO;
 import de.leonlatsch.oliviabackend.dto.MessageDTO;
 import de.leonlatsch.oliviabackend.dto.PublicUserDTO;
@@ -13,6 +14,9 @@ import org.slf4j.LoggerFactory;
 import javax.sql.rowset.serial.SerialBlob;
 import java.sql.Blob;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.util.Date;
 
 public class DatabaseMapper {
 
@@ -71,7 +75,7 @@ public class DatabaseMapper {
         dto.setTo(message.getTo());
         dto.setContent(Base64.convertToBase64(message.getContent()));
         dto.setType(message.getType());
-        dto.setTimestamp(message.getTimestamp());
+        dto.setTimestamp(message.getTimestamp().toString());
         dto.setCid(message.getCid());
         return dto;
     }
@@ -93,7 +97,7 @@ public class DatabaseMapper {
             message.setTo(dto.getTo());
             message.setContent(content);
             message.setType(dto.getType().getValue());
-            message.setTimestamp(dto.getTimestamp());
+            message.setTimestamp(stringToTimestamp(dto.getTimestamp()));
             message.setCid(dto.getCid());
             return message;
         } catch (SQLException e) {
@@ -145,5 +149,14 @@ public class DatabaseMapper {
         }
 
         return databaseMapper;
+    }
+
+    private Timestamp stringToTimestamp(String timestamp) {
+        try {
+            Date parsed = Formats.DATE_FORMAT.parse(timestamp);
+            return new Timestamp(parsed.getTime());
+        } catch (ParseException e) {
+            return null;
+        }
     }
 }

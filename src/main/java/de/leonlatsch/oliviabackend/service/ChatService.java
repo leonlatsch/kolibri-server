@@ -4,7 +4,6 @@ import de.leonlatsch.oliviabackend.dto.ChatDTO;
 import de.leonlatsch.oliviabackend.dto.MessageDTO;
 import de.leonlatsch.oliviabackend.entity.Chat;
 import de.leonlatsch.oliviabackend.repository.ChatRepository;
-import de.leonlatsch.oliviabackend.repository.MessageRepository;
 import de.leonlatsch.oliviabackend.util.CommonUtils;
 import de.leonlatsch.oliviabackend.util.DatabaseMapper;
 import org.slf4j.Logger;
