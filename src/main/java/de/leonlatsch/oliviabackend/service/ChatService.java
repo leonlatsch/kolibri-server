@@ -1,6 +1,7 @@
 package de.leonlatsch.oliviabackend.service;
 
 import de.leonlatsch.oliviabackend.dto.ChatDTO;
+import de.leonlatsch.oliviabackend.dto.MessageDTO;
 import de.leonlatsch.oliviabackend.entity.Chat;
 import de.leonlatsch.oliviabackend.repository.ChatRepository;
 import de.leonlatsch.oliviabackend.repository.MessageRepository;
@@ -25,9 +26,6 @@ public class ChatService {
     @Autowired
     private ChatRepository chatRepository;
 
-    @Autowired
-    private MessageRepository messageRepository;
-
     public ChatDTO getChat(String cid) {
         Optional<Chat> chat = chatRepository.findById(cid);
         return chat.isPresent() ? mapper.mapToTransferObject(chat.get()) : null;
@@ -39,6 +37,28 @@ public class ChatService {
         return chatRepository.saveAndFlush(chat) != null ? OK : ERROR;
     }
 
+    public String createChatFromMessage(MessageDTO messageDTO) {
+        int from = messageDTO.getFrom();
+        int to = messageDTO.getTo();
+
+        Chat chat = new Chat();
+        String cid = CommonUtils.genUUID();
+        chat.setCid(cid);
+        chat.setFirstMember(from);
+        chat.setSecondMember(to);
+        return chatRepository.saveAndFlush(chat) != null ? cid : ERROR;
+    }
+
+    public ChatDTO getChatFromMembers(int firstMember, int secondMember) {
+        Optional<Chat> chat = chatRepository.findByFirstMemberAndSecondMember(firstMember, secondMember);
+        if (chat.isPresent()) {
+            return mapper.mapToTransferObject(chat.get());
+        } else {
+            chat = chatRepository.findByFirstMemberAndSecondMember(secondMember, firstMember);
+        }
+        return chat.isPresent() ? mapper.mapToTransferObject(chat.get()) : null;
+    }
+
     public String deleteChat(String cid) {
         Optional<Chat> chat = chatRepository.findById(cid);
 
@@ -48,5 +68,23 @@ public class ChatService {
         } else {
             return ERROR;
         }
+    }
+
+    public boolean chatExists(String cid) {
+        if (cid == null) {
+            return false;
+        }
+        Optional<Chat> chat = chatRepository.findById(cid);
+        return chat.isPresent();
+    }
+
+    public boolean chatExists(int firstMember, int secondMember) {
+        Optional<Chat> chat = chatRepository.findByFirstMemberAndSecondMember(firstMember, secondMember);
+        if (chat.isPresent()) {
+            return true;
+        } else {
+            chat = chatRepository.findByFirstMemberAndSecondMember(secondMember, firstMember);
+        }
+        return chat.isPresent();
     }
 }

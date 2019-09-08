@@ -1,5 +1,6 @@
 package de.leonlatsch.oliviabackend.service;
 
+import de.leonlatsch.oliviabackend.dto.ChatDTO;
 import de.leonlatsch.oliviabackend.dto.MessageDTO;
 import de.leonlatsch.oliviabackend.entity.Message;
 import de.leonlatsch.oliviabackend.repository.MessageRepository;
@@ -12,7 +13,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-import static de.leonlatsch.oliviabackend.constants.JsonResponse.*;
+import static de.leonlatsch.oliviabackend.constants.JsonResponse.ERROR;
+import static de.leonlatsch.oliviabackend.constants.JsonResponse.OK;
 
 @Service
 public class MessageService {
@@ -22,24 +24,45 @@ public class MessageService {
     private DatabaseMapper databaseMapper = DatabaseMapper.getInstance();
 
     @Autowired
-    private MessageRepository repository;
+    private MessageRepository messageRepository;
+
+    @Autowired
+    private ChatService chatService;
+
+    @Autowired
+    private AccessTokenService accessTokenService;
 
     public MessageDTO getMessage(String mid) {
-        Optional<Message> message = repository.findById(mid);
+        Optional<Message> message = messageRepository.findById(mid);
         return message.isPresent() ? databaseMapper.mapToTransferObject(message.get()) : null;
     }
 
-    public String createMessage(MessageDTO message) {
+    public String createMessage(String accessToken, MessageDTO message) {
+        int uid = accessTokenService.getUserForToken(accessToken);
+        if (uid != message.getFrom()) {
+            return ERROR;
+        }
+        String cid = message.getCid();
+        if (!chatService.chatExists(cid)) {
+            if (chatService.chatExists(message.getFrom(), message.getTo())) {
+                ChatDTO chat = chatService.getChatFromMembers(message.getFrom(), message.getTo());
+                cid = chat.getCid();
+            } else {
+                cid = chatService.createChatFromMessage(message);
+            }
+            message.setCid(cid);
+        }
+
         Message entity = databaseMapper.mapToEntity(message);
         entity.setMid(CommonUtils.genUUID());
-        return repository.saveAndFlush(entity) != null ? OK : ERROR;
+        return messageRepository.saveAndFlush(entity) != null ? OK : ERROR;
     }
 
     public String deleteMessage(String mid) {
-        Optional<Message> message = repository.findById(mid);
+        Optional<Message> message = messageRepository.findById(mid);
 
         if (message.isPresent()) {
-            repository.delete(message.get());
+            messageRepository.delete(message.get());
             return OK;
         } else {
             return ERROR;
