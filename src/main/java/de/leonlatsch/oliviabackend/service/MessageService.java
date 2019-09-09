@@ -25,8 +25,7 @@ public class MessageService {
     private DatabaseMapper databaseMapper = DatabaseMapper.getInstance();
     private QueueManager queueManager = QueueManager.getInstance();
 
-    private static final String MESSAGE_QUEUE_PREFIX = "message-queue-";
-    private static final String MESSAGE_PREFIX = "message-";
+    private static final String MESSAGE_ID = "message";
 
     @Autowired
     private MessageRepository messageRepository;
@@ -62,7 +61,7 @@ public class MessageService {
         Message entity = databaseMapper.mapToEntity(message);
         boolean success =  messageRepository.saveAndFlush(entity) != null;
         if (success) {
-            queueManager.sendMessage(MESSAGE_QUEUE_PREFIX + message.getCid(), MESSAGE_PREFIX + message.getMid(), message);
+            queueManager.sendMessage(message.getCid(), MESSAGE_ID, message);
             return OK;
         } else {
             return ERROR;
