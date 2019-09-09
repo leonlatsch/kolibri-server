@@ -96,7 +96,7 @@ public class DatabaseMapper {
             message.setFrom(dto.getFrom());
             message.setTo(dto.getTo());
             message.setContent(content);
-            message.setType(dto.getType().getValue());
+            message.setType(dto.getType());
             message.setTimestamp(stringToTimestamp(dto.getTimestamp()));
             message.setCid(dto.getCid());
             return message;

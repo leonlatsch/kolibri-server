@@ -22,7 +22,6 @@ public class AdminManager {
     private static final String PROPERTY_KEY = "admin.access_token";
     private static final String PROPERTY_COMMENT = "Use this token to use admin features";
 
-    @EventListener(ContextRefreshedEvent.class)
     public static String getAdminAccessToken() {
         loadAdminAccessToken();
         return ADMIN_ACCESS_TOKEN;

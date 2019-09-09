@@ -27,7 +27,7 @@ public class Message {
     private Blob content;
 
     @Column(name = "type")
-    private MessageType type;
+    private String type;
 
     @Column(name = "timestamp")
     private Timestamp timestamp;
@@ -37,12 +37,12 @@ public class Message {
 
     public Message() {}
 
-    public Message(String mid, int from, int to, Blob content, int type, Timestamp timestamp, String cid) {
+    public Message(String mid, int from, int to, Blob content, String type, Timestamp timestamp, String cid) {
         this.mid = mid;
         this.from = from;
         this.to = to;
         this.content = content;
-        this.type = MessageType.valueOf(type);
+        this.type = type;
         this.timestamp = timestamp;
         this.cid = cid;
     }
@@ -79,12 +79,12 @@ public class Message {
         this.content = content;
     }
 
-    public MessageType getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(int type) {
-        this.type = MessageType.valueOf(type);
+    public void setType(String type) {
+        this.type = type;
     }
 
     public Timestamp getTimestamp() {

@@ -3,6 +3,7 @@ package de.leonlatsch.oliviabackend.service;
 import de.leonlatsch.oliviabackend.dto.ChatDTO;
 import de.leonlatsch.oliviabackend.dto.MessageDTO;
 import de.leonlatsch.oliviabackend.entity.Chat;
+import de.leonlatsch.oliviabackend.queue.QueueManager;
 import de.leonlatsch.oliviabackend.repository.ChatRepository;
 import de.leonlatsch.oliviabackend.util.CommonUtils;
 import de.leonlatsch.oliviabackend.util.DatabaseMapper;

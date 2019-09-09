@@ -1,29 +1,17 @@
 package de.leonlatsch.oliviabackend.constants;
 
+import de.leonlatsch.oliviabackend.entity.Message;
+
 import java.util.HashMap;
 import java.util.Map;
 
-public enum MessageType {
-    UNDEFINED(0), TEXT(1), PICTURE(2), VIDEO(3), AUDIO(4);
+public class MessageType {
 
-    private int value;
-    private static Map map = new HashMap<>();
+    public static final String UNDEFINED = "UNDEFINED";
+    public static final String TEXT = "TEXT";
+    public static final String PICTURE = "PICTURE";
+    public static final String VIDEO = "VIDEO";
+    public static final String AUDIO = "AUDIO";
 
-    private MessageType(int value) {
-        this.value = value;
-    }
-
-    static {
-        for (MessageType messageType : MessageType.values()) {
-            map.put(messageType.value, messageType);
-        }
-    }
-
-    public static MessageType valueOf(int messageType) {
-        return (MessageType) map.get(messageType);
-    }
-
-    public int getValue() {
-        return value;
-    }
+    private MessageType () {}
 }

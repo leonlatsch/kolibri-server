@@ -3,6 +3,7 @@ package de.leonlatsch.oliviabackend.service;
 import de.leonlatsch.oliviabackend.dto.ChatDTO;
 import de.leonlatsch.oliviabackend.dto.MessageDTO;
 import de.leonlatsch.oliviabackend.entity.Message;
+import de.leonlatsch.oliviabackend.queue.QueueManager;
 import de.leonlatsch.oliviabackend.repository.MessageRepository;
 import de.leonlatsch.oliviabackend.util.CommonUtils;
 import de.leonlatsch.oliviabackend.util.DatabaseMapper;
@@ -22,6 +23,10 @@ public class MessageService {
     private static final Logger log = LoggerFactory.getLogger(MessageService.class);
 
     private DatabaseMapper databaseMapper = DatabaseMapper.getInstance();
+    private QueueManager queueManager = QueueManager.getInstance();
+
+    private static final String MESSAGE_QUEUE_PREFIX = "message-queue-";
+    private static final String MESSAGE_PREFIX = "message-";
 
     @Autowired
     private MessageRepository messageRepository;
@@ -51,11 +56,17 @@ public class MessageService {
                 cid = chatService.createChatFromMessage(message);
             }
             message.setCid(cid);
+            message.setMid(CommonUtils.genUUID());
         }
 
         Message entity = databaseMapper.mapToEntity(message);
-        entity.setMid(CommonUtils.genUUID());
-        return messageRepository.saveAndFlush(entity) != null ? OK : ERROR;
+        boolean success =  messageRepository.saveAndFlush(entity) != null;
+        if (success) {
+            queueManager.sendMessage(MESSAGE_QUEUE_PREFIX + message.getCid(), MESSAGE_PREFIX + message.getMid(), message);
+            return OK;
+        } else {
+            return ERROR;
+        }
     }
 
     public String deleteMessage(String mid) {
