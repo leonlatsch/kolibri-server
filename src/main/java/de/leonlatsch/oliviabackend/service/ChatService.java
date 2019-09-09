@@ -3,7 +3,6 @@ package de.leonlatsch.oliviabackend.service;
 import de.leonlatsch.oliviabackend.dto.ChatDTO;
 import de.leonlatsch.oliviabackend.dto.MessageDTO;
 import de.leonlatsch.oliviabackend.entity.Chat;
-import de.leonlatsch.oliviabackend.queue.QueueManager;
 import de.leonlatsch.oliviabackend.repository.ChatRepository;
 import de.leonlatsch.oliviabackend.util.CommonUtils;
 import de.leonlatsch.oliviabackend.util.DatabaseMapper;
@@ -14,7 +13,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-import static de.leonlatsch.oliviabackend.constants.JsonResponse.*;
+import static de.leonlatsch.oliviabackend.constants.JsonResponse.ERROR;
+import static de.leonlatsch.oliviabackend.constants.JsonResponse.OK;
 
 @Service
 public class ChatService {

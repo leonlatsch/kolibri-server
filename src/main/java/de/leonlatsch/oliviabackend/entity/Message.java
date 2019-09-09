@@ -1,7 +1,5 @@
 package de.leonlatsch.oliviabackend.entity;
 
-import de.leonlatsch.oliviabackend.constants.MessageType;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;

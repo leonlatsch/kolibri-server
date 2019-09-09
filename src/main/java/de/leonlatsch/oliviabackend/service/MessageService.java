@@ -3,7 +3,6 @@ package de.leonlatsch.oliviabackend.service;
 import de.leonlatsch.oliviabackend.dto.ChatDTO;
 import de.leonlatsch.oliviabackend.dto.MessageDTO;
 import de.leonlatsch.oliviabackend.entity.Message;
-import de.leonlatsch.oliviabackend.queue.QueueManager;
 import de.leonlatsch.oliviabackend.repository.MessageRepository;
 import de.leonlatsch.oliviabackend.util.CommonUtils;
 import de.leonlatsch.oliviabackend.util.DatabaseMapper;
@@ -23,7 +22,6 @@ public class MessageService {
     private static final Logger log = LoggerFactory.getLogger(MessageService.class);
 
     private DatabaseMapper databaseMapper = DatabaseMapper.getInstance();
-    private QueueManager queueManager = QueueManager.getInstance();
 
     private static final String MESSAGE_ID = "message";
 
@@ -59,13 +57,7 @@ public class MessageService {
         }
 
         Message entity = databaseMapper.mapToEntity(message);
-        boolean success =  messageRepository.saveAndFlush(entity) != null;
-        if (success) {
-            queueManager.sendMessage(message.getCid(), MESSAGE_ID, message);
-            return OK;
-        } else {
-            return ERROR;
-        }
+        return messageRepository.saveAndFlush(entity) != null ? OK : ERROR;
     }
 
     public String deleteMessage(String mid) {

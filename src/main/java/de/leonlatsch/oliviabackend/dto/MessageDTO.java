@@ -1,7 +1,5 @@
 package de.leonlatsch.oliviabackend.dto;
 
-import de.leonlatsch.oliviabackend.constants.MessageType;
-
 public class MessageDTO {
 
     private String mid; // The unique message id
