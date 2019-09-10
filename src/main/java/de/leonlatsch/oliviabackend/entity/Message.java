@@ -1,12 +1,11 @@
 package de.leonlatsch.oliviabackend.entity;
 
-import de.leonlatsch.oliviabackend.constants.MessageType;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.sql.Blob;
+import java.sql.Timestamp;
 
 @Entity
 @Table(name = "message")
@@ -26,22 +25,22 @@ public class Message {
     private Blob content;
 
     @Column(name = "type")
-    private MessageType type;
+    private String type;
 
     @Column(name = "timestamp")
-    private String timestamp;
+    private Timestamp timestamp;
 
     @Column(name = "cid")
     private String cid;
 
     public Message() {}
 
-    public Message(String mid, int from, int to, Blob content, int type, String timestamp, String cid) {
+    public Message(String mid, int from, int to, Blob content, String type, Timestamp timestamp, String cid) {
         this.mid = mid;
         this.from = from;
         this.to = to;
         this.content = content;
-        this.type = MessageType.valueOf(type);
+        this.type = type;
         this.timestamp = timestamp;
         this.cid = cid;
     }
@@ -78,19 +77,19 @@ public class Message {
         this.content = content;
     }
 
-    public MessageType getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(int type) {
-        this.type = MessageType.valueOf(type);
+    public void setType(String type) {
+        this.type = type;
     }
 
-    public String getTimestamp() {
+    public Timestamp getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(String timestamp) {
+    public void setTimestamp(Timestamp timestamp) {
         this.timestamp = timestamp;
     }
 

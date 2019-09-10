@@ -36,4 +36,9 @@ public class AccessTokenService {
     public AccessToken saveAccessToken(AccessToken accessToken) {
         return accessTokenRepository.saveAndFlush(accessToken);
     }
+
+    public boolean isTokenValid(String accessToken) {
+        Optional<AccessToken> token = accessTokenRepository.findById(accessToken);
+        return token.isPresent() && token.get().isValid();
+    }
 }

@@ -1,0 +1,37 @@
+version: '2'
+
+services:
+
+  database:
+    container_name: olivia-database
+    restart: always
+    image: mysql
+    ports:
+      - 3306:3306
+
+    networks:
+      - olivia-network
+
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: olivia
+      MYSQL_PASSWORD: olivia
+      MYSQL_DATABASE: oliviadb
+
+
+  backend:
+    container_name: olivia-backend
+    restart: always
+    image: olivia-backend
+    ports:
+      - 8080:8080
+
+    networks:
+      - olivia-network
+
+    depends_on:
+      - database
+
+networks:
+  olivia-network:
+    driver: bridge

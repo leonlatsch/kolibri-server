@@ -1,6 +1,5 @@
 package de.leonlatsch.oliviabackend.controller;
 
-import com.fasterxml.jackson.databind.BeanProperty;
 import de.leonlatsch.oliviabackend.constants.Headers;
 import de.leonlatsch.oliviabackend.dto.PublicUserDTO;
 import de.leonlatsch.oliviabackend.dto.StdResponse;

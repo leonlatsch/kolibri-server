@@ -1,20 +1,18 @@
 package de.leonlatsch.oliviabackend.dto;
 
-import de.leonlatsch.oliviabackend.constants.MessageType;
-
 public class MessageDTO {
 
     private String mid; // The unique message id
     private int from; // user's uid that sent the message
     private int to; // user's uid that will receive the message
     private String content; // base64 encoded binary content
-    private MessageType type; // The type of the message, used for mapping the content
+    private String type; // The type of the message, used for mapping the content
     private String timestamp; // The timestamp the message was sent
     private String cid; // Chat FK to the chat
 
     public MessageDTO() {}
 
-    public MessageDTO(String mid, int from, int to, String content, MessageType type, String timestamp, String cid) {
+    public MessageDTO(String mid, int from, int to, String content, String type, String timestamp, String cid) {
         this.mid = mid;
         this.from = from;
         this.to = to;
@@ -56,11 +54,11 @@ public class MessageDTO {
         this.content = content;
     }
 
-    public MessageType getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(MessageType type) {
+    public void setType(String type) {
         this.type = type;
     }
 
