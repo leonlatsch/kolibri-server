@@ -34,6 +34,9 @@ public class MessageService {
     @Autowired
     private AccessTokenService accessTokenService;
 
+    @Autowired
+    RabbitMQSender rabbitMQSender;
+
     public MessageDTO getMessage(String mid) {
         Optional<Message> message = messageRepository.findById(mid);
         return message.isPresent() ? databaseMapper.mapToTransferObject(message.get()) : null;
@@ -57,6 +60,7 @@ public class MessageService {
         }
 
         Message entity = databaseMapper.mapToEntity(message);
+        rabbitMQSender.send(message);
         return messageRepository.saveAndFlush(entity) != null ? OK : ERROR;
     }
 
