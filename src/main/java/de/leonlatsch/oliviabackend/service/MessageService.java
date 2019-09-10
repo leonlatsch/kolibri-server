@@ -60,7 +60,7 @@ public class MessageService {
         }
 
         Message entity = databaseMapper.mapToEntity(message);
-        rabbitMQService.send(message);
+        rabbitMQService.send(message, cid);
         return messageRepository.saveAndFlush(entity) != null ? OK : ERROR;
     }
 

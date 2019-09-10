@@ -15,8 +15,9 @@ public class RabbitMQService {
     @Value("amq.headers")
     private String exchange;
 
-    public void send(MessageDTO message) {
-        template.convertAndSend(exchange, message);
+    public void send(MessageDTO message, String routingKey) {
+        System.out.println("Sending: " + message.getMid() + " to " + routingKey); // remove later
+        template.convertAndSend(exchange, routingKey, message);
 
     }
 }
