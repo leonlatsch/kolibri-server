@@ -1,23 +1,29 @@
 package de.leonlatsch.oliviabackend.service;
 
 import de.leonlatsch.oliviabackend.dto.MessageDTO;
-import org.springframework.amqp.core.AmqpTemplate;
+import org.springframework.amqp.core.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
 public class RabbitMQService {
 
+    public static final String EXCHANGE = "amq.direct";
+
     @Autowired
     private AmqpTemplate template;
 
-    @Value("amq.headers")
-    private String exchange;
+    @Autowired
+    private AmqpAdmin admin;
 
-    public void send(MessageDTO message, String routingKey) {
-        System.out.println("Sending: " + message.getMid() + " to " + routingKey); // remove later
-        template.convertAndSend(exchange, routingKey, message);
+    public void send(MessageDTO message) {
+        template.convertAndSend(message.getCid(), message);
+    }
 
+    public void createQueue(String queueName, boolean durable) {
+        Queue queue = new Queue(queueName, durable, false, false);
+        Binding binding = new Binding(queueName, Binding.DestinationType.QUEUE, EXCHANGE, queueName, null);
+        admin.declareQueue(queue);
+        admin.declareBinding(binding);
     }
 }

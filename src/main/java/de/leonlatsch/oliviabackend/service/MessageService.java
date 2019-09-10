@@ -54,13 +54,14 @@ public class MessageService {
                 cid = chat.getCid();
             } else {
                 cid = chatService.createChatFromMessage(message);
+                rabbitMQService.createQueue(cid, true);
             }
             message.setCid(cid);
             message.setMid(CommonUtils.genUUID());
         }
 
         Message entity = databaseMapper.mapToEntity(message);
-        rabbitMQService.send(message, cid);
+        rabbitMQService.send(message);
         return messageRepository.saveAndFlush(entity) != null ? OK : ERROR;
     }
 
