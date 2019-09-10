@@ -7,12 +7,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
-public class RabbitMQSender {
+public class RabbitMQService {
 
     @Autowired
     private AmqpTemplate template;
 
-    @Value("amq.direct")
+    @Value("amq.headers")
     private String exchange;
 
     public void send(MessageDTO message) {
