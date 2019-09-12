@@ -1,9 +1,6 @@
 package de.leonlatsch.oliviabackend.service;
 
-import de.leonlatsch.oliviabackend.dto.AuthResponse;
-import de.leonlatsch.oliviabackend.dto.ProfilePicDTO;
-import de.leonlatsch.oliviabackend.dto.PublicUserDTO;
-import de.leonlatsch.oliviabackend.dto.UserDTO;
+import de.leonlatsch.oliviabackend.dto.*;
 import de.leonlatsch.oliviabackend.entity.AccessToken;
 import de.leonlatsch.oliviabackend.entity.User;
 import de.leonlatsch.oliviabackend.repository.UserRepository;
@@ -34,7 +31,7 @@ public class UserService {
 
     private DatabaseMapper mapper = DatabaseMapper.getInstance();
 
-    public List<UserDTO> getAllUsers(String accessToken) {
+    public Response getAllUsers(String accessToken) {
         if (!AdminManager.getAdminAccessToken().equals(accessToken)) {
             return null;
         }
@@ -44,20 +41,39 @@ public class UserService {
             rmProfilePic(user);
         }
 
-        return list;
+        return new Response(200, OK, list);
     }
 
-    public UserDTO get(String accessToken) {
+    public Response getPublicKey(int uid) {
+        Optional<User> blob = userRepository.findPublicKeyByUid(uid);
+        if (blob.isPresent()) {
+            return new Response(200, OK, Base64.convertToBase64(blob.get().getPublicKey()));
+        } else {
+            return new Response(400, ERROR, null);
+        }
+    }
+
+    public Response get(String accessToken) {
         int uid = accessTokenService.getUserForToken(accessToken);
         if (uid == -1) {
             return null;
         }
         Optional<User> user = userRepository.findById(uid);
         rmProfilePic(user);
-        return user.isPresent() ? mapper.mapToTransferObject(user.get()) : null;
+        Response response = new Response();
+        if (user.isPresent()) {
+            response.setCode(200);
+            response.setMessage(OK);
+            response.setContent(mapper.mapToTransferObject(user.get()));
+        } else {
+            response.setContent(400);
+            response.setMessage(ERROR);
+            response.setContent(null);
+        }
+        return response;
     }
 
-    public AuthResponse createUser(UserDTO user) {
+    public AuthResponse createUser(UserDTO user, String publicKey) {
         AuthResponse response = new AuthResponse();
         Optional<User> checkUser = userRepository.findByUsername(user.getUsername());
         if (checkUser.isPresent()) {
@@ -74,6 +90,7 @@ public class UserService {
         entity.setUid(uid);
         entity.setProfilePic(profilePic);
         entity.setProfilePicTn(ImageHelper.createThumbnail(profilePic));
+        entity.setPublicKey(Base64.convertToBlob(publicKey));
         if (userRepository.saveAndFlush(entity) == null) {
             response.setMessage(ERROR);
             response.setAccessToken(null);
@@ -99,31 +116,51 @@ public class UserService {
         return response;
     }
 
-    public String deleteUser(String accessToken) {
+    public Response deleteUser(String accessToken) {
         int uid = accessTokenService.getUserForToken(accessToken);
         if (uid == -1) {
-            return ERROR;
+            return new Response(400, ERROR, null);
         }
         userRepository.deleteById(uid);
         accessTokenService.disableAccessToken(accessToken);
-        return OK;
+        return new Response(200, OK, null);
     }
 
-    public String isUsernameFree(String username) {
+    public Response isUsernameFree(String username) {
         Optional<User> user = userRepository.findByUsername(username);
-        return user.isPresent() ? TAKEN : FREE;
+        Response response = new Response();
+        response.setCode(200);
+        response.setContent(null);
+        if (user.isPresent()){
+            response.setMessage(TAKEN);
+        } else {
+            response.setMessage(FREE);
+        }
+        return response;
     }
 
-    public String isEmailFree(String email) {
+    public Response isEmailFree(String email) {
         Optional<User> user = userRepository.findByEmail(email);
-        return user.isPresent() ? TAKEN : FREE;
+        Response response = new Response();
+        response.setCode(200);
+        response.setContent(null);
+        if (user.isPresent()){
+            response.setMessage(TAKEN);
+        } else {
+            response.setMessage(FREE);
+        }
+        return response;
     }
 
-    public String updateUser(String accessToken, UserDTO userDTO) {
+    public Response updateUser(String accessToken, UserDTO userDTO) {
         int uid = accessTokenService.getUserForToken(accessToken);
 
+        Response response = new Response();
         if (uid == -1) {
-            return ERROR;
+            response.setCode(400);
+            response.setMessage(ERROR);
+            response.setContent(null);
+            return response;
         }
         User user = mapper.mapToEntity(userDTO);
         user.setUid(uid);
@@ -146,27 +183,33 @@ public class UserService {
                 user.setProfilePicTn(dbUser.get().getProfilePicTn());
             }
             userRepository.saveAndFlush(user);
-            return OK;
+            response.setCode(200);
+            response.setMessage(OK);
+            response.setContent(null);
+            return response;
         } else {
-            return ERROR;
+            response.setCode(400);
+            response.setMessage(ERROR);
+            response.setContent(null);
+            return response;
         }
     }
 
-    public List<PublicUserDTO> search(String username) {
+    public Response search(String username) {
         List<User> users = userRepository.findByUsernameContaining(username);
         for (User user : users) {
             rmProfilePic(user);
         }
-        return mapToPublicUsers(mapToTransferObjects(users));
+        return new Response(200, OK, mapToPublicUsers(mapToTransferObjects(users)));
     }
 
-    public List<PublicUserDTO> searchTop100(String username) {
+    public Response searchTop100(String username) {
         List<User> users = userRepository.findTop100ByUsernameContaining(username);
         for (User user : users) {
             rmProfilePic(user);
         }
 
-        return mapToPublicUsers(mapToTransferObjects(users));
+        return new Response(200, OK, mapToPublicUsers(mapToTransferObjects(users)));
     }
 
     public AuthResponse authUserByEmail(String email, String hash) {
@@ -193,7 +236,7 @@ public class UserService {
         }
     }
 
-    public ProfilePicDTO loadProfilePic(String accessToken) {
+    public Response loadProfilePic(String accessToken) {
         int uid = accessTokenService.getUserForToken(accessToken);
         if (uid == -1) {
             return null;
@@ -206,7 +249,7 @@ public class UserService {
             profilePicDto.setProfilePic(null);
         }
 
-        return profilePicDto;
+        return new Response(200, OK, profilePicDto);
     }
 
     private List<PublicUserDTO> mapToPublicUsers(Collection<UserDTO> users) {

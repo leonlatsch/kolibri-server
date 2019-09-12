@@ -57,7 +57,7 @@ public class DatabaseMapper {
                 profilePic = new SerialBlob(Base64.convertToBlob(userDTO.getProfilePic()));
                 profilePicTn = new SerialBlob(ImageHelper.createThumbnail(profilePic));
             }
-            return new User(userDTO.getUid(), userDTO.getUsername(), userDTO.getEmail(), userDTO.getPassword(), profilePic, profilePicTn);
+            return new User(userDTO.getUid(), userDTO.getUsername(), userDTO.getEmail(), userDTO.getPassword(), profilePic, profilePicTn, null);
         } catch (SQLException e) {
             log.error("" + e);
             return null;

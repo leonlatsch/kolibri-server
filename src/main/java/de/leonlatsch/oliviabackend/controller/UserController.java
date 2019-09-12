@@ -2,7 +2,7 @@ package de.leonlatsch.oliviabackend.controller;
 
 import de.leonlatsch.oliviabackend.constants.Headers;
 import de.leonlatsch.oliviabackend.dto.PublicUserDTO;
-import de.leonlatsch.oliviabackend.dto.StdResponse;
+import de.leonlatsch.oliviabackend.dto.Response;
 import de.leonlatsch.oliviabackend.dto.UserDTO;
 import de.leonlatsch.oliviabackend.dto.ProfilePicDTO;
 import de.leonlatsch.oliviabackend.service.UserService;
@@ -23,68 +23,53 @@ public class UserController {
     private UserService userService;
 
     @RequestMapping(method = RequestMethod.GET, value = "get/all")
-    public ResponseEntity<Collection<UserDTO>> getAllUsers(@RequestHeader(value = Headers.ACCESS_TOKEN) String accessToken) {
-        Collection<UserDTO> users = userService.getAllUsers(accessToken);
-        if (users == null || users.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } else {
-            return new ResponseEntity<>(users, HttpStatus.OK);
-        }
+    public ResponseEntity<Response> getAllUsers(@RequestHeader(value = Headers.ACCESS_TOKEN) String accessToken) {
+        return createResponse(userService.getAllUsers(accessToken));
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/get")
-    public ResponseEntity<UserDTO> get(@RequestHeader(value = Headers.ACCESS_TOKEN) String accessToken) {
-        UserDTO userDTO =  userService.get(accessToken);
-        if (userDTO == null) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } else {
-            return new ResponseEntity<>(userDTO, HttpStatus.OK);
-        }
+    public ResponseEntity<Response> get(@RequestHeader(value = Headers.ACCESS_TOKEN) String accessToken) {
+        return createResponse(userService.get(accessToken));
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/get/publicKey/{uid}")
+    public ResponseEntity<Response> getPublicKey(@PathVariable("uid") int uid) {
+        return createResponse(userService.getPublicKey(uid));
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/delete")
-    public ResponseEntity<StdResponse> delete(@RequestHeader(value = Headers.ACCESS_TOKEN) String accessToken) {
-        return createStdResponse(userService.deleteUser(accessToken));
+    public ResponseEntity<Response> delete(@RequestHeader(value = Headers.ACCESS_TOKEN) String accessToken) {
+        return createResponse(userService.deleteUser(accessToken));
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/check/username/{username}")
-    public ResponseEntity<StdResponse> checkUsername(@PathVariable("username") String username) {
-        return createStdResponse(userService.isUsernameFree(username));
+    public ResponseEntity<Response> checkUsername(@PathVariable("username") String username) {
+        return createResponse(userService.isUsernameFree(username));
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/check/email/{email}")
-    public ResponseEntity<StdResponse> checkEmail(@PathVariable("email") String email) {
-        return createStdResponse(userService.isEmailFree(email));
+    public ResponseEntity<Response> checkEmail(@PathVariable("email") String email) {
+        return createResponse(userService.isEmailFree(email));
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/update", produces = "application/json")
-    public ResponseEntity<StdResponse> update(@RequestHeader(value = Headers.ACCESS_TOKEN) String accessToken, @RequestBody UserDTO user) {
-        return createStdResponse(userService.updateUser(accessToken, user));
+    public ResponseEntity<Response> update(@RequestHeader(value = Headers.ACCESS_TOKEN) String accessToken, @RequestBody UserDTO user) {
+        return createResponse(userService.updateUser(accessToken, user));
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/search/{username}")
-    public ResponseEntity<Collection<PublicUserDTO>> searchUsersByUsername(@PathVariable("username") String username) {
-        Collection<PublicUserDTO> users = userService.search(username);
-        if (users == null | users.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } else {
-            return new ResponseEntity<>(users, HttpStatus.OK);
-        }
+    public ResponseEntity<Response> searchUsersByUsername(@PathVariable("username") String username) {
+        return createResponse(userService.search(username));
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/search/top100/{username}")
-    public ResponseEntity<Collection<PublicUserDTO>> searchUsersTop100ByUsername(@PathVariable("username") String username) {
-        Collection<PublicUserDTO> users = userService.searchTop100(username);
-        if (users == null | users.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } else {
-            return new ResponseEntity<>(users, HttpStatus.OK);
-        }
+    public ResponseEntity<Response> searchUsersTop100ByUsername(@PathVariable("username") String username) {
+        return createResponse(userService.searchTop100(username));
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/get/profilePic")
-    public ResponseEntity<ProfilePicDTO> loadProfilePic(@RequestHeader(Headers.ACCESS_TOKEN) String accessToken) {
-        return new ResponseEntity<>(userService.loadProfilePic(accessToken), HttpStatus.OK);
+    public ResponseEntity<Response> loadProfilePic(@RequestHeader(Headers.ACCESS_TOKEN) String accessToken) {
+        return createResponse(userService.loadProfilePic(accessToken));
     }
 
     @ExceptionHandler
@@ -92,11 +77,7 @@ public class UserController {
         response.sendError(HttpStatus.BAD_REQUEST.value());
     }
 
-    private ResponseEntity<StdResponse> createStdResponse(String message, HttpStatus httpStatus) {
-        return new ResponseEntity<StdResponse>(new StdResponse(message), httpStatus);
-    }
-
-    private ResponseEntity<StdResponse> createStdResponse(String message) {
-        return createStdResponse(message, HttpStatus.OK);
+    private ResponseEntity<Response> createResponse(Response response) {
+        return new ResponseEntity<Response>(response, HttpStatus.valueOf(response.getCode()));
     }
 }

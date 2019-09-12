@@ -2,6 +2,7 @@ package de.leonlatsch.oliviabackend.service;
 
 import de.leonlatsch.oliviabackend.dto.ChatDTO;
 import de.leonlatsch.oliviabackend.dto.MessageDTO;
+import de.leonlatsch.oliviabackend.dto.Response;
 import de.leonlatsch.oliviabackend.entity.Message;
 import de.leonlatsch.oliviabackend.repository.MessageRepository;
 import de.leonlatsch.oliviabackend.util.CommonUtils;
@@ -42,10 +43,10 @@ public class MessageService {
         return message.isPresent() ? databaseMapper.mapToTransferObject(message.get()) : null;
     }
 
-    public String createMessage(String accessToken, MessageDTO message) {
+    public Response createMessage(String accessToken, MessageDTO message) {
         int uid = accessTokenService.getUserForToken(accessToken);
         if (uid != message.getFrom()) {
-            return ERROR;
+            return new Response(400, ERROR, null);
         }
         String cid = message.getCid();
         if (!chatService.chatExists(cid)) {
@@ -64,9 +65,9 @@ public class MessageService {
         boolean success =  messageRepository.saveAndFlush(entity) != null;
         if (success) {
             rabbitMQService.send(message);
-            return OK;
+            return new Response(200, OK, null);
         } else {
-            return ERROR;
+            return new Response(400, ERROR, null);
         }
     }
 
