@@ -17,6 +17,8 @@ import java.util.Optional;
 import static de.leonlatsch.oliviabackend.constants.JsonResponse.ERROR;
 import static de.leonlatsch.oliviabackend.constants.JsonResponse.OK;
 
+import static de.leonlatsch.oliviabackend.constants.CommonResponses.*;
+
 @Service
 public class MessageService {
 
@@ -46,7 +48,7 @@ public class MessageService {
     public Response createMessage(String accessToken, MessageDTO message) {
         int uid = accessTokenService.getUserForToken(accessToken);
         if (uid != message.getFrom()) {
-            return new Response(400, ERROR, null);
+            return RES_ERROR;
         }
         String cid = message.getCid();
         if (!chatService.chatExists(cid)) {
@@ -65,20 +67,20 @@ public class MessageService {
         boolean success =  messageRepository.saveAndFlush(entity) != null;
         if (success) {
             rabbitMQService.send(message);
-            return new Response(200, OK, null);
+            return RES_OK;
         } else {
-            return new Response(400, ERROR, null);
+            return RES_ERROR;
         }
     }
 
-    public String deleteMessage(String mid) {
+    public Response deleteMessage(String mid) {
         Optional<Message> message = messageRepository.findById(mid);
 
         if (message.isPresent()) {
             messageRepository.delete(message.get());
-            return OK;
+            return RES_OK;
         } else {
-            return ERROR;
+            return RES_ERROR;
         }
     }
 }

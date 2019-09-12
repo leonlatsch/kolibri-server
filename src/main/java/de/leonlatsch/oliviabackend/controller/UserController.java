@@ -33,8 +33,8 @@ public class UserController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/publicKey/get/{uid}")
-    public ResponseEntity<Response> getPublicKey(@PathVariable("uid") int uid) {
-        return createResponseEntity(userService.getPublicKey(uid));
+    public ResponseEntity<Response> getPublicKey(@RequestHeader(Headers.ACCESS_TOKEN) String accessToken, @PathVariable("uid") int uid) {
+        return createResponseEntity(userService.getPublicKey(accessToken, uid));
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/publicKey/update")
@@ -63,13 +63,13 @@ public class UserController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/search/{username}")
-    public ResponseEntity<Response> searchUsersByUsername(@PathVariable("username") String username) {
-        return createResponseEntity(userService.search(username));
+    public ResponseEntity<Response> searchUsersByUsername(@RequestHeader(Headers.ACCESS_TOKEN) String accessToken, @PathVariable("username") String username) {
+        return createResponseEntity(userService.search(accessToken, username));
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/search/top100/{username}")
-    public ResponseEntity<Response> searchUsersTop100ByUsername(@PathVariable("username") String username) {
-        return createResponseEntity(userService.searchTop100(username));
+    public ResponseEntity<Response> searchUsersTop100ByUsername(@RequestHeader(Headers.ACCESS_TOKEN) String accessToken, @PathVariable("username") String username) {
+        return createResponseEntity(userService.searchTop100(accessToken, username));
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/get/profilePic")

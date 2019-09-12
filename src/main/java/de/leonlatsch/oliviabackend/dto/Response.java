@@ -1,9 +1,14 @@
 package de.leonlatsch.oliviabackend.dto;
 
+import de.leonlatsch.oliviabackend.constants.Formats;
+
+import java.sql.Timestamp;
+
 public class Response {
 
     private int code;
     private String message;
+    private String timestamp;
     private Object content;
 
     public Response() {}
@@ -36,5 +41,14 @@ public class Response {
 
     public void setContent(Object content) {
         this.content = content;
+    }
+
+    public String getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp() {
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        this.timestamp = Formats.DATE_FORMAT.format(timestamp);
     }
 }
