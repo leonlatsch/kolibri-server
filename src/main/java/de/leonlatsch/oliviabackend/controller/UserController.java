@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import static de.leonlatsch.oliviabackend.util.ControllerUtils.createResponseEntity;
+
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
@@ -22,57 +24,57 @@ public class UserController {
 
     @RequestMapping(method = RequestMethod.GET, value = "get/all")
     public ResponseEntity<Response> getAllUsers(@RequestHeader(value = Headers.ACCESS_TOKEN) String accessToken) {
-        return ControllerUtils.createResponseEntity(userService.getAllUsers(accessToken));
+        return createResponseEntity(userService.getAllUsers(accessToken));
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/get")
     public ResponseEntity<Response> get(@RequestHeader(value = Headers.ACCESS_TOKEN) String accessToken) {
-        return ControllerUtils.createResponseEntity(userService.get(accessToken));
+        return createResponseEntity(userService.get(accessToken));
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/publicKey/get/{uid}")
     public ResponseEntity<Response> getPublicKey(@PathVariable("uid") int uid) {
-        return ControllerUtils.createResponseEntity(userService.getPublicKey(uid));
+        return createResponseEntity(userService.getPublicKey(uid));
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/publicKey/update")
     public ResponseEntity<Response> updatePublicKey(@RequestHeader(Headers.ACCESS_TOKEN) String accessToken, @RequestHeader(Headers.PUBLIC_KEY) String publicKey) {
-        return ControllerUtils.createResponseEntity(userService.updatePublicKey(accessToken, publicKey));
+        return createResponseEntity(userService.updatePublicKey(accessToken, publicKey));
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/delete")
     public ResponseEntity<Response> delete(@RequestHeader(value = Headers.ACCESS_TOKEN) String accessToken) {
-        return ControllerUtils.createResponseEntity(userService.deleteUser(accessToken));
+        return createResponseEntity(userService.deleteUser(accessToken));
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/check/username/{username}")
     public ResponseEntity<Response> checkUsername(@PathVariable("username") String username) {
-        return ControllerUtils.createResponseEntity(userService.isUsernameFree(username));
+        return createResponseEntity(userService.isUsernameFree(username));
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/check/email/{email}")
     public ResponseEntity<Response> checkEmail(@PathVariable("email") String email) {
-        return ControllerUtils.createResponseEntity(userService.isEmailFree(email));
+        return createResponseEntity(userService.isEmailFree(email));
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/update", produces = "application/json")
     public ResponseEntity<Response> update(@RequestHeader(value = Headers.ACCESS_TOKEN) String accessToken, @RequestBody UserDTO user) {
-        return ControllerUtils.createResponseEntity(userService.updateUser(accessToken, user));
+        return createResponseEntity(userService.updateUser(accessToken, user));
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/search/{username}")
     public ResponseEntity<Response> searchUsersByUsername(@PathVariable("username") String username) {
-        return ControllerUtils.createResponseEntity(userService.search(username));
+        return createResponseEntity(userService.search(username));
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/search/top100/{username}")
     public ResponseEntity<Response> searchUsersTop100ByUsername(@PathVariable("username") String username) {
-        return ControllerUtils.createResponseEntity(userService.searchTop100(username));
+        return createResponseEntity(userService.searchTop100(username));
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/get/profilePic")
     public ResponseEntity<Response> loadProfilePic(@RequestHeader(Headers.ACCESS_TOKEN) String accessToken) {
-        return ControllerUtils.createResponseEntity(userService.loadProfilePic(accessToken));
+        return createResponseEntity(userService.loadProfilePic(accessToken));
     }
 
     @ExceptionHandler

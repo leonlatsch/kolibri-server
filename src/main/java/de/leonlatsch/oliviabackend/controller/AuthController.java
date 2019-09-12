@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import static de.leonlatsch.oliviabackend.util.ControllerUtils.createResponseEntity;
+
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
@@ -18,11 +20,11 @@ public class AuthController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/login")
     public ResponseEntity<Response> login(@RequestBody UserDTO dto) {
-        return ControllerUtils.createResponseEntity(userService.authUserByEmail(dto.getEmail(), dto.getPassword()));
+        return createResponseEntity(userService.authUserByEmail(dto.getEmail(), dto.getPassword()));
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/register")
     public ResponseEntity<Response> register(@RequestBody UserDTO dto, @RequestHeader(value = Headers.PUBLIC_KEY) String publicKey) {
-        return ControllerUtils.createResponseEntity(userService.createUser(dto, publicKey));
+        return createResponseEntity(userService.createUser(dto, publicKey));
     }
 }

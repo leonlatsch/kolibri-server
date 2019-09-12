@@ -1,6 +1,9 @@
 package de.leonlatsch.oliviabackend.service;
 
-import de.leonlatsch.oliviabackend.dto.*;
+import de.leonlatsch.oliviabackend.dto.ProfilePicDTO;
+import de.leonlatsch.oliviabackend.dto.PublicUserDTO;
+import de.leonlatsch.oliviabackend.dto.Response;
+import de.leonlatsch.oliviabackend.dto.UserDTO;
 import de.leonlatsch.oliviabackend.entity.AccessToken;
 import de.leonlatsch.oliviabackend.entity.User;
 import de.leonlatsch.oliviabackend.repository.UserRepository;
@@ -10,7 +13,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.nio.channels.UnsupportedAddressTypeException;
 import java.sql.Blob;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -61,9 +63,22 @@ public class UserService {
             response.setCode(401);
             response.setMessage(UNAUTHORIZED);
             response.setContent(null);
-            return response;
+        } else {
+            Optional<User> user = userRepository.findById(uid);
+            if (user.isPresent()) {
+                User newUser = user.get();
+                newUser.setPublicKey(Base64.convertToBlob(publicKey));
+                userRepository.saveAndFlush(newUser);
+                response.setCode(200);
+                response.setMessage(OK);
+                response.setContent(null);
+            } else {
+                response.setCode(500); // Should never happen case
+                response.setMessage(ERROR);
+                response.setContent(null);
+            }
         }
-        return null;
+        return response;
     }
 
     public Response get(String accessToken) {
