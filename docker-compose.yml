@@ -41,8 +41,8 @@ services:
       - 15672:15672
       - 5672:5672
     environment:
-      RABBITMQ_USER: olivia
-      RABBITMQ_PASSWORD: olivia
+      RABBITMQ_DEFAULT_USER: olivia
+      RABBITMQ_DEFAULT_PASS: olivia
 
     networks:
       - olivia-network

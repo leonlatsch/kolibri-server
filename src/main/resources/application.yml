@@ -16,6 +16,6 @@ spring:
 
   rabbitmq:
     host: olivia-queue
-    password: guest
-    username: guest
+    password: olivia
+    username: olivia
     port: 5672

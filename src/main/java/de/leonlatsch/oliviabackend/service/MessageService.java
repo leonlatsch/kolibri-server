@@ -61,8 +61,13 @@ public class MessageService {
         }
 
         Message entity = databaseMapper.mapToEntity(message);
-        rabbitMQService.send(message);
-        return messageRepository.saveAndFlush(entity) != null ? OK : ERROR;
+        boolean success =  messageRepository.saveAndFlush(entity) != null;
+        if (success) {
+            rabbitMQService.send(message);
+            return OK;
+        } else {
+            return ERROR;
+        }
     }
 
     public String deleteMessage(String mid) {
