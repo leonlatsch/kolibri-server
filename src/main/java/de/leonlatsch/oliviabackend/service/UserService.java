@@ -253,7 +253,7 @@ public class UserService {
     }
 
     private List<PublicUserDTO> mapToPublicUsers(Collection<UserDTO> users) {
-        if (users == null) {
+        if (users == null || users.isEmpty()) {
             return null;
         }
 
@@ -265,7 +265,7 @@ public class UserService {
     }
 
     private List<UserDTO> mapToTransferObjects(Collection<User> entities) {
-        if (entities == null) {
+        if (entities == null || entities.isEmpty()) {
             return null;
         }
         List<UserDTO> transferObjects = new ArrayList<>();
