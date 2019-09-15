@@ -1,12 +1,12 @@
 # Olivia Backend REST API
 
 ----
+### About
 
-Spring boot Application. It is used to communicate between diffrent instances of the Olivia Messenger.
+The purpose of this application is to communicate between these components:
+- Olivia App
+- RabbitMQ
+- Database
 
 
-
-Documentation is found in the **Wiki**. 
-
-
-
+Documentation can found in the **Wiki**. 
