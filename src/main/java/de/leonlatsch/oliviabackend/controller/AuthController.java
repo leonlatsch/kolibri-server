@@ -4,7 +4,6 @@ import de.leonlatsch.oliviabackend.constants.Headers;
 import de.leonlatsch.oliviabackend.dto.Response;
 import de.leonlatsch.oliviabackend.dto.UserDTO;
 import de.leonlatsch.oliviabackend.service.UserService;
-import de.leonlatsch.oliviabackend.util.ControllerUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

@@ -1,5 +1,6 @@
-package de.leonlatsch.oliviabackend.util;
+package de.leonlatsch.oliviabackend.security;
 
+import de.leonlatsch.oliviabackend.util.CommonUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;

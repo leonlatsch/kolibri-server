@@ -7,13 +7,13 @@ import de.leonlatsch.oliviabackend.dto.UserDTO;
 import de.leonlatsch.oliviabackend.entity.AccessToken;
 import de.leonlatsch.oliviabackend.entity.User;
 import de.leonlatsch.oliviabackend.repository.UserRepository;
+import de.leonlatsch.oliviabackend.security.AdminManager;
 import de.leonlatsch.oliviabackend.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.Blob;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -106,19 +106,13 @@ public class UserService {
             return RES_ERROR;
         }
 
-        Blob profilePic = ImageHelper.loadDefaultProfilePic();
         User entity = mapper.mapToEntity(user);
 
         int uid = CommonUtils.genUid();
         entity.setUid(uid);
-        entity.setProfilePic(profilePic);
-        entity.setProfilePicTn(ImageHelper.createThumbnail(profilePic));
         entity.setPublicKey(Base64.convertToBlob(publicKey));
         if (userRepository.saveAndFlush(entity) == null) {
-            response.setMessage(ERROR);
-            response.setContent(null);
-            response.setCode(400);
-            return response;
+            return RES_ERROR;
         }
         AccessToken token = new AccessToken();
         String rawToken = CommonUtils.genAccessToken(24);
@@ -237,6 +231,7 @@ public class UserService {
 
         String token = accessTokenService.getTokenForUser(user.get().getUid());
         if (user.get().getPassword().equals(hash) && token != null) {
+            response.setCode(200);
             response.setMessage(AUTHORIZED);
             response.setContent(token);
             return response;

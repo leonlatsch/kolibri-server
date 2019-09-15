@@ -35,8 +35,10 @@ public class DatabaseMapper {
         if (withPassword) {
             dto.setPassword(user.getPassword());
         }
-        dto.setProfilePic(Base64.convertToBase64(user.getProfilePic()));
-        dto.setProfilePicTn(Base64.convertToBase64(user.getProfilePicTn()));
+        if (user.getProfilePic() != null) {
+            dto.setProfilePic(Base64.convertToBase64(user.getProfilePic()));
+            dto.setProfilePicTn(Base64.convertToBase64(user.getProfilePicTn()));
+        }
         return dto;
     }
 

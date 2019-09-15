@@ -14,9 +14,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-import static de.leonlatsch.oliviabackend.constants.JsonResponse.ERROR;
-import static de.leonlatsch.oliviabackend.constants.JsonResponse.OK;
-
 import static de.leonlatsch.oliviabackend.constants.CommonResponses.*;
 
 @Service

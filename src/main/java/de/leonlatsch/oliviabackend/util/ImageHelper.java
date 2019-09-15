@@ -1,7 +1,6 @@
 package de.leonlatsch.oliviabackend.util;
 
 import net.coobird.thumbnailator.Thumbnails;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,24 +8,12 @@ import org.slf4j.LoggerFactory;
 import javax.sql.rowset.serial.SerialBlob;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.sql.Blob;
 import java.sql.SQLException;
 
 public class ImageHelper {
 
     private static final Logger log = LoggerFactory.getLogger(ImageHelper.class);
-
-    public static Blob loadDefaultProfilePic() {
-        InputStream inputStream = ImageHelper.class.getClassLoader().getResourceAsStream("images/default_profile_pic.png");
-        try {
-            byte[] bytes = IOUtils.toByteArray(inputStream);
-            return new SerialBlob(bytes);
-        } catch (IOException | SQLException e) {
-            log.error("Error loading standard profile pic");
-            throw new RuntimeException(e);
-        }
-    }
 
     public static Blob createThumbnail(Blob original) {
         try {

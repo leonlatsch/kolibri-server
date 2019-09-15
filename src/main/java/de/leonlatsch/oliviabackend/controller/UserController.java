@@ -4,7 +4,6 @@ import de.leonlatsch.oliviabackend.constants.Headers;
 import de.leonlatsch.oliviabackend.dto.Response;
 import de.leonlatsch.oliviabackend.dto.UserDTO;
 import de.leonlatsch.oliviabackend.service.UserService;
-import de.leonlatsch.oliviabackend.util.ControllerUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,12 +31,12 @@ public class UserController {
         return createResponseEntity(userService.get(accessToken));
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/publicKey/get/{uid}")
+    @RequestMapping(method = RequestMethod.GET, value = "/public-key/get/{uid}")
     public ResponseEntity<Response> getPublicKey(@RequestHeader(Headers.ACCESS_TOKEN) String accessToken, @PathVariable("uid") int uid) {
         return createResponseEntity(userService.getPublicKey(accessToken, uid));
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value = "/publicKey/update")
+    @RequestMapping(method = RequestMethod.PUT, value = "/public-key/update")
     public ResponseEntity<Response> updatePublicKey(@RequestHeader(Headers.ACCESS_TOKEN) String accessToken, @RequestHeader(Headers.PUBLIC_KEY) String publicKey) {
         return createResponseEntity(userService.updatePublicKey(accessToken, publicKey));
     }
