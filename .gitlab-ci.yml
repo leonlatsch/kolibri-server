@@ -6,6 +6,7 @@ cache:
     - target/
 stages:
   - build
+  - test
 
 variables:
   MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
@@ -13,9 +14,16 @@ variables:
 build:
   stage: build
   script:
-    - sh build.sh
+    - mvn clean package
   only:
     - master
   artifacts:
     paths:
       - target/*.jar
+
+test:
+  stage: test
+  script:
+    - mvn clean test
+  only:
+    - master
