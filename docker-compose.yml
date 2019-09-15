@@ -31,6 +31,21 @@ services:
 
     depends_on:
       - database
+      - queue
+
+  queue:
+    container_name: olivia-queue
+    restart: always
+    image: rabbitmq:management
+    ports:
+      - 15672:15672
+      - 5672:5672
+    environment:
+      RABBITMQ_DEFAULT_USER: olivia
+      RABBITMQ_DEFAULT_PASS: uJ7Kii8HFa8fJ
+
+    networks:
+      - olivia-network
 
 networks:
   olivia-network:

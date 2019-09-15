@@ -1,8 +1,8 @@
 package de.leonlatsch.oliviabackend.service;
 
-import de.leonlatsch.oliviabackend.dto.AuthResponse;
 import de.leonlatsch.oliviabackend.dto.ProfilePicDTO;
 import de.leonlatsch.oliviabackend.dto.PublicUserDTO;
+import de.leonlatsch.oliviabackend.dto.Response;
 import de.leonlatsch.oliviabackend.dto.UserDTO;
 import de.leonlatsch.oliviabackend.entity.AccessToken;
 import de.leonlatsch.oliviabackend.entity.User;
@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static de.leonlatsch.oliviabackend.constants.JsonResponse.*;
+import static de.leonlatsch.oliviabackend.constants.CommonResponses.*;
 
 @Service
 public class UserService {
@@ -34,7 +35,7 @@ public class UserService {
 
     private DatabaseMapper mapper = DatabaseMapper.getInstance();
 
-    public List<UserDTO> getAllUsers(String accessToken) {
+    public Response getAllUsers(String accessToken) {
         if (!AdminManager.getAdminAccessToken().equals(accessToken)) {
             return null;
         }
@@ -44,27 +45,65 @@ public class UserService {
             rmProfilePic(user);
         }
 
-        return list;
+        return new Response(200, OK, list);
     }
 
-    public UserDTO get(String accessToken) {
+    public Response getPublicKey(String accessToken, int uid) {
+        if (!accessTokenService.isTokenValid(accessToken)) {
+            return new Response(401, UNAUTHORIZED, null);
+        }
+        Optional<User> blob = userRepository.findPublicKeyByUid(uid);
+        if (blob.isPresent()) {
+            return new Response(200, OK, Base64.convertToBase64(blob.get().getPublicKey()));
+        } else {
+            return RES_ERROR;
+        }
+    }
+
+    public Response updatePublicKey(String accessToken, String publicKey) {
+        Response response = new Response();
         int uid = accessTokenService.getUserForToken(accessToken);
         if (uid == -1) {
-            return null;
+            return RES_UNAUTHORIZED;
+        } else {
+            Optional<User> user = userRepository.findById(uid);
+            if (user.isPresent()) {
+                User newUser = user.get();
+                newUser.setPublicKey(Base64.convertToBlob(publicKey));
+                userRepository.saveAndFlush(newUser);
+                return RES_OK;
+            } else {
+                response.setCode(500); // Should never happen case
+                response.setMessage(ERROR);
+                response.setContent(null);
+            }
+        }
+        return response;
+    }
+
+    public Response get(String accessToken) {
+        Response response = new Response();
+        int uid = accessTokenService.getUserForToken(accessToken);
+        if (uid == -1) {
+            return RES_OK;
         }
         Optional<User> user = userRepository.findById(uid);
         rmProfilePic(user);
-        return user.isPresent() ? mapper.mapToTransferObject(user.get()) : null;
+        if (user.isPresent()) {
+            response.setCode(200);
+            response.setMessage(OK);
+            response.setContent(mapper.mapToTransferObject(user.get()));
+            return response;
+        } else {
+            return RES_ERROR;
+        }
     }
 
-    public AuthResponse createUser(UserDTO user) {
-        AuthResponse response = new AuthResponse();
+    public Response createUser(UserDTO user, String publicKey) {
+        Response response = new Response();
         Optional<User> checkUser = userRepository.findByUsername(user.getUsername());
         if (checkUser.isPresent()) {
-            response.setMessage(ERROR);
-            response.setAccessToken(null);
-            response.setSuccess(false);
-            return response;
+            return RES_ERROR;
         }
 
         Blob profilePic = ImageHelper.loadDefaultProfilePic();
@@ -74,56 +113,69 @@ public class UserService {
         entity.setUid(uid);
         entity.setProfilePic(profilePic);
         entity.setProfilePicTn(ImageHelper.createThumbnail(profilePic));
+        entity.setPublicKey(Base64.convertToBlob(publicKey));
         if (userRepository.saveAndFlush(entity) == null) {
             response.setMessage(ERROR);
-            response.setAccessToken(null);
-            response.setSuccess(false);
+            response.setContent(null);
+            response.setCode(400);
             return response;
         }
-
         AccessToken token = new AccessToken();
         String rawToken = CommonUtils.genAccessToken(24);
         token.setUid(uid);
         token.setValid(true);
         token.setToken(rawToken);
         if (accessTokenService.saveAccessToken(token) == null) {
-            response.setMessage(ERROR);
-            response.setAccessToken(null);
-            response.setSuccess(false);
-            return response;
+            return RES_ERROR;
         }
 
         response.setMessage(OK);
-        response.setAccessToken(rawToken);
-        response.setSuccess(true);
+        response.setContent(rawToken);
+        response.setCode(200);
         return response;
     }
 
-    public String deleteUser(String accessToken) {
+    public Response deleteUser(String accessToken) {
         int uid = accessTokenService.getUserForToken(accessToken);
         if (uid == -1) {
-            return ERROR;
+            return RES_ERROR;
         }
         userRepository.deleteById(uid);
         accessTokenService.disableAccessToken(accessToken);
-        return OK;
+        return RES_OK;
     }
 
-    public String isUsernameFree(String username) {
+    public Response isUsernameFree(String username) {
         Optional<User> user = userRepository.findByUsername(username);
-        return user.isPresent() ? TAKEN : FREE;
+        Response response = new Response();
+        response.setCode(200);
+        response.setContent(null);
+        if (user.isPresent()){
+            response.setMessage(TAKEN);
+        } else {
+            response.setMessage(FREE);
+        }
+        return response;
     }
 
-    public String isEmailFree(String email) {
+    public Response isEmailFree(String email) {
         Optional<User> user = userRepository.findByEmail(email);
-        return user.isPresent() ? TAKEN : FREE;
+        Response response = new Response();
+        response.setCode(200);
+        response.setContent(null);
+        if (user.isPresent()){
+            response.setMessage(TAKEN);
+        } else {
+            response.setMessage(FREE);
+        }
+        return response;
     }
 
-    public String updateUser(String accessToken, UserDTO userDTO) {
+    public Response updateUser(String accessToken, UserDTO userDTO) {
         int uid = accessTokenService.getUserForToken(accessToken);
 
         if (uid == -1) {
-            return ERROR;
+            return RES_ERROR;
         }
         User user = mapper.mapToEntity(userDTO);
         user.setUid(uid);
@@ -131,72 +183,72 @@ public class UserService {
         Optional<User> dbUser = userRepository.findById(uid);
         if (dbUser.isPresent()) {
             if (user.getUsername() == null) {
-                user.setUsername(dbUser.get().getUsername());
+                dbUser.get().setUsername(user.getUsername());
             }
             if (user.getEmail() == null) {
-                user.setEmail(dbUser.get().getEmail());
+                dbUser.get().setEmail(user.getEmail());
             }
             if (user.getPassword() == null) {
-                user.setPassword(dbUser.get().getPassword());
+                dbUser.get().setPassword(user.getPassword());
             }
             if (user.getProfilePic() == null) {
-                user.setProfilePic(dbUser.get().getProfilePic());
+                dbUser.get().setProfilePic(user.getProfilePic());
             }
             if (user.getProfilePicTn() == null) {
-                user.setProfilePicTn(dbUser.get().getProfilePicTn());
+                dbUser.get().setProfilePicTn(user.getProfilePicTn());
             }
-            userRepository.saveAndFlush(user);
-            return OK;
+            userRepository.saveAndFlush(dbUser.get());
+            return RES_OK;
         } else {
-            return ERROR;
+            return RES_ERROR;
         }
     }
 
-    public List<PublicUserDTO> search(String username) {
+    public Response search(String accessToken, String username) {
+        if (!accessTokenService.isTokenValid(accessToken)) {
+            return RES_UNAUTHORIZED;
+        }
         List<User> users = userRepository.findByUsernameContaining(username);
         for (User user : users) {
             rmProfilePic(user);
         }
-        return mapToPublicUsers(mapToTransferObjects(users));
+        return new Response(200, OK, mapToPublicUsers(mapToTransferObjects(users)));
     }
 
-    public List<PublicUserDTO> searchTop100(String username) {
+    public Response searchTop100(String accessToken, String username) {
+        if (!accessTokenService.isTokenValid(accessToken)) {
+            return RES_UNAUTHORIZED;
+        }
         List<User> users = userRepository.findTop100ByUsernameContaining(username);
         for (User user : users) {
             rmProfilePic(user);
         }
 
-        return mapToPublicUsers(mapToTransferObjects(users));
+        return new Response(200, OK, mapToPublicUsers(mapToTransferObjects(users)));
     }
 
-    public AuthResponse authUserByEmail(String email, String hash) {
+    public Response authUserByEmail(String email, String hash) {
         Optional<User> user = userRepository.findByEmail(email);
-        AuthResponse response = new AuthResponse();
+        Response response = new Response();
 
         if (hash == null || !user.isPresent()) {
-            response.setMessage(UNAUTHORIZED);
-            response.setSuccess(false);
-            return response;
+           return RES_UNAUTHORIZED;
         }
 
         String token = accessTokenService.getTokenForUser(user.get().getUid());
         if (user.get().getPassword().equals(hash) && token != null) {
             response.setMessage(AUTHORIZED);
-            response.setAccessToken(token);
-            response.setSuccess(true);
+            response.setContent(token);
             return response;
         } else {
-            response.setMessage(UNAUTHORIZED);
-            response.setAccessToken(null);
-            response.setSuccess(false);
-            return response;
+            return RES_UNAUTHORIZED;
         }
     }
 
-    public ProfilePicDTO loadProfilePic(String accessToken) {
+    public Response loadProfilePic(String accessToken) {
         int uid = accessTokenService.getUserForToken(accessToken);
         if (uid == -1) {
-            return null;
+            return RES_ERROR;
         }
         ProfilePicDTO profilePicDto = new ProfilePicDTO();
         Optional<User> user = userRepository.findById(uid);
@@ -206,11 +258,11 @@ public class UserService {
             profilePicDto.setProfilePic(null);
         }
 
-        return profilePicDto;
+        return new Response(200, OK, profilePicDto);
     }
 
     private List<PublicUserDTO> mapToPublicUsers(Collection<UserDTO> users) {
-        if (users == null) {
+        if (users == null || users.isEmpty()) {
             return null;
         }
 
@@ -222,7 +274,7 @@ public class UserService {
     }
 
     private List<UserDTO> mapToTransferObjects(Collection<User> entities) {
-        if (entities == null) {
+        if (entities == null || entities.isEmpty()) {
             return null;
         }
         List<UserDTO> transferObjects = new ArrayList<>();

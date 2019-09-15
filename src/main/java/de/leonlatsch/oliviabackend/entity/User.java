@@ -28,13 +28,18 @@ public class User {
     @Column(name = "profile_pic_tn")
     private Blob profilePicTn;
 
-    public User(int uid, String username, String email, String password, Blob profilePic, Blob profilePicTn) {
+    @Lob
+    @Column(name = "public_key")
+    private Blob publicKey;
+
+    public User(int uid, String username, String email, String password, Blob profilePic, Blob profilePicTn, Blob publicKey) {
         this.uid = uid;
         this.username = username;
         this.email = email;
         this.password = password;
         this.profilePic = profilePic;
         this.profilePicTn = profilePicTn;
+        this.publicKey = publicKey;
     }
 
     public User() {}
@@ -85,5 +90,13 @@ public class User {
 
     public void setProfilePicTn(Blob profilePicTn) {
         this.profilePicTn = profilePicTn;
+    }
+
+    public Blob getPublicKey() {
+        return publicKey;
+    }
+
+    public void setPublicKey(Blob publicKey) {
+        this.publicKey = publicKey;
     }
 }
