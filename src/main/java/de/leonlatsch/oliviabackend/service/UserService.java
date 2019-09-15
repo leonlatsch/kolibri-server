@@ -56,7 +56,7 @@ public class UserService {
         if (blob.isPresent()) {
             return new Response(200, OK, Base64.convertToBase64(blob.get().getPublicKey()));
         } else {
-            return new Response(400, ERROR, null);
+            return RES_ERROR;
         }
     }
 
