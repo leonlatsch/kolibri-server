@@ -13,6 +13,7 @@ spring:
     properties:
         hibernate:
           dialect: org.hibernate.dialect.MySQL5Dialect
+    open-in-view: true # default setting to remove warning
 
   rabbitmq:
     host: olivia-queue
