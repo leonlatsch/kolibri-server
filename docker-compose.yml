@@ -1,8 +1,12 @@
 version: '2'
 
+networks:
+  olivia-network:
+    driver: bridge
+
 services:
 
-  database:
+  database: # MYSQL Database Server
     container_name: olivia-database
     restart: always
     image: mysql
@@ -19,12 +23,15 @@ services:
       MYSQL_DATABASE: oliviadb
 
 
-  backend:
+  backend: # Pre built image of the backend
     container_name: olivia-backend
     restart: always
     image: olivia-backend
     ports:
       - 8080:8080
+
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
 
     networks:
       - olivia-network
@@ -33,7 +40,7 @@ services:
       - database
       - queue
 
-  queue:
+  queue: # RabbitMQ Server
     container_name: olivia-queue
     restart: always
     image: rabbitmq:management
@@ -44,9 +51,23 @@ services:
       RABBITMQ_DEFAULT_USER: olivia
       RABBITMQ_DEFAULT_PASS: uJ7Kii8HFa8fJ
 
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
     networks:
       - olivia-network
 
-networks:
-  olivia-network:
-    driver: bridge
+  proxy: # Traefik Reverse proxy
+    container_name: olivia-proxy
+    restart: always
+    image: traefik
+    ports:
+      - 80:80
+      - 443:443
+      - 8090:8090
+    networks:
+      - olivia-network
+
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./assets/traefik/config.toml:/etc/traefik/traefik.toml
