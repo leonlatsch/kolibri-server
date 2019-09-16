@@ -26,12 +26,12 @@ watch = true
   [backends.olivia-backend]
     [backends.olivia-backend.servers]
       [backends.olivia-backend.servers.main]
-      url = "http://localhost:8080"
+      url = "http://olivia-backend:8080"
       weight = 1
   [backends.olivia-queue]
       [backends.olivia-queue.servers]
         [backends.olivia-queue.servers.main]
-        url = "http://localhost:15672"
+        url = "http://olivia-queue:15672"
         weight = 1
   [backends.olivia-proxy]
       [backends.olivia-proxy.servers]
