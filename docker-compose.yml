@@ -71,3 +71,4 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./assets/traefik/config.toml:/etc/traefik/traefik.toml
+      - ./assets/traefik/acme.json:/etc/traefik/acme/acme.json
