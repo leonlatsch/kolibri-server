@@ -9,6 +9,7 @@ import de.leonlatsch.oliviabackend.entity.User;
 import de.leonlatsch.oliviabackend.repository.UserRepository;
 import de.leonlatsch.oliviabackend.security.AdminManager;
 import de.leonlatsch.oliviabackend.util.*;
+import jdk.nashorn.internal.parser.TokenStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -115,7 +116,7 @@ public class UserService {
             return RES_ERROR;
         }
         AccessToken token = new AccessToken();
-        String rawToken = CommonUtils.genAccessToken(24);
+        String rawToken = CommonUtils.genAccessToken();
         token.setUid(uid);
         token.setValid(true);
         token.setToken(rawToken);
@@ -166,6 +167,7 @@ public class UserService {
     }
 
     public Response updateUser(String accessToken, UserDTO userDTO) {
+        Response response = new Response();
         int uid = accessTokenService.getUserForToken(accessToken);
 
         if (uid == -1) {
@@ -176,23 +178,27 @@ public class UserService {
 
         Optional<User> dbUser = userRepository.findById(uid);
         if (dbUser.isPresent()) {
-            if (user.getUsername() == null) {
+            if (user.getUsername() != null) {
                 dbUser.get().setUsername(user.getUsername());
             }
-            if (user.getEmail() == null) {
+            if (user.getEmail() != null) {
                 dbUser.get().setEmail(user.getEmail());
             }
-            if (user.getPassword() == null) {
+            if (user.getPassword() != null) {
                 dbUser.get().setPassword(user.getPassword());
+                String newToken = updateAccessToken(dbUser.get().getUid());
+                response.setContent(newToken);
             }
-            if (user.getProfilePic() == null) {
+            if (user.getProfilePic() != null) {
                 dbUser.get().setProfilePic(user.getProfilePic());
             }
-            if (user.getProfilePicTn() == null) {
+            if (user.getProfilePicTn() != null) {
                 dbUser.get().setProfilePicTn(user.getProfilePicTn());
             }
             userRepository.saveAndFlush(dbUser.get());
-            return RES_OK;
+            response.setCode(200);
+            response.setMessage(OK);
+            return response;
         } else {
             return RES_ERROR;
         }
@@ -277,6 +283,18 @@ public class UserService {
             transferObjects.add(mapper.mapToTransferObject(user));
         }
         return transferObjects;
+    }
+
+    private String updateAccessToken(int uid) {
+        String oldToken = accessTokenService.getTokenForUser(uid);
+        accessTokenService.disableAccessToken(oldToken);
+        String newToken = CommonUtils.genAccessToken();
+        AccessToken accessToken = new AccessToken();
+        accessToken.setUid(uid);
+        accessToken.setToken(newToken);
+        accessToken.setValid(true);
+        accessTokenService.saveAccessToken(accessToken);
+        return newToken;
     }
 
     private void rmProfilePic(UserDTO dto) {
