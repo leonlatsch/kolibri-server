@@ -60,7 +60,7 @@ services:
   proxy: # Traefik Reverse proxy
     container_name: olivia-proxy
     restart: always
-    image: traefik
+    image: traefik:v1.7.16
     ports:
       - 80:80
       - 443:443
