@@ -12,8 +12,7 @@ defaultEntryPoints = ["http", "https"] # Add amqp later
   [entryPoints.api]
   address = ":8090"
     [entryPoints.api.auth.basic]
-    users = ["admin:3777ab2a7ce2fade19df9b60d995a87b31da6b90"]
-# add basic auth
+    users = ["admin:$2y$12$T/ovzkv3CJtSWIaK9MLb0uHN8ghBl6G7Gsfb/c9Sj1z6gfWWeMyJC"]
 
 [api]
 entrypoint = "api"
