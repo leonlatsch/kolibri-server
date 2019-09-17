@@ -46,7 +46,7 @@ watch = true
   passHostHeader = true
   [frontends.olivia-backend.routes]
     [frontends.olivia-backend.routes.route]
-    rule = "PathPrefixStrip:/api;PathPrefix:/api"
+    rule = "Host:olivia.leonlatsch.de;PathPrefixStrip:/api;PathPrefix:/api"
 
   [frontends.olivia-queue]
   entryPoints = ["https"]
@@ -54,7 +54,7 @@ watch = true
   passHostHeader = true
   [frontends.olivia-queue.routes]
     [frontends.olivia-queue.routes.route]
-    rule = "PathPrefixStrip:/queue;PathPrefix:/queue"
+    rule = "Host:olivia.leonlatsch.de;PathPrefixStrip:/queue;PathPrefix:/queue"
 
   [frontends.olivia-proxy]
   entryPoints = ["https"]
@@ -62,15 +62,12 @@ watch = true
   passHostHeader = true
   [frontends.olivia-proxy.routes]
     [frontends.olivia-proxy.routes.route]
-    rule = "PathPrefixStrip:/proxy;PathPrefix:/proxy"
+    rule = "Host:olivia.leonlatsch.de;PathPrefixStrip:/proxy;PathPrefix:/proxy"
 
 [acme]
 email = "dev.leonlatsch@gmail.com"
 storage = "/etc/traefik/acme/acme.json"
 entryPoint = "https"
 onHostRule = true
-[[acme.domains]]
-  main = "olivia.leonlatsch.de"
-  sans = ["olivia.leonlatsch.de"]
 [acme.httpChallenge]
   entryPoint = "http"
