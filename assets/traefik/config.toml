@@ -9,6 +9,9 @@ defaultEntryPoints = ["http", "https"] # Add amqp later
   [entryPoints.https]
   address = ":443"
   [entryPoints.https.tls]
+    [[entryPoints.https.tls.certificates]]
+    certFile = "/etc/traefik/acme/acme.json"
+    keyFile = "/etc/traefik/acme/acme.json"
   [entryPoints.api]
   address = ":8090"
 # add basic auth
