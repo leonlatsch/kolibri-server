@@ -14,7 +14,6 @@ entryPoints:
 
 api:
   dashboard: true
-  entryPoint: api
 
 providers:
   file:
