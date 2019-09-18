@@ -11,8 +11,8 @@ http:
     proxy-router:
       rule: "Path(`/proxy`)"
       service: proxy-service
-      middlewares:
-        - admin-auth
+ #     middlewares:
+ #       - admin-auth
 
   services:
     api-service:
@@ -33,7 +33,6 @@ http:
   middlewares:
     admin-auth:
       basicAuth:
-        removeHeader: true
         usersFile: "/etc/traefik/admins"
 
 tcp:
@@ -41,7 +40,7 @@ tcp:
     mq-service:
       loadBalancer:
         servers:
-          - url: "olivia-queue:56722"
+          - address: "olivia-queue:56722"
 
   routers:
     mq-router:
