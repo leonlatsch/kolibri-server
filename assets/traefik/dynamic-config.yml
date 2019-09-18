@@ -10,7 +10,9 @@ http:
 
     proxy-router:
       rule: "PathPrefix(`/proxy`)"
-      service: proxy-service
+      service: api@internal
+      middlewares:
+        - auth
 
   services:
     api-service:
@@ -23,15 +25,11 @@ http:
         servers:
           - url: "http://olivia-queue:15672/#/"
 
-    proxy-service:
-      loadBalancer:
-        servers:
-          - url: "http://localhost:8090"
-
   middlewares:
-    admin-auth:
+    auth:
       basicAuth:
-        usersFile: "/etc/traefik/admins"
+        users:
+          - "test:$apr1$H6uskkkW$IgXLP6ewTrSuBkTrqE8wj/"
 
 tcp:
   services:
