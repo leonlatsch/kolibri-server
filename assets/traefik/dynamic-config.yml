@@ -11,8 +11,6 @@ http:
     proxy-router:
       rule: "PathPrefix(`/proxy`)"
       service: api@internal
- #     middlewares:
- #       - admin-auth
 
   services:
     api-service:
@@ -24,11 +22,6 @@ http:
       loadBalancer:
         servers:
           - url: "http://olivia-queue:15672/#/"
-
-    proxy-service:
-      loadBalancer:
-        servers:
-          - url: "http://localhost:8090"
 
   middlewares:
     admin-auth:
