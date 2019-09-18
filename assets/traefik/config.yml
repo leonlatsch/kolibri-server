@@ -9,7 +9,7 @@ entryPoints:
     address: ":8090"
 
   mq:
-    address: ":25672"
+    address: ":5672"
 
 api:
   dashboard: true

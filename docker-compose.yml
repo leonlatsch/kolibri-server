@@ -46,7 +46,7 @@ services:
     image: rabbitmq:management
     ports:
       - 15672:15672
-      - 5672:5672
+      - 56722:5672
     environment:
       RABBITMQ_DEFAULT_USER: olivia
       RABBITMQ_DEFAULT_PASS: uJ7Kii8HFa8fJ

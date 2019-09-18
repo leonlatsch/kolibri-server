@@ -1,15 +1,15 @@
 http:
   routers:
     api-router:
-      rule: "Path('/api')"
+      rule: "Path(`/api`)"
       service: api-service
 
     mq-dashboard-router:
-      rule: "Path('/mq-dashboard')"
+      rule: "Path(`/mq-dashboard`)"
       service: mq-dashboard-service
 
     proxy-router:
-      rule: "Path('/proxy')"
+      rule: "Path(`/proxy`)"
       service: proxy-service
       middlewares:
         - admin-auth
@@ -42,7 +42,7 @@ tcp:
     mq-service:
       loadBalancer:
         servers:
-          - url: "tcp://olivia-queue:5672"
+          - url: "tcp://olivia-queue:56722"
 
   routers:
     mq-router:
