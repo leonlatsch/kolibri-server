@@ -1,15 +1,15 @@
 http:
   routers:
     api-router:
-      rule: "Path(`/api`)"
+      rule: "PathPrefix(`/api`)"
       service: api-service
 
     mq-dashboard-router:
-      rule: "Path(`/mq-dashboard`)"
+      rule: "PathPrefix(`/mq-dashboard`)"
       service: mq-dashboard-service
 
     proxy-router:
-      rule: "Path(`/proxy`)"
+      rule: "PathPrefix(`/proxy`)"
       service: api@internal
  #     middlewares:
  #       - admin-auth

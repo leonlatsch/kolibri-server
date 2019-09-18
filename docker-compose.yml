@@ -74,3 +74,7 @@ services:
       - ./assets/traefik/dynamic-config.yml:/etc/traefik/dynamic-config.yml
       - ./assets/traefik/acme.json:/etc/traefik/acme.json
       - ./assets/traefik/admins:/etc/traefik/admins
+
+    depends_on:
+      - backend
+      - queue
