@@ -10,7 +10,7 @@ http:
 
     proxy-router:
       rule: "Path(`/proxy`)"
-      service: proxy-service
+      service: api@internal
  #     middlewares:
  #       - admin-auth
 

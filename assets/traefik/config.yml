@@ -5,9 +5,6 @@ entryPoints:
   https:
     address: ":443"
 
-  api:
-    address: ":8090"
-
   mq:
     address: ":5672"
 
