@@ -8,11 +8,15 @@ entryPoints:
   mq:
     address: ":5672"
 
+  traefik:
+    address: ":8090"
+
 api:
   dashboard: true
+  insecure: true
 
 log:
-  level: INFO
+  level: DEBUG
 
 providers:
   file:
