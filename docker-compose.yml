@@ -71,4 +71,5 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./assets/traefik/config.yml:/etc/traefik/traefik.yml
+      - ./assets/traefik/dynamic-config.yml:/etc/traefik/dynamic-config.yml
       - ./assets/traefik/acme.json:/etc/traefik/acme.json

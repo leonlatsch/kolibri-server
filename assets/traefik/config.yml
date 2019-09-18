@@ -16,55 +16,6 @@ api:
   dashboard: true
   entryPoint: api
 
-http:
-  routers:
-    api-router:
-      rule: "Path('/api')"
-      service: api-service
-
-    mq-dashboard-router:
-      rule: "Path('/mq-dashboard')"
-      service: mq-dashboard-service
-
-    proxy-router:
-      rule: "Path('/proxy')"
-      service: proxy-service
-      middlewares:
-        - admin-auth
-
-  services:
-    api-service:
-      loadBalancer:
-        servers:
-          - url: "http://olivia-backend:8080"
-
-    mq-dashboard-service:
-      loadBalancer:
-        servers:
-          - url: "http://olivia-queue:15672/#/"
-
-    proxy-service:
-      loadBalancer:
-        servers:
-          - url: "http://localhost:8090"
-
-  middlewares:
-    admin-auth:
-      basicAuth:
-        removeHeader: true
-        users:
-          - "admin:$2y$12$T/ovzkv3CJtSWIaK9MLb0uHN8ghBl6G7Gsfb/c9Sj1z6gfWWeMyJC"
-
-tcp:
-  services:
-    mq-service:
-      loadBalancer:
-        servers:
-          - url: "tcp://olivia-queue:5672"
-
-  routers:
-    mq-router:
-      entryPoints:
-        - mq
-      rule: "HostSNI(`*`)"
-      service: mq-service
+providers:
+  file:
+    filename: "/etc/traefik/dynamic-config.yml"
