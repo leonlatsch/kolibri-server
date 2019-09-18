@@ -11,6 +11,9 @@ entryPoints:
 api:
   dashboard: true
 
+log:
+  level: INFO
+
 providers:
   file:
     filename: "/etc/traefik/dynamic-config.yml"
