@@ -35,7 +35,7 @@ http:
       basicAuth:
         removeHeader: true
         users:
-          - "admin:$2y$12$T/ovzkv3CJtSWIaK9MLb0uHN8ghBl6G7Gsfb/c9Sj1z6gfWWeMyJC"
+          - "admin:$2y$12$WZPPrMZUgMxIwyesvaLqjuWJ0gztFfqertyz9iVL.I.6qhMPSOLr."
 
 tcp:
   services:
@@ -47,6 +47,6 @@ tcp:
   routers:
     mq-router:
       entryPoints:
-        - mq
+        - "mq"
       rule: "HostSNI(`*`)"
       service: mq-service
