@@ -34,19 +34,18 @@ http:
     admin-auth:
       basicAuth:
         removeHeader: true
-        users:
-          - "admin:$2y$12$WZPPrMZUgMxIwyesvaLqjuWJ0gztFfqertyz9iVL.I.6qhMPSOLr."
+        usersFile: "/etc/traefik/admins"
 
 tcp:
   services:
     mq-service:
       loadBalancer:
         servers:
-          - url: "tcp://olivia-queue:56722"
+          - url: "olivia-queue:56722"
 
   routers:
     mq-router:
       entryPoints:
-        - "mq"
+        - mq
       rule: "HostSNI(`*`)"
       service: mq-service
