@@ -1,5 +1,3 @@
-logLevel: "INFO"
-
 entryPoints:
   http:
     address: ":80"
