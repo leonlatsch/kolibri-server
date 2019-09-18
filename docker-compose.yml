@@ -60,7 +60,7 @@ services:
   proxy: # Traefik Reverse proxy
     container_name: olivia-proxy
     restart: always
-    image: traefik:v1.7.16
+    image: traefik:v2.0
     ports:
       - 80:80
       - 443:443
@@ -70,5 +70,5 @@ services:
 
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - ./assets/traefik/config.toml:/etc/traefik/traefik.toml
+      - ./assets/traefik/config.yml:/etc/traefik/traefik.yml
       - ./assets/traefik/acme.json:/etc/traefik/acme.json
