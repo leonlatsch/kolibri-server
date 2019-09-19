@@ -3,33 +3,47 @@ http:
     api-router:
       rule: "PathPrefix(`/api`)"
       service: api-service
+      middlewares:
+        - strip
 
     mq-dashboard-router:
-      rule: "PathPrefix(`/mq-dashboard`)"
+      rule: "PathPrefix(`/mq`)"
       service: mq-dashboard-service
+      middlewares:
+        - strip
 
     proxy-router:
       rule: "PathPrefix(`/proxy`)"
       service: api@internal
       middlewares:
         - auth
+        - strip
 
   services:
     api-service:
       loadBalancer:
+        passHostHeader: true
         servers:
           - url: "http://olivia-backend:8080"
 
     mq-dashboard-service:
+      passHostHeader: true
       loadBalancer:
         servers:
-          - url: "http://olivia-queue:15672/#/"
+          - url: "http://olivia-queue:15672"
 
   middlewares:
     auth:
       basicAuth:
         users:
           - "test:$apr1$H6uskkkW$IgXLP6ewTrSuBkTrqE8wj/"
+
+    strip:
+      stripPrefix:
+        prefixes:
+          - "/proxy"
+          - "/api"
+          - "/mq"
 
 tcp:
   services:

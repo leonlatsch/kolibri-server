@@ -16,8 +16,11 @@ api:
   insecure: true
 
 log:
-  level: DEBUG
+  level: INFO
+
+accessLog: {} # Remove in production
 
 providers:
   file:
-    filename: "/etc/traefik/dynamic-config.yml"
+    watch: true
+    filename: /etc/traefik/dynamic-config.yml
