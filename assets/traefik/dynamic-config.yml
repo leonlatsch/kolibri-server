@@ -1,20 +1,29 @@
 http:
   routers:
     api-router:
+      entryPoints:
+        - https
       rule: "PathPrefix(`/api`)"
       service: api-service
+      tls: {}
       middlewares:
         - strip
 
     mq-dashboard-router:
+      entryPoints:
+        - https
       rule: "PathPrefix(`/mq`)"
       service: mq-dashboard-service
+      tls: {}
       middlewares:
         - strip
 
     proxy-router:
+      entryPoints:
+        - https
       rule: "PathPrefix(`/proxy`)"
-      service: api@internal
+      service: proxy-service
+      tls: {}
       middlewares:
         - auth
         - strip
@@ -32,6 +41,26 @@ http:
         servers:
           - url: "http://olivia-queue:15672"
 
+    proxy-service:
+      passHostHeader: true
+      loadBalancer:
+        servers:
+          - url: "http://localhost:8090"
+
+tcp:
+  services:
+    mq-service:
+      loadBalancer:
+        servers:
+          - address: "olivia-queue:5672"
+
+  routers:
+    mq-router:
+      entryPoints:
+        - mq
+      rule: "HostSNI(`*`)"
+      service: mq-service
+
   middlewares:
     auth:
       basicAuth:
@@ -44,17 +73,3 @@ http:
           - "/proxy"
           - "/api"
           - "/mq"
-
-tcp:
-  services:
-    mq-service:
-      loadBalancer:
-        servers:
-          - address: "olivia-queue:56722"
-
-  routers:
-    mq-router:
-      entryPoints:
-        - mq
-      rule: "HostSNI(`*`)"
-      service: mq-service

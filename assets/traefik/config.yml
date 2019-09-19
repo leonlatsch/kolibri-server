@@ -6,7 +6,7 @@ entryPoints:
     address: ":443"
 
   mq:
-    address: ":5672"
+    address: ":56722"
 
   traefik:
     address: ":8090"
