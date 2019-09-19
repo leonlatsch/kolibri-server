@@ -1,0 +1,77 @@
+http:
+  routers:
+    backend-router:
+      entryPoints:
+        - https
+      rule: "PathPrefix(`/backend`)"
+      service: backend-service
+      tls:
+        certResolver: main
+        domains:
+          - main: olivia.leonlatsch.de
+      middlewares:
+        - strip
+
+    mq-dashboard-router:
+      entryPoints:
+        - https
+      rule: "PathPrefix(`/mq`)"
+      service: mq-dashboard-service
+      tls:
+        certResolver: main
+        domains:
+          - main: olivia.leonlatsch.de
+      middlewares:
+        - strip
+
+    proxy-router:
+      entryPoints:
+        - https
+      rule: "PathPrefix(`/api`) || PathPrefix(`/dashboard`)"
+      service: api@internal
+      tls:
+        certResolver: main
+        domains:
+          - main: olivia.leonlatsch.de
+      middlewares:
+        - auth
+
+  services:
+    backend-service:
+      loadBalancer:
+        passHostHeader: true
+        servers:
+          - url: "http://olivia-backend:8080"
+
+    mq-dashboard-service:
+      passHostHeader: true
+      loadBalancer:
+        servers:
+          - url: "http://olivia-queue:15672"
+
+  middlewares:
+    auth:
+      basicAuth:
+        users:
+          - "admin:$2y$05$La.l7/vvIsLprQu1E2/1zehlpht.DM6LmvnNHBvbC3NMRi6ChKBn6"
+
+    strip:
+      stripPrefix:
+        prefixes:
+          - "/proxy"
+          - "/api"
+          - "/mq"
+
+tcp:
+  services:
+    mq-service:
+      loadBalancer:
+        servers:
+          - address: "olivia-queue:5672"
+
+  routers:
+    mq-router:
+      entryPoints:
+        - mq
+      rule: "HostSNI(`*`)"
+      service: mq-service
