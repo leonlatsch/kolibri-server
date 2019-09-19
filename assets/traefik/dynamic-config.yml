@@ -5,7 +5,10 @@ http:
         - https
       rule: "PathPrefix(`/backend`)"
       service: backend-service
-      tls: {}
+      tls:
+        certResolver: main
+        domains:
+          - main: olivia.leonlatsch.de
       middlewares:
         - strip
 
@@ -14,7 +17,10 @@ http:
         - https
       rule: "PathPrefix(`/mq`)"
       service: mq-dashboard-service
-      tls: {}
+      tls:
+        certResolver: main
+        domains:
+          - main: olivia.leonlatsch.de
       middlewares:
         - strip
 
@@ -23,7 +29,10 @@ http:
         - https
       rule: "PathPrefix(`/api`) || PathPrefix(`/dashboard`)"
       service: api@internal
-      tls: {}
+      tls:
+        certResolver: main
+        domains:
+          - main: olivia.leonlatsch.de
       middlewares:
         - auth
 
