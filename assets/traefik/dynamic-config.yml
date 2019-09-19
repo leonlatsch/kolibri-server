@@ -53,7 +53,7 @@ http:
     auth:
       basicAuth:
         users:
-          - "test:$apr1$H6uskkkW$IgXLP6ewTrSuBkTrqE8wj/"
+          - "admin:$2y$05$La.l7/vvIsLprQu1E2/1zehlpht.DM6LmvnNHBvbC3NMRi6ChKBn6"
 
     strip:
       stripPrefix:
