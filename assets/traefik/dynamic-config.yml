@@ -1,10 +1,10 @@
 http:
   routers:
-    api-router:
+    backend-router:
       entryPoints:
         - https
-      rule: "PathPrefix(`/api`)"
-      service: api-service
+      rule: "PathPrefix(`/backend`)"
+      service: backend-service
       tls: {}
       middlewares:
         - strip
@@ -21,15 +21,14 @@ http:
     proxy-router:
       entryPoints:
         - https
-      rule: "PathPrefix(`/proxy`)"
-      service: proxy-service
+      rule: "PathPrefix(`/api`) || PathPrefix(`/dashboard`)"
+      service: api@internal
       tls: {}
       middlewares:
         - auth
-        - strip
 
   services:
-    api-service:
+    backend-service:
       loadBalancer:
         passHostHeader: true
         servers:
@@ -41,11 +40,18 @@ http:
         servers:
           - url: "http://olivia-queue:15672"
 
-    proxy-service:
-      passHostHeader: true
-      loadBalancer:
-        servers:
-          - url: "http://localhost:8090"
+  middlewares:
+    auth:
+      basicAuth:
+        users:
+          - "test:$apr1$H6uskkkW$IgXLP6ewTrSuBkTrqE8wj/"
+
+    strip:
+      stripPrefix:
+        prefixes:
+          - "/proxy"
+          - "/api"
+          - "/mq"
 
 tcp:
   services:
@@ -60,16 +66,3 @@ tcp:
         - mq
       rule: "HostSNI(`*`)"
       service: mq-service
-
-  middlewares:
-    auth:
-      basicAuth:
-        users:
-          - "test:$apr1$H6uskkkW$IgXLP6ewTrSuBkTrqE8wj/"
-
-    strip:
-      stripPrefix:
-        prefixes:
-          - "/proxy"
-          - "/api"
-          - "/mq"

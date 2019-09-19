@@ -8,17 +8,13 @@ entryPoints:
   mq:
     address: ":56722"
 
-  traefik:
-    address: ":8090"
-
 api:
   dashboard: true
-  insecure: true
 
 log:
-  level: INFO
+  level: INFO # DEBUG ERROR
 
-accessLog: {} # Remove in production
+#accessLog: {} # debug
 
 providers:
   file:
