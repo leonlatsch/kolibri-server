@@ -20,3 +20,11 @@ providers:
   file:
     watch: true
     filename: /etc/traefik/dynamic-config.yml
+
+certificatesResolvers:
+  main:
+    acme:
+      email: dev.leonlatsch@gmail.com
+      storage: /etc/traefik/acme.json
+      httpChallenge:
+        entryPoint: http
