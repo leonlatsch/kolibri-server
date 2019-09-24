@@ -59,7 +59,7 @@ http:
       stripPrefix:
         prefixes:
           - "/proxy"
-          - "/api"
+          - "/backend"
           - "/mq"
 
 tcp:
