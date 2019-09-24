@@ -3,6 +3,7 @@ http:
     backend-router:
       entryPoints:
         - https
+        - http
       rule: "PathPrefix(`/backend`)"
       service: backend-service
       tls:
@@ -11,10 +12,12 @@ http:
           - main: olivia.leonlatsch.de
       middlewares:
         - strip
+        - redirect
 
     mq-dashboard-router:
       entryPoints:
         - https
+        - http
       rule: "PathPrefix(`/mq`)"
       service: mq-dashboard-service
       tls:
@@ -23,10 +26,12 @@ http:
           - main: olivia.leonlatsch.de
       middlewares:
         - strip
+        - redirect
 
     proxy-router:
       entryPoints:
         - https
+        - http
       rule: "PathPrefix(`/api`) || PathPrefix(`/dashboard`)"
       service: api@internal
       tls:
@@ -35,6 +40,7 @@ http:
           - main: olivia.leonlatsch.de
       middlewares:
         - auth
+        - redirect
 
   services:
     backend-service:
@@ -61,6 +67,11 @@ http:
           - "/proxy"
           - "/backend"
           - "/mq"
+
+    redirect:
+      redirectScheme:
+        scheme: https
+        permanent: true
 
 tcp:
   services:
