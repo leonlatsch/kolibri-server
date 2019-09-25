@@ -37,6 +37,8 @@ public class DatabaseMapper {
         }
         if (user.getProfilePic() != null) {
             dto.setProfilePic(Base64.convertToBase64(user.getProfilePic()));
+        }
+        if (user.getProfilePicTn() != null) {
             dto.setProfilePicTn(Base64.convertToBase64(user.getProfilePicTn()));
         }
         return dto;

@@ -246,20 +246,19 @@ public class UserService {
         }
     }
 
-    public Response loadProfilePic(String accessToken) {
-        int uid = accessTokenService.getUserForToken(accessToken);
-        if (uid == -1) {
-            return RES_ERROR;
+    public Response loadProfilePic(String accessToken, int uid) {
+        if (!accessTokenService.isTokenValid(accessToken)) {
+            return RES_UNAUTHORIZED;
         }
-        ProfilePicDTO profilePicDto = new ProfilePicDTO();
+        String profilePic;
         Optional<User> user = userRepository.findById(uid);
         if (user.isPresent()) {
-            profilePicDto.setProfilePic(Base64.convertToBase64(user.get().getProfilePic()));
+            profilePic = Base64.convertToBase64(user.get().getProfilePic());
         } else {
-            profilePicDto.setProfilePic(null);
+            profilePic = null;
         }
 
-        return new Response(200, OK, profilePicDto);
+        return new Response(200, OK, profilePic);
     }
 
     private List<PublicUserDTO> mapToPublicUsers(Collection<UserDTO> users) {

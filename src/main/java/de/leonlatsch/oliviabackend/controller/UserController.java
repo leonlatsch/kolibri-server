@@ -71,9 +71,9 @@ public class UserController {
         return createResponseEntity(userService.searchTop100(accessToken, username));
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/get/profilePic")
-    public ResponseEntity<Response> loadProfilePic(@RequestHeader(Headers.ACCESS_TOKEN) String accessToken) {
-        return createResponseEntity(userService.loadProfilePic(accessToken));
+    @RequestMapping(method = RequestMethod.GET, value = "/get/profile-pic/{uid}")
+    public ResponseEntity<Response> loadProfilePic(@RequestHeader(Headers.ACCESS_TOKEN) String accessToken, @PathVariable("uid") int uid) {
+        return createResponseEntity(userService.loadProfilePic(accessToken, uid));
     }
 
     @ExceptionHandler
