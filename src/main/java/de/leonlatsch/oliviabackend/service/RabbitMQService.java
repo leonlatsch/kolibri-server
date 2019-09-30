@@ -1,5 +1,6 @@
 package de.leonlatsch.oliviabackend.service;
 
+import de.leonlatsch.oliviabackend.constants.Formats;
 import de.leonlatsch.oliviabackend.dto.MessageDTO;
 import org.springframework.amqp.core.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,7 @@ public class RabbitMQService {
     private AmqpAdmin admin;
 
     public void send(MessageDTO message) {
-        template.convertAndSend(message.getCid(), message);
+        template.convertAndSend(Formats.USER_QUEUE_PREFIX + message.getTo(), message);
     }
 
     public void createQueue(String queueName, boolean durable) {

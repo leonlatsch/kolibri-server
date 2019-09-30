@@ -1,6 +1,6 @@
 package de.leonlatsch.oliviabackend.service;
 
-import de.leonlatsch.oliviabackend.dto.ProfilePicDTO;
+import de.leonlatsch.oliviabackend.constants.Formats;
 import de.leonlatsch.oliviabackend.dto.PublicUserDTO;
 import de.leonlatsch.oliviabackend.dto.Response;
 import de.leonlatsch.oliviabackend.dto.UserDTO;
@@ -8,20 +8,22 @@ import de.leonlatsch.oliviabackend.entity.AccessToken;
 import de.leonlatsch.oliviabackend.entity.User;
 import de.leonlatsch.oliviabackend.repository.UserRepository;
 import de.leonlatsch.oliviabackend.security.AdminManager;
-import de.leonlatsch.oliviabackend.util.*;
-import jdk.nashorn.internal.parser.TokenStream;
+import de.leonlatsch.oliviabackend.util.Base64;
+import de.leonlatsch.oliviabackend.util.CommonUtils;
+import de.leonlatsch.oliviabackend.util.DatabaseMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.Format;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-import static de.leonlatsch.oliviabackend.constants.JsonResponse.*;
 import static de.leonlatsch.oliviabackend.constants.CommonResponses.*;
+import static de.leonlatsch.oliviabackend.constants.JsonResponse.*;
 
 @Service
 public class UserService {
@@ -33,6 +35,9 @@ public class UserService {
 
     @Autowired
     private AccessTokenService accessTokenService;
+
+    @Autowired
+    private RabbitMQService rabbitMQService;
 
     private DatabaseMapper mapper = DatabaseMapper.getInstance();
 
@@ -123,6 +128,9 @@ public class UserService {
         if (accessTokenService.saveAccessToken(token) == null) {
             return RES_ERROR;
         }
+
+        String queueName = Formats.USER_QUEUE_PREFIX + entity.getUid();
+        rabbitMQService.createQueue(queueName, true);
 
         response.setMessage(OK);
         response.setContent(rawToken);
@@ -259,6 +267,11 @@ public class UserService {
         }
 
         return new Response(200, OK, profilePic);
+    }
+
+    public boolean userExists(int uid) {
+        Optional<User> user = userRepository.findById(uid);
+        return user.isPresent();
     }
 
     private List<PublicUserDTO> mapToPublicUsers(Collection<UserDTO> users) {
