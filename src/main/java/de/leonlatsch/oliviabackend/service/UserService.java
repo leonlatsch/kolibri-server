@@ -145,6 +145,7 @@ public class UserService {
         }
         userRepository.deleteById(uid);
         accessTokenService.disableAccessToken(accessToken);
+        rabbitMQService.deleteQueue(Formats.USER_QUEUE_PREFIX + uid);
         return RES_OK;
     }
 

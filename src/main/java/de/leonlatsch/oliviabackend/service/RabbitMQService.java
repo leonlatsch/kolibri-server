@@ -27,4 +27,8 @@ public class RabbitMQService {
         admin.declareQueue(queue);
         admin.declareBinding(binding);
     }
+
+    public void deleteQueue(String queueName) {
+        admin.deleteQueue(queueName);
+    }
 }
