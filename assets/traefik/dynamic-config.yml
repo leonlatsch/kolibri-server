@@ -78,7 +78,7 @@ tcp:
     mq-service:
       loadBalancer:
         servers:
-          - address: "olivia-queue:5672"
+          - address: "amqp://olivia-queue:5672"
 
   routers:
     mq-router:
