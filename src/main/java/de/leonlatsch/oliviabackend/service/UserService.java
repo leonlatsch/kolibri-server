@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Blob;
 import java.text.Format;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -112,11 +113,15 @@ public class UserService {
             return RES_ERROR;
         }
 
-        User entity = mapper.mapToEntity(user);
+        Blob publicKeyBlob = Base64.convertToBlob(publicKey);
+        if (publicKeyBlob == null) {
+            return RES_ERROR;
+        }
 
+        User entity = mapper.mapToEntity(user);
         int uid = CommonUtils.genUid();
         entity.setUid(uid);
-        entity.setPublicKey(Base64.convertToBlob(publicKey));
+        entity.setPublicKey(publicKeyBlob);
         if (userRepository.saveAndFlush(entity) == null) {
             return RES_ERROR;
         }
@@ -149,28 +154,34 @@ public class UserService {
         return RES_OK;
     }
 
-    public Response isUsernameFree(String username) {
+    public Response isUsernameFree(String accessToken, String username) {
+        int uid = accessTokenService.getUserForToken(accessToken);
         Optional<User> user = userRepository.findByUsername(username);
         Response response = new Response();
         response.setCode(200);
         response.setContent(null);
-        if (user.isPresent()){
-            response.setMessage(TAKEN);
-        } else {
+        if (!user.isPresent()) {
             response.setMessage(FREE);
+        } else if (user.get().getUid() == uid) {
+            response.setMessage(TAKEN_BY_YOU);
+        } else {
+            response.setMessage(TAKEN);
         }
         return response;
     }
 
-    public Response isEmailFree(String email) {
+    public Response isEmailFree(String accessToken, String email) {
+        int uid = accessTokenService.getUserForToken(accessToken);
         Optional<User> user = userRepository.findByEmail(email);
         Response response = new Response();
         response.setCode(200);
         response.setContent(null);
-        if (user.isPresent()){
-            response.setMessage(TAKEN);
-        } else {
+        if (!user.isPresent()) {
             response.setMessage(FREE);
+        } else if (user.get().getUid() == uid) {
+            response.setMessage(TAKEN_BY_YOU);
+        } else {
+            response.setMessage(TAKEN);
         }
         return response;
     }
@@ -187,9 +198,6 @@ public class UserService {
 
         Optional<User> dbUser = userRepository.findById(uid);
         if (dbUser.isPresent()) {
-            if (user.getUsername() != null) {
-                dbUser.get().setUsername(user.getUsername());
-            }
             if (user.getEmail() != null) {
                 dbUser.get().setEmail(user.getEmail());
             }

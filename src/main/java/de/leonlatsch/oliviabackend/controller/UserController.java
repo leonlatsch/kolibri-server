@@ -47,13 +47,13 @@ public class UserController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/check/username/{username}")
-    public ResponseEntity<Response> checkUsername(@PathVariable("username") String username) {
-        return createResponseEntity(userService.isUsernameFree(username));
+    public ResponseEntity<Response> checkUsername(@RequestHeader(Headers.ACCESS_TOKEN) String accessToken, @PathVariable("username") String username) {
+        return createResponseEntity(userService.isUsernameFree(accessToken, username));
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/check/email/{email}")
-    public ResponseEntity<Response> checkEmail(@PathVariable("email") String email) {
-        return createResponseEntity(userService.isEmailFree(email));
+    public ResponseEntity<Response> checkEmail(@RequestHeader(Headers.ACCESS_TOKEN) String accessToken, @PathVariable("email") String email) {
+        return createResponseEntity(userService.isEmailFree(accessToken, email));
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/update", produces = "application/json")
