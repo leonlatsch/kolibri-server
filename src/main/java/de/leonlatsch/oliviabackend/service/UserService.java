@@ -92,7 +92,7 @@ public class UserService {
         Response response = new Response();
         int uid = accessTokenService.getUserForToken(accessToken);
         if (uid == -1) {
-            return RES_OK;
+            return RES_UNAUTHORIZED;
         }
         Optional<User> user = userRepository.findById(uid);
         rmProfilePic(user);
