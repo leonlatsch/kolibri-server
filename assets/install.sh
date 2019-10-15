@@ -1,3 +1,3 @@
 #!/bin/sh
 
-# add commands here
+mkdir /config

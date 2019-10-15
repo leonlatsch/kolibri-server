@@ -6,7 +6,7 @@ EXPOSE 8080
 
 ARG JAR=target/olivia-backend-1.0-SNAPSHOT.jar
 ARG SH=assets/entrypoint.sh
-ARG INST=/assets/install.sh
+ARG INST=assets/install.sh
 
 # Add files
 ADD ${JAR} olivia-backend-1.0-SNAPSHOT.jar
