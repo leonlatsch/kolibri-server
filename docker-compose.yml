@@ -49,7 +49,7 @@ services:
       - 5672:5672
     environment:
       RABBITMQ_DEFAULT_USER: olivia
-      RABBITMQ_DEFAULT_PASS: uJ7Kii8HFa8fJ
+      RABBITMQ_DEFAULT_PASS: olivia
 
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
