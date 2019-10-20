@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class RabbitMQService {
+public class BrokerService {
 
     public static final String EXCHANGE = "amq.direct";
 

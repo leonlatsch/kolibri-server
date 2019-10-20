@@ -35,7 +35,7 @@ public class MessageService {
     private AccessTokenService accessTokenService;
 
     @Autowired
-    private RabbitMQService rabbitMQService;
+    private BrokerService brokerService;
 
     @Autowired
     private UserService userService;
@@ -68,7 +68,7 @@ public class MessageService {
         Message entity = databaseMapper.mapToEntity(message);
         boolean success =  messageRepository.saveAndFlush(entity) != null;
         if (success) {
-            rabbitMQService.send(message);
+            brokerService.send(message);
             return RES_OK;
         } else {
             return RES_ERROR;

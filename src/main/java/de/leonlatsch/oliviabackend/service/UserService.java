@@ -17,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Blob;
-import java.text.Format;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -38,7 +37,7 @@ public class UserService {
     private AccessTokenService accessTokenService;
 
     @Autowired
-    private RabbitMQService rabbitMQService;
+    private BrokerService brokerService;
 
     private DatabaseMapper mapper = DatabaseMapper.getInstance();
 
@@ -135,7 +134,7 @@ public class UserService {
         }
 
         String queueName = Formats.USER_QUEUE_PREFIX + entity.getUid();
-        rabbitMQService.createQueue(queueName, true);
+        brokerService.createQueue(queueName, true);
 
         response.setMessage(OK);
         response.setContent(rawToken);
@@ -150,7 +149,7 @@ public class UserService {
         }
         userRepository.deleteById(uid);
         accessTokenService.disableAccessToken(accessToken);
-        rabbitMQService.deleteQueue(Formats.USER_QUEUE_PREFIX + uid);
+        brokerService.deleteQueue(Formats.USER_QUEUE_PREFIX + uid);
         return RES_OK;
     }
 
