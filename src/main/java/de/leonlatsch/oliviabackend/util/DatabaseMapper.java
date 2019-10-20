@@ -2,10 +2,8 @@ package de.leonlatsch.oliviabackend.util;
 
 import de.leonlatsch.oliviabackend.constants.Formats;
 import de.leonlatsch.oliviabackend.dto.ChatDTO;
-import de.leonlatsch.oliviabackend.dto.MessageDTO;
 import de.leonlatsch.oliviabackend.dto.PublicUserDTO;
 import de.leonlatsch.oliviabackend.entity.Chat;
-import de.leonlatsch.oliviabackend.entity.Message;
 import de.leonlatsch.oliviabackend.entity.User;
 import de.leonlatsch.oliviabackend.dto.UserDTO;
 import org.slf4j.Logger;
@@ -62,48 +60,6 @@ public class DatabaseMapper {
                 profilePicTn = new SerialBlob(ImageHelper.createThumbnail(profilePic));
             }
             return new User(userDTO.getUid(), userDTO.getUsername(), userDTO.getEmail(), userDTO.getPassword(), profilePic, profilePicTn, null);
-        } catch (SQLException e) {
-            log.error("" + e);
-            return null;
-        }
-    }
-
-    public MessageDTO mapToTransferObject(Message message) {
-        if (message == null) {
-            return null;
-        }
-
-        MessageDTO dto = new MessageDTO();
-        dto.setMid(message.getMid());
-        dto.setFrom(message.getFrom());
-        dto.setTo(message.getTo());
-        dto.setContent(Base64.convertToBase64(message.getContent()));
-        dto.setType(message.getType());
-        dto.setTimestamp(message.getTimestamp().toString());
-        dto.setCid(message.getCid());
-        return dto;
-    }
-
-    public Message mapToEntity(MessageDTO dto) {
-        if (dto == null) {
-            return null;
-        }
-
-        try {
-            Blob content = null;
-
-            if (dto.getContent() != null) {
-                content = new SerialBlob(Base64.convertToBlob(dto.getContent()));
-            }
-            Message message = new Message();
-            message.setMid(dto.getMid());
-            message.setFrom(dto.getFrom());
-            message.setTo(dto.getTo());
-            message.setContent(content);
-            message.setType(dto.getType());
-            message.setTimestamp(stringToTimestamp(dto.getTimestamp()));
-            message.setCid(dto.getCid());
-            return message;
         } catch (SQLException e) {
             log.error("" + e);
             return null;

@@ -19,6 +19,6 @@ public class ChatController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/send")
     public ResponseEntity<Response> send(@RequestHeader(value = Headers.ACCESS_TOKEN) String accessToken, @RequestBody MessageDTO message) {
-        return createResponseEntity(messageService.createMessage(accessToken, message));
+        return createResponseEntity(messageService.createAndSendMessage(accessToken, message));
     }
 }
