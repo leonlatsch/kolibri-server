@@ -5,9 +5,6 @@ entryPoints:
   https:
     address: ":443"
 
-  mq:
-    address: ":56722"
-
 api:
   dashboard: true
 
@@ -22,7 +19,7 @@ providers:
     filename: /etc/traefik/dynamic-config.yml
 
 certificatesResolvers:
-  main:
+  acme_default:
     acme:
       email: dev.leonlatsch@gmail.com
       storage: /etc/traefik/acme.json

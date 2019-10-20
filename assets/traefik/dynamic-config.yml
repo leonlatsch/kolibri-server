@@ -7,12 +7,11 @@ http:
       rule: "PathPrefix(`/backend`)"
       service: backend-service
       tls:
-        certResolver: main
+        certResolver: acme_default
         domains:
-          - main: olivia.leonlatsch.de
+          - default: olivia.leonlatsch.de
       middlewares:
         - strip
-        - redirect
 
     mq-dashboard-router:
       entryPoints:
@@ -21,12 +20,11 @@ http:
       rule: "PathPrefix(`/mq`)"
       service: mq-dashboard-service
       tls:
-        certResolver: main
+        certResolver: acme_default
         domains:
-          - main: olivia.leonlatsch.de
+          - default: olivia.leonlatsch.de
       middlewares:
         - strip
-        - redirect
 
     proxy-router:
       entryPoints:
@@ -35,12 +33,11 @@ http:
       rule: "PathPrefix(`/api`) || PathPrefix(`/dashboard`)"
       service: api@internal
       tls:
-        certResolver: main
+        certResolver: acme_default
         domains:
-          - main: olivia.leonlatsch.de
+          - default: olivia.leonlatsch.de
       middlewares:
         - auth
-        - redirect
 
   services:
     backend-service:
@@ -64,25 +61,5 @@ http:
     strip:
       stripPrefix:
         prefixes:
-          - "/proxy"
           - "/backend"
           - "/mq"
-
-    redirect:
-      redirectScheme:
-        scheme: https
-        permanent: true
-
-tcp:
-  services:
-    mq-service:
-      loadBalancer:
-        servers:
-          - address: "amqp://olivia-queue:5672"
-
-  routers:
-    mq-router:
-      entryPoints:
-        - mq
-      rule: "HostSNI(`*`)"
-      service: mq-service
