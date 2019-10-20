@@ -47,12 +47,10 @@ services:
     ports:
       - 15672:15672
       - 5672:5672
-    environment:
-      RABBITMQ_DEFAULT_USER: olivia
-      RABBITMQ_DEFAULT_PASS: olivia
 
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+      - ./assets/rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
 
     networks:
       - olivia-network
