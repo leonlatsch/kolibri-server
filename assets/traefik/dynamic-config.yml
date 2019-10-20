@@ -9,7 +9,7 @@ http:
       tls:
         certResolver: acme_default
         domains:
-          - default: olivia.leonlatsch.de
+          - olivia.leonlatsch.de
       middlewares:
         - strip
 
@@ -22,7 +22,7 @@ http:
       tls:
         certResolver: acme_default
         domains:
-          - default: olivia.leonlatsch.de
+          - olivia.leonlatsch.de
       middlewares:
         - strip
 
@@ -35,7 +35,7 @@ http:
       tls:
         certResolver: acme_default
         domains:
-          - default: olivia.leonlatsch.de
+          - olivia.leonlatsch.de
       middlewares:
         - auth
 
