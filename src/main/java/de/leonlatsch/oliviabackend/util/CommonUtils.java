@@ -10,7 +10,7 @@ import java.util.UUID;
 
 public class CommonUtils {
 
-    private static CommonUtils object; // Singleton
+    private static CommonUtils object = new CommonUtils(); // Singleton
 
     @Autowired
     private ChatRepository chatRepository;
@@ -78,4 +78,6 @@ public class CommonUtils {
         }
         return token.toString();
     }
+
+    private CommonUtils() {}
 }
