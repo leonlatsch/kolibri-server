@@ -56,14 +56,10 @@ public class UserService {
 
     public Response getPublicKey(String accessToken, int uid) {
         if (!accessTokenService.isTokenValid(accessToken)) {
-            return new Response(401, UNAUTHORIZED, null);
+            return RES_UNAUTHORIZED;
         }
         Optional<User> blob = userRepository.findPublicKeyByUid(uid);
-        if (blob.isPresent()) {
-            return new Response(200, OK, Base64.convertToBase64(blob.get().getPublicKey()));
-        } else {
-            return RES_ERROR;
-        }
+        return blob.isPresent() ? new Response(200, OK, Base64.convertToBase64(blob.get().getPublicKey())) : RES_ERROR;
     }
 
     public Response updatePublicKey(String accessToken, String publicKey) {
@@ -118,14 +114,14 @@ public class UserService {
         }
 
         User entity = mapper.mapToEntity(user);
-        int uid = CommonUtils.genUid();
+        int uid = CommonUtils.genSafeUid();
         entity.setUid(uid);
         entity.setPublicKey(publicKeyBlob);
         if (userRepository.saveAndFlush(entity) == null) {
             return RES_ERROR;
         }
         AccessToken token = new AccessToken();
-        String rawToken = CommonUtils.genAccessToken();
+        String rawToken = CommonUtils.genSafeAccessToken();
         token.setUid(uid);
         token.setValid(true);
         token.setToken(rawToken);
@@ -308,7 +304,7 @@ public class UserService {
     private String updateAccessToken(int uid) {
         String oldToken = accessTokenService.getTokenForUser(uid);
         accessTokenService.disableAccessToken(oldToken);
-        String newToken = CommonUtils.genAccessToken();
+        String newToken = CommonUtils.genSafeAccessToken();
         AccessToken accessToken = new AccessToken();
         accessToken.setUid(uid);
         accessToken.setToken(newToken);

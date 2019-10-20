@@ -33,7 +33,7 @@ public class ChatService {
 
     public String createChat(ChatDTO chatDTO) {
         Chat chat = mapper.mapToEntity(chatDTO);
-        chat.setCid(CommonUtils.genUUID());
+        chat.setCid(CommonUtils.genSafeCid());
         return chatRepository.saveAndFlush(chat) != null ? OK : ERROR;
     }
 
@@ -42,7 +42,7 @@ public class ChatService {
         int to = messageDTO.getTo();
 
         Chat chat = new Chat();
-        String cid = CommonUtils.genUUID();
+        String cid = CommonUtils.genSafeCid();
         chat.setCid(cid);
         chat.setFirstMember(from);
         chat.setSecondMember(to);

@@ -50,7 +50,7 @@ public class MessageService {
                 cid = chatService.createChatFromMessage(message);
             }
             message.setCid(cid);
-            message.setMid(CommonUtils.genUUID());
+            message.setMid(CommonUtils.genSaveMid());
         }
 
         brokerService.send(message);
