@@ -32,7 +32,7 @@ public class UserController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/public-key/get/{uid}")
-    public ResponseEntity<Response> getPublicKey(@RequestHeader(Headers.ACCESS_TOKEN) String accessToken, @PathVariable("uid") int uid) {
+    public ResponseEntity<Response> getPublicKey(@RequestHeader(Headers.ACCESS_TOKEN) String accessToken, @PathVariable("uid") String uid) {
         return createResponseEntity(userService.getPublicKey(accessToken, uid));
     }
 
@@ -72,7 +72,7 @@ public class UserController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/get/profile-pic/{uid}")
-    public ResponseEntity<Response> loadProfilePic(@RequestHeader(Headers.ACCESS_TOKEN) String accessToken, @PathVariable("uid") int uid) {
+    public ResponseEntity<Response> loadProfilePic(@RequestHeader(Headers.ACCESS_TOKEN) String accessToken, @PathVariable("uid") String uid) {
         return createResponseEntity(userService.loadProfilePic(accessToken, uid));
     }
 

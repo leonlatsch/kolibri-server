@@ -14,14 +14,14 @@ public class AccessToken {
     private String token;
 
     @Column(name = "uid")
-    private int uid;
+    private String uid;
 
     @Column(name = "valid")
     private boolean valid;
 
     public AccessToken() {}
 
-    public AccessToken(String token, int uid, boolean valid) {
+    public AccessToken(String token, String uid, boolean valid) {
         this.token = token;
         this.uid = uid;
         this.valid = valid;
@@ -35,11 +35,11 @@ public class AccessToken {
         this.token = token;
     }
 
-    public int getUid() {
+    public String getUid() {
         return uid;
     }
 
-    public void setUid(int uid) {
+    public void setUid(String uid) {
         this.uid = uid;
     }
 

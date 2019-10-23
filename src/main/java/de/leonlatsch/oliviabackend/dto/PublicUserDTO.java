@@ -2,23 +2,23 @@ package de.leonlatsch.oliviabackend.dto;
 
 public class PublicUserDTO {
 
-    private int uid;
+    private String uid;
     private String username;
     private String profilePicTn;
 
     public PublicUserDTO() {}
 
-    public PublicUserDTO(int uid, String username, String profilePicTn) {
+    public PublicUserDTO(String uid, String username, String profilePicTn) {
         this.uid = uid;
         this.username = username;
         this.profilePicTn = profilePicTn;
     }
 
-    public int getUid() {
+    public String getUid() {
         return uid;
     }
 
-    public void setUid(int uid) {
+    public void setUid(String uid) {
         this.uid = uid;
     }
 

@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Integer> {
+public interface UserRepository extends JpaRepository<User, String> {
 
     Optional<User> findByEmail(String email);
 
@@ -18,7 +18,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     List<User> findTop100ByUsernameContaining(String username);
 
-    Optional<User> findPublicKeyByUid(int uid);
+    Optional<User> findPublicKeyByUid(String uid);
 
-    Optional<User> findUidByUid(int uid);
+    Optional<User> findUidByUid(String uid);
 }

@@ -14,14 +14,14 @@ public class Chat {
     private String cid;
 
     @Column(name = "first_member")
-    private int firstMember;
+    private String firstMember;
 
     @Column(name = "second_member")
-    private int secondMember;
+    private String secondMember;
 
     public Chat() {}
 
-    public Chat(String cid, int firstMember, int secondMember) {
+    public Chat(String cid, String firstMember, String secondMember) {
         this.cid = cid;
         this.firstMember = firstMember;
         this.secondMember = secondMember;
@@ -35,19 +35,19 @@ public class Chat {
         this.cid = cid;
     }
 
-    public int getFirstMember() {
+    public String getFirstMember() {
         return firstMember;
     }
 
-    public void setFirstMember(int firstMember) {
+    public void setFirstMember(String firstMember) {
         this.firstMember = firstMember;
     }
 
-    public int getSecondMember() {
+    public String getSecondMember() {
         return secondMember;
     }
 
-    public void setSecondMember(int secondMember) {
+    public void setSecondMember(String secondMember) {
         this.secondMember = secondMember;
     }
 }

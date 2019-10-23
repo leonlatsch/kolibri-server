@@ -8,8 +8,8 @@ import java.sql.Blob;
 public class User {
 
     @Id
-    @Column(name = "uid")
-    private int uid;
+    @Column(name = "uid", length = 36)
+    private String uid;
 
     @Column(name = "username")
     private String username;
@@ -32,7 +32,7 @@ public class User {
     @Column(name = "public_key")
     private Blob publicKey;
 
-    public User(int uid, String username, String email, String password, Blob profilePic, Blob profilePicTn, Blob publicKey) {
+    public User(String uid, String username, String email, String password, Blob profilePic, Blob profilePicTn, Blob publicKey) {
         this.uid = uid;
         this.username = username;
         this.email = email;
@@ -44,11 +44,11 @@ public class User {
 
     public User() {}
 
-    public int getUid() {
+    public String getUid() {
         return uid;
     }
 
-    public void setUid(int uid) {
+    public void setUid(String uid) {
         this.uid = uid;
     }
 

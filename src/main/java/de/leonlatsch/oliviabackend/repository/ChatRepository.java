@@ -9,7 +9,7 @@ import java.util.Optional;
 @Repository
 public interface ChatRepository extends JpaRepository<Chat, String> {
 
-    Optional<Chat> findByFirstMemberAndSecondMember(int firstMember, int secondMember);
+    Optional<Chat> findByFirstMemberAndSecondMember(String firstMember, String secondMember);
 
     Optional<Chat> findCidByCid(String cid);
 }

@@ -3,12 +3,12 @@ package de.leonlatsch.oliviabackend.dto;
 public class ChatDTO {
 
     private String cid;
-    private int first_member;
-    private int secondMember;
+    private String first_member;
+    private String secondMember;
 
     public ChatDTO() {}
 
-    public ChatDTO(String cid, int first_member, int secondMember) {
+    public ChatDTO(String cid, String first_member, String secondMember) {
         this.cid = cid;
         this.first_member = first_member;
         this.secondMember = secondMember;
@@ -22,19 +22,19 @@ public class ChatDTO {
         this.cid = cid;
     }
 
-    public int getFirst_member() {
+    public String getFirst_member() {
         return first_member;
     }
 
-    public void setFirst_member(int first_member) {
+    public void setFirst_member(String first_member) {
         this.first_member = first_member;
     }
 
-    public int getSecondMember() {
+    public String getSecondMember() {
         return secondMember;
     }
 
-    public void setSecondMember(int secondMember) {
+    public void setSecondMember(String secondMember) {
         this.secondMember = secondMember;
     }
 }

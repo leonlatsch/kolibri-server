@@ -54,7 +54,7 @@ public class UserService {
         return new Response(200, OK, list);
     }
 
-    public Response getPublicKey(String accessToken, int uid) {
+    public Response getPublicKey(String accessToken, String uid) {
         if (!accessTokenService.isTokenValid(accessToken)) {
             return RES_UNAUTHORIZED;
         }
@@ -64,8 +64,8 @@ public class UserService {
 
     public Response updatePublicKey(String accessToken, String publicKey) {
         Response response = new Response();
-        int uid = accessTokenService.getUserForToken(accessToken);
-        if (uid == -1) {
+        String uid = accessTokenService.getUserForToken(accessToken);
+        if (uid == null) {
             return RES_UNAUTHORIZED;
         } else {
             Optional<User> user = userRepository.findById(uid);
@@ -85,8 +85,8 @@ public class UserService {
 
     public Response get(String accessToken) {
         Response response = new Response();
-        int uid = accessTokenService.getUserForToken(accessToken);
-        if (uid == -1) {
+        String uid = accessTokenService.getUserForToken(accessToken);
+        if (uid == null) {
             return RES_UNAUTHORIZED;
         }
         Optional<User> user = userRepository.findById(uid);
@@ -114,7 +114,7 @@ public class UserService {
         }
 
         User entity = mapper.mapToEntity(user);
-        int uid = CommonUtils.genSafeUid();
+        String uid = CommonUtils.genSafeUid();
         entity.setUid(uid);
         entity.setPublicKey(publicKeyBlob);
         if (userRepository.saveAndFlush(entity) == null) {
@@ -139,8 +139,8 @@ public class UserService {
     }
 
     public Response deleteUser(String accessToken) {
-        int uid = accessTokenService.getUserForToken(accessToken);
-        if (uid == -1) {
+        String uid = accessTokenService.getUserForToken(accessToken);
+        if (uid == null) {
             return RES_ERROR;
         }
         userRepository.deleteById(uid);
@@ -150,14 +150,14 @@ public class UserService {
     }
 
     public Response isUsernameFree(String accessToken, String username) {
-        int uid = accessTokenService.getUserForToken(accessToken);
+        String uid = accessTokenService.getUserForToken(accessToken);
         Optional<User> user = userRepository.findByUsername(username);
         Response response = new Response();
         response.setCode(200);
         response.setContent(null);
         if (!user.isPresent()) {
             response.setMessage(FREE);
-        } else if (user.get().getUid() == uid) {
+        } else if (user.get().getUid().equals(uid)) {
             response.setMessage(TAKEN_BY_YOU);
         } else {
             response.setMessage(TAKEN);
@@ -166,7 +166,7 @@ public class UserService {
     }
 
     public Response isEmailFree(String accessToken, String email) {
-        int uid = accessTokenService.getUserForToken(accessToken);
+        String uid = accessTokenService.getUserForToken(accessToken);
         Optional<User> user = userRepository.findByEmail(email);
         Response response = new Response();
         response.setCode(200);
@@ -183,9 +183,9 @@ public class UserService {
 
     public Response updateUser(String accessToken, UserDTO userDTO) {
         Response response = new Response();
-        int uid = accessTokenService.getUserForToken(accessToken);
+        String uid = accessTokenService.getUserForToken(accessToken);
 
-        if (uid == -1) {
+        if (uid == null) {
             return RES_ERROR;
         }
         User user = mapper.mapToEntity(userDTO);
@@ -258,7 +258,7 @@ public class UserService {
         }
     }
 
-    public Response loadProfilePic(String accessToken, int uid) {
+    public Response loadProfilePic(String accessToken, String uid) {
         if (!accessTokenService.isTokenValid(accessToken)) {
             return RES_UNAUTHORIZED;
         }
@@ -273,7 +273,7 @@ public class UserService {
         return new Response(200, OK, profilePic);
     }
 
-    public boolean userExists(int uid) {
+    public boolean userExists(String uid) {
         Optional<User> user = userRepository.findById(uid);
         return user.isPresent();
     }
@@ -301,7 +301,7 @@ public class UserService {
         return transferObjects;
     }
 
-    private String updateAccessToken(int uid) {
+    private String updateAccessToken(String uid) {
         String oldToken = accessTokenService.getTokenForUser(uid);
         accessTokenService.disableAccessToken(oldToken);
         String newToken = CommonUtils.genSafeAccessToken();

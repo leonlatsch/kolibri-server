@@ -34,8 +34,8 @@ public class MessageService {
     private UserService userService;
 
     public Response createAndSendMessage(String accessToken, MessageDTO message) {
-        int uid = accessTokenService.getUserForToken(accessToken);
-        if (uid != message.getFrom()) {
+        String uid = accessTokenService.getUserForToken(accessToken);
+        if (!uid.equals(message.getFrom())) {
             return RES_UNAUTHORIZED;
         }
         if (!userService.userExists(message.getTo())) {

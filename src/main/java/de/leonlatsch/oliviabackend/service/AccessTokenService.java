@@ -13,16 +13,16 @@ public class AccessTokenService {
     @Autowired
     private AccessTokenRepository accessTokenRepository;
 
-    public String getTokenForUser(int uid) {
+    public String getTokenForUser(String uid) {
         Optional<AccessToken> token = accessTokenRepository.findByUidAndValidTrue(uid);
 
         return token.isPresent() && token.get().isValid() ? token.get().getToken() : null;
     }
 
-    public int getUserForToken(String token) {
+    public String getUserForToken(String token) {
         Optional<AccessToken> accessToken = accessTokenRepository.findById(token);
 
-        return accessToken.isPresent() && accessToken.get().isValid() ? accessToken.get().getUid() : -1;
+        return accessToken.isPresent() && accessToken.get().isValid() ? accessToken.get().getUid() : null;
     }
 
     public void disableAccessToken(String accessToken) {

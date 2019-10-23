@@ -38,8 +38,8 @@ public class ChatService {
     }
 
     public String createChatFromMessage(MessageDTO messageDTO) {
-        int from = messageDTO.getFrom();
-        int to = messageDTO.getTo();
+        String from = messageDTO.getFrom();
+        String to = messageDTO.getTo();
 
         Chat chat = new Chat();
         String cid = CommonUtils.genSafeCid();
@@ -49,7 +49,7 @@ public class ChatService {
         return chatRepository.saveAndFlush(chat) != null ? cid : ERROR;
     }
 
-    public ChatDTO getChatFromMembers(int firstMember, int secondMember) {
+    public ChatDTO getChatFromMembers(String firstMember, String secondMember) {
         Optional<Chat> chat = chatRepository.findByFirstMemberAndSecondMember(firstMember, secondMember);
         if (chat.isPresent()) {
             return mapper.mapToTransferObject(chat.get());
@@ -78,7 +78,7 @@ public class ChatService {
         return chat.isPresent();
     }
 
-    public boolean chatExists(int firstMember, int secondMember) {
+    public boolean chatExists(String firstMember, String secondMember) {
         Optional<Chat> chat = chatRepository.findByFirstMemberAndSecondMember(firstMember, secondMember);
         if (chat.isPresent()) {
             return true;

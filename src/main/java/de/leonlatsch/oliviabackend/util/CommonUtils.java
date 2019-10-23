@@ -20,15 +20,15 @@ public class CommonUtils {
     @Autowired
     private static AccessTokenRepository accessTokenRepository;
 
-    public static int genSafeUid() {
-        int uid = 0;
+    public static String genSafeUid() {
+        String uid = null;
 
         if (userRepository != null) {
             do {
-                uid = genUid();
+                uid = genUUID();
             } while (userRepository.findUidByUid(uid).isPresent());
         } else {
-            uid = genUid();
+            uid = genUUID();
         }
 
         return uid;
@@ -71,11 +71,6 @@ public class CommonUtils {
     private static String genUUID() {
         UUID uuid = UUID.randomUUID();
         return uuid.toString();
-    }
-
-    private static int genUid() {
-        Random rnd = new Random();
-        return 10000000 + rnd.nextInt(90000000);
     }
 
     private static String genAccessToken() {
