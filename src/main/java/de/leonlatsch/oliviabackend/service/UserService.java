@@ -173,7 +173,7 @@ public class UserService {
         response.setContent(null);
         if (!user.isPresent()) {
             response.setMessage(FREE);
-        } else if (user.get().getUid() == uid) {
+        } else if (user.get().getUid().equals(uid)) {
             response.setMessage(TAKEN_BY_YOU);
         } else {
             response.setMessage(TAKEN);
