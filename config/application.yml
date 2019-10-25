@@ -3,7 +3,7 @@ spring:
   datasource:
     initialization-mode: always
     password: olivia
-    url: jdbc:mysql://olivia-database:3306/oliviadb
+    url: jdbc:mysql://testserver:3306/oliviadb
     username: olivia
 
   jpa:
@@ -16,7 +16,7 @@ spring:
     open-in-view: true # default setting to remove warning
 
   rabbitmq:
-    host: olivia-queue
+    host: testserver
     password: olivia
     username: olivia
     port: 5672
