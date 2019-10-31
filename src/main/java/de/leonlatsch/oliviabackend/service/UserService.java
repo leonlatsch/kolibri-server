@@ -221,9 +221,6 @@ public class UserService {
             return RES_UNAUTHORIZED;
         }
         List<User> users = userRepository.findByUsernameContaining(username);
-        for (User user : users) {
-            rmProfilePic(user);
-        }
         return new Response(200, OK, mapToPublicUsers(mapToTransferObjects(users)));
     }
 
@@ -232,9 +229,6 @@ public class UserService {
             return RES_UNAUTHORIZED;
         }
         List<User> users = userRepository.findTop100ByUsernameContaining(username);
-        for (User user : users) {
-            rmProfilePic(user);
-        }
 
         return new Response(200, OK, mapToPublicUsers(mapToTransferObjects(users)));
     }
