@@ -17,9 +17,6 @@ public class RestClientFactory {
 
     private RabbitMQRestService rabbitMQRestService;
 
-    @Autowired
-    private Environment env;
-
     @Value("${spring.rabbitmq.host}")
     private String host;
 
