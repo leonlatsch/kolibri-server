@@ -14,11 +14,11 @@ public interface RabbitMQRestService {
     String PERMISSIONS_ENDPOINT = "api/permissions/%2F/{name}";
 
     @PUT(USER_ENDPOINT)
-    Call createUser(@Path("name") String name, @Body RMQUser user);
+    Call<Void> createUser(@Path("name") String name, @Body RMQUser user);
 
     @DELETE(USER_ENDPOINT)
-    Call deleteUser(@Path("name") String name);
+    Call<Void> deleteUser(@Path("name") String name);
 
     @PUT(PERMISSIONS_ENDPOINT)
-    Call setPermissions(@Path("user") String user, @Body RMQPermissions permissions);
+    Call<Void> setPermissions(@Path("name") String user, @Body RMQPermissions permissions);
 }

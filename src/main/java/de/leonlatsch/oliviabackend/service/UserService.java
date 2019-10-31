@@ -4,12 +4,9 @@ import de.leonlatsch.oliviabackend.constants.Formats;
 import de.leonlatsch.oliviabackend.dto.PublicUserDTO;
 import de.leonlatsch.oliviabackend.dto.Response;
 import de.leonlatsch.oliviabackend.dto.UserDTO;
-import de.leonlatsch.oliviabackend.dto.rabbitmq.RMQUser;
 import de.leonlatsch.oliviabackend.entity.AccessToken;
 import de.leonlatsch.oliviabackend.entity.User;
 import de.leonlatsch.oliviabackend.repository.UserRepository;
-import de.leonlatsch.oliviabackend.rest.RabbitMQRestService;
-import de.leonlatsch.oliviabackend.rest.RestClientFactory;
 import de.leonlatsch.oliviabackend.security.AdminManager;
 import de.leonlatsch.oliviabackend.util.Base64;
 import de.leonlatsch.oliviabackend.util.CommonUtils;
@@ -18,7 +15,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import retrofit2.Call;
 
 import java.sql.Blob;
 import java.util.ArrayList;
@@ -44,7 +40,7 @@ public class UserService {
     private BrokerService brokerService;
 
     @Autowired
-    private RestClientFactory restClientFactory;
+    private RabbitMQManagementService rabbitMQManagementService;
 
     private DatabaseMapper mapper = DatabaseMapper.getInstance();
 
@@ -117,6 +113,7 @@ public class UserService {
 
         Blob publicKeyBlob = Base64.convertToBlob(publicKey);
         if (publicKeyBlob == null) {
+            log.error("Error decoding public key: " + publicKey);
             return RES_ERROR;
         }
 
@@ -125,6 +122,7 @@ public class UserService {
         entity.setUid(uid);
         entity.setPublicKey(publicKeyBlob);
         if (userRepository.saveAndFlush(entity) == null) {
+            log.error("Error saving user: " + uid);
             return RES_ERROR;
         }
         AccessToken token = new AccessToken();
@@ -133,18 +131,13 @@ public class UserService {
         token.setValid(true);
         token.setToken(rawToken);
         if (accessTokenService.saveAccessToken(token) == null) {
+            log.error("Error saving access token for user: " + uid);
             return RES_ERROR;
         }
 
         String queueName = Formats.USER_QUEUE_PREFIX + entity.getUid();
         brokerService.createQueue(queueName, true);
-        try {
-            retrofit2.Response res = restClientFactory.getRabbitMQRestService().createUser(Formats.USER_PREFIX + uid, new RMQUser(rawToken, "")).execute();
-            if (!res.isSuccessful()) {
-                return RES_ERROR;
-            }
-        } catch (Exception e) {
-            log.error("" + e);
+        if (!rabbitMQManagementService.createUser(uid, rawToken)) {
             return RES_ERROR;
         }
 
@@ -162,6 +155,10 @@ public class UserService {
         userRepository.deleteById(uid);
         accessTokenService.disableAccessToken(accessToken);
         brokerService.deleteQueue(Formats.USER_QUEUE_PREFIX + uid);
+        if (!rabbitMQManagementService.deleteUser(uid)) {
+            return RES_ERROR;
+        }
+
         return RES_OK;
     }
 
@@ -215,6 +212,9 @@ public class UserService {
             if (user.getPassword() != null) {
                 dbUser.get().setPassword(user.getPassword());
                 String newToken = updateAccessToken(dbUser.get().getUid());
+                if (!rabbitMQManagementService.changeBrokerPassword(dbUser.get().getUid(), newToken)) {
+                    return RES_ERROR;
+                }
                 response.setContent(newToken);
             }
             if (user.getProfilePic() != null) {
@@ -274,11 +274,7 @@ public class UserService {
         }
         String profilePic;
         Optional<User> user = userRepository.findById(uid);
-        if (user.isPresent()) {
-            profilePic = Base64.convertToBase64(user.get().getProfilePic());
-        } else {
-            profilePic = null;
-        }
+        profilePic = user.isPresent() ? Base64.convertToBase64(user.get().getProfilePic()) : null;
 
         return new Response(200, OK, profilePic);
     }
