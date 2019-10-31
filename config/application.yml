@@ -20,3 +20,4 @@ spring:
     password: olivia
     username: olivia
     port: 5672
+    http-port: 15672

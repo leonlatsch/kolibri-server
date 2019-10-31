@@ -39,6 +39,9 @@ public class UserService {
     @Autowired
     private BrokerService brokerService;
 
+    @Autowired
+    private RabbitMQManagementService rabbitMQManagementService;
+
     private DatabaseMapper mapper = DatabaseMapper.getInstance();
 
     public Response getAllUsers(String accessToken) {
@@ -110,6 +113,7 @@ public class UserService {
 
         Blob publicKeyBlob = Base64.convertToBlob(publicKey);
         if (publicKeyBlob == null) {
+            log.error("Error decoding public key: " + publicKey);
             return RES_ERROR;
         }
 
@@ -118,6 +122,7 @@ public class UserService {
         entity.setUid(uid);
         entity.setPublicKey(publicKeyBlob);
         if (userRepository.saveAndFlush(entity) == null) {
+            log.error("Error saving user: " + uid);
             return RES_ERROR;
         }
         AccessToken token = new AccessToken();
@@ -126,11 +131,15 @@ public class UserService {
         token.setValid(true);
         token.setToken(rawToken);
         if (accessTokenService.saveAccessToken(token) == null) {
+            log.error("Error saving access token for user: " + uid);
             return RES_ERROR;
         }
 
         String queueName = Formats.USER_QUEUE_PREFIX + entity.getUid();
         brokerService.createQueue(queueName, true);
+        if (!rabbitMQManagementService.createUser(uid, rawToken)) {
+            return RES_ERROR;
+        }
 
         response.setMessage(OK);
         response.setContent(rawToken);
@@ -146,6 +155,10 @@ public class UserService {
         userRepository.deleteById(uid);
         accessTokenService.disableAccessToken(accessToken);
         brokerService.deleteQueue(Formats.USER_QUEUE_PREFIX + uid);
+        if (!rabbitMQManagementService.deleteUser(uid)) {
+            return RES_ERROR;
+        }
+
         return RES_OK;
     }
 
@@ -199,6 +212,9 @@ public class UserService {
             if (user.getPassword() != null) {
                 dbUser.get().setPassword(user.getPassword());
                 String newToken = updateAccessToken(dbUser.get().getUid());
+                if (!rabbitMQManagementService.changeBrokerPassword(dbUser.get().getUid(), newToken)) {
+                    return RES_ERROR;
+                }
                 response.setContent(newToken);
             }
             if (user.getProfilePic() != null) {
@@ -258,11 +274,7 @@ public class UserService {
         }
         String profilePic;
         Optional<User> user = userRepository.findById(uid);
-        if (user.isPresent()) {
-            profilePic = Base64.convertToBase64(user.get().getProfilePic());
-        } else {
-            profilePic = null;
-        }
+        profilePic = user.isPresent() ? Base64.convertToBase64(user.get().getProfilePic()) : null;
 
         return new Response(200, OK, profilePic);
     }
