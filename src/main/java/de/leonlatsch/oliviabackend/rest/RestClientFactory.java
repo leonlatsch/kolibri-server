@@ -1,34 +1,42 @@
 package de.leonlatsch.oliviabackend.rest;
 
 import okhttp3.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
+import org.springframework.stereotype.Component;
 import retrofit2.Retrofit;
+import retrofit2.converter.jackson.JacksonConverterFactory;
 
 import java.io.IOException;
 
+@Component
 public class RestClientFactory {
 
-    private static Retrofit retrofit;
+    private Retrofit retrofit;
 
-    private static RabbitMQRestService rabbitMQRestService;
+    private RabbitMQRestService rabbitMQRestService;
+
+    @Autowired
+    private Environment env;
 
     @Value("${spring.rabbitmq.host}")
-    private static String host;
+    private String host;
 
     @Value("${spring.rabbitmq.http-port}")
-    private static String httpPort;
+    private String httpPort;
 
-    @Value("${spring.rabbitmq.user}")
-    private static String user;
+    @Value("${spring.rabbitmq.username}")
+    private String user;
 
     @Value("${spring.rabbitmq.password}")
-    private static String password;
+    private String password;
 
-    private static String buildBaseUrl() {
+    private String buildBaseUrl() {
         return "http://" + host + ":" + httpPort + "";
     }
 
-    private static void createRetrofit() {
+    private void createRetrofit() {
         if (retrofit == null) {
             OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
             httpClient.addInterceptor(new AuthInterceptor(user, password));
@@ -36,6 +44,7 @@ public class RestClientFactory {
             retrofit = new Retrofit.Builder()
                     .baseUrl(buildBaseUrl())
                     .client(httpClient.build())
+                    .addConverterFactory(JacksonConverterFactory.create())
                     .build();
         }
     }
@@ -64,7 +73,7 @@ public class RestClientFactory {
         public Response intercept(Chain chain) throws IOException {
             Request orig = chain.request();
             Request request = orig.newBuilder()
-                    .addHeader("Authorization", "Basic " + Credentials.basic(user, password))
+                    .addHeader("Authorization", Credentials.basic(user, password))
                     .method(orig.method(), orig.body())
                     .build();
 

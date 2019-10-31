@@ -4,9 +4,12 @@ import de.leonlatsch.oliviabackend.constants.Formats;
 import de.leonlatsch.oliviabackend.dto.PublicUserDTO;
 import de.leonlatsch.oliviabackend.dto.Response;
 import de.leonlatsch.oliviabackend.dto.UserDTO;
+import de.leonlatsch.oliviabackend.dto.rabbitmq.RMQUser;
 import de.leonlatsch.oliviabackend.entity.AccessToken;
 import de.leonlatsch.oliviabackend.entity.User;
 import de.leonlatsch.oliviabackend.repository.UserRepository;
+import de.leonlatsch.oliviabackend.rest.RabbitMQRestService;
+import de.leonlatsch.oliviabackend.rest.RestClientFactory;
 import de.leonlatsch.oliviabackend.security.AdminManager;
 import de.leonlatsch.oliviabackend.util.Base64;
 import de.leonlatsch.oliviabackend.util.CommonUtils;
@@ -15,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import retrofit2.Call;
 
 import java.sql.Blob;
 import java.util.ArrayList;
@@ -38,6 +42,9 @@ public class UserService {
 
     @Autowired
     private BrokerService brokerService;
+
+    @Autowired
+    private RestClientFactory restClientFactory;
 
     private DatabaseMapper mapper = DatabaseMapper.getInstance();
 
@@ -131,6 +138,15 @@ public class UserService {
 
         String queueName = Formats.USER_QUEUE_PREFIX + entity.getUid();
         brokerService.createQueue(queueName, true);
+        try {
+            retrofit2.Response res = restClientFactory.getRabbitMQRestService().createUser(Formats.USER_PREFIX + uid, new RMQUser(rawToken, "")).execute();
+            if (!res.isSuccessful()) {
+                return RES_ERROR;
+            }
+        } catch (Exception e) {
+            log.error("" + e);
+            return RES_ERROR;
+        }
 
         response.setMessage(OK);
         response.setContent(rawToken);

@@ -10,15 +10,15 @@ import retrofit2.http.Path;
 
 public interface RabbitMQRestService {
 
-    String USER_ENDPOINT = "/api/users/{name}";
-    String PERMISSIONS_ENDPOINT = "/api/permissions/%2F/{name}";
+    String USER_ENDPOINT = "api/users/{name}";
+    String PERMISSIONS_ENDPOINT = "api/permissions/%2F/{name}";
 
     @PUT(USER_ENDPOINT)
-    Call<String> createUser(@Path("name") String name, @Body RMQUser user); //TODO change
+    Call createUser(@Path("name") String name, @Body RMQUser user);
 
     @DELETE(USER_ENDPOINT)
-    Call<String> deleteUser(@Path("name") String name);
+    Call deleteUser(@Path("name") String name);
 
     @PUT(PERMISSIONS_ENDPOINT)
-    Call<String> setPermissions(@Path("user") String user, @Body RMQPermissions permissions);
+    Call setPermissions(@Path("user") String user, @Body RMQPermissions permissions);
 }
