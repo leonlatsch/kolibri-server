@@ -6,10 +6,7 @@ import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 
 public class MavenProperties {
 
@@ -27,13 +24,7 @@ public class MavenProperties {
                 if ((new File("pom.xml")).exists())
                     model = reader.read(new FileReader("pom.xml"));
                 else
-                    model = reader.read(
-                            new InputStreamReader(
-                                    MavenProperties.class.getResourceAsStream(
-                                            "/META-INF/maven/de.scrum-master.stackoverflow/aspectj-introduce-method/pom.xml"
-                                    )
-                            )
-                    );
+                    model = reader.read(MavenProperties.class.getResourceAsStream("/META-INF/maven/de.leonlatsch/olivia-backend/pom.xml"));
                 artifactId = model.getArtifactId();
                 groupId = model.getGroupId();
                 version = model.getVersion();
