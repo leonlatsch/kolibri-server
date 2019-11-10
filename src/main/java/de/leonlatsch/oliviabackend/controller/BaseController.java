@@ -27,4 +27,9 @@ public class BaseController {
         return "Running " + artifact + " Version " + version + " \n\n" +
                 "See the GitHub Wiki for Documentation";
     }
+
+    @RequestMapping(value = "version", method = RequestMethod.GET)
+    public String version() {
+        return MavenProperties.getVersion();
+    }
 }
