@@ -90,6 +90,10 @@ public class DatabaseMapper {
         return chat;
     }
 
+    public PublicUserDTO mapToPublicUser(User user) {
+        return mapToPublicUser(mapToTransferObject(user, false));
+    }
+
     public PublicUserDTO mapToPublicUser(UserDTO dto) {
         if (dto == null) {
             return null;

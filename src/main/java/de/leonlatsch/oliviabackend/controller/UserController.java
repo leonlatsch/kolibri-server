@@ -26,6 +26,11 @@ public class UserController {
         return createResponseEntity(userService.getAllUsers(accessToken));
     }
 
+    @RequestMapping(method = RequestMethod.GET, value = "get/{uid}")
+    public ResponseEntity<Response> get(@RequestHeader(value = Headers.ACCESS_TOKEN) String accessToken, @PathVariable("uid") String uid) {
+        return createResponseEntity(userService.get(accessToken, uid));
+    }
+
     @RequestMapping(method = RequestMethod.GET, value = "/get")
     public ResponseEntity<Response> get(@RequestHeader(value = Headers.ACCESS_TOKEN) String accessToken) {
         return createResponseEntity(userService.get(accessToken));

@@ -104,6 +104,25 @@ public class UserService {
         }
     }
 
+    public Response get(String accessToken, String uid) {
+        Response response = new Response();
+        if (accessTokenService.isTokenValid(accessToken)) {
+            Optional<User> user = userRepository.findById(uid);
+            if (user.isPresent()) {
+                response.setCode(200);
+                response.setMessage(OK);
+                response.setContent(mapper.mapToPublicUser(user.get()));
+            } else {
+                response.setContent(201);
+                response.setMessage(OK);
+                response.setContent(null);
+            }
+            return response;
+        } else {
+            return RES_UNAUTHORIZED;
+        }
+    }
+
     public Response createUser(UserDTO user, String publicKey) {
         Response response = new Response();
         Optional<User> checkUser = userRepository.findByUsername(user.getUsername());
