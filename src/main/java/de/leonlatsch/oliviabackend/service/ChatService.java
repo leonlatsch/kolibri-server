@@ -42,7 +42,12 @@ public class ChatService {
         String to = messageDTO.getTo();
 
         Chat chat = new Chat();
-        String cid = CommonUtils.genSafeCid();
+        String cid;
+        if (messageDTO.getCid() != null) {
+            cid = messageDTO.getCid();
+        } else {
+            cid = CommonUtils.genSafeCid();
+        }
         chat.setCid(cid);
         chat.setFirstMember(from);
         chat.setSecondMember(to);
