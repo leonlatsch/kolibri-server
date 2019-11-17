@@ -1,18 +1,13 @@
 package de.leonlatsch.oliviabackend.util;
 
 import de.leonlatsch.oliviabackend.repository.AccessTokenRepository;
-import de.leonlatsch.oliviabackend.repository.ChatRepository;
 import de.leonlatsch.oliviabackend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.util.Random;
 import java.util.UUID;
 
 public class CommonUtils {
-
-    @Autowired
-    private static ChatRepository chatRepository;
 
     @Autowired
     private static UserRepository userRepository;
@@ -32,20 +27,6 @@ public class CommonUtils {
         }
 
         return uid;
-    }
-
-    public static String genSafeCid() {
-        String cid = null;
-
-        if (chatRepository != null) {
-            do {
-                cid = genUUID();
-            } while (chatRepository.findCidByCid(cid).isPresent());
-        } else {
-            cid = genUUID();
-        }
-
-        return cid;
     }
 
     public static String genSaveMid() {

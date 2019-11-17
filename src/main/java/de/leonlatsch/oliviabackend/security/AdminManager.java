@@ -40,10 +40,12 @@ public class AdminManager {
             try {
                 file.createNewFile();
 
+                String token = CommonUtils.genSafeAccessToken();
                 Properties properties = new Properties();
-                properties.setProperty(PROPERTY_KEY, CommonUtils.genSafeAccessToken());
+                properties.setProperty(PROPERTY_KEY, token);
                 properties.store(new FileOutputStream(AAT_FILE), PROPERTY_COMMENT);
-                log.info("Generated new admin credentials");
+                log.info("Generated admin access token: " + token + " Please note this down. It won't be logged again");
+                log.info("If you lost your access token, look for \"" + AAT_FILE + "\" or simply recreate te container");
                 ADMIN_ACCESS_TOKEN = properties.getProperty(PROPERTY_KEY);
             } catch (IOException e) {
                 log.error(e.getMessage());
