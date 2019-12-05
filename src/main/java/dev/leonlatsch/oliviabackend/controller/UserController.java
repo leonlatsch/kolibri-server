@@ -73,7 +73,7 @@ public class UserController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/search/top100/{username}")
     public ResponseEntity<Response> searchUsersTop100ByUsername(@RequestHeader(Headers.ACCESS_TOKEN) String accessToken, @PathVariable("username") String username) {
-        return createResponseEntity(userService.searchTop100(accessToken, username));
+        return createResponseEntity(userService.search(accessToken, username));
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/get/profile-pic/{uid}")

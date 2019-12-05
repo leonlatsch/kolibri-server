@@ -17,10 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Blob;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static dev.leonlatsch.oliviabackend.constants.CommonResponses.*;
 import static dev.leonlatsch.oliviabackend.constants.JsonResponse.*;
@@ -255,15 +252,9 @@ public class UserService {
         if (!accessTokenService.isTokenValid(accessToken)) {
             return RES_UNAUTHORIZED;
         }
-        List<User> users = userRepository.findByUsernameContaining(username);
-        return new Response(200, OK, mapToPublicUsers(mapToTransferObjects(users)));
-    }
 
-    public Response searchTop100(String accessToken, String username) {
-        if (!accessTokenService.isTokenValid(accessToken)) {
-            return RES_UNAUTHORIZED;
-        }
-        List<User> users = userRepository.findTop100ByUsernameContaining(username);
+        String uid = accessTokenService.getUserForToken(accessToken);
+        List<User> users = userRepository.findTop100ByUidNotAndUsernameContaining(uid, username);
 
         return new Response(200, OK, mapToPublicUsers(mapToTransferObjects(users)));
     }

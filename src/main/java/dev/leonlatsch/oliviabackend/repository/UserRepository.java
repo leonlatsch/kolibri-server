@@ -14,9 +14,7 @@ public interface UserRepository extends JpaRepository<User, String> {
 
     Optional<User> findByUsername(String username);
 
-    List<User> findByUsernameContaining(String username);
-
-    List<User> findTop100ByUsernameContaining(String username);
+    List<User> findTop100ByUidNotAndUsernameContaining(String uid, String username);
 
     Optional<User> findPublicKeyByUid(String uid);
 
