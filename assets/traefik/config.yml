@@ -21,7 +21,7 @@ providers:
 certificatesResolvers:
   acme_default:
     acme:
-      email: dev.leonlatsch@gmail.com
+      email: <email-address>
       storage: /etc/traefik/acme.json
       httpChallenge:
         entryPoint: http

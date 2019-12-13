@@ -9,7 +9,7 @@ http:
       tls:
         certResolver: acme_default
         domains:
-          - main: olivia.leonlatsch.dev
+          - main: <domain>
       middlewares:
         - strip
 
@@ -22,7 +22,7 @@ http:
       tls:
         certResolver: acme_default
         domains:
-          - main: olivia.leonlatsch.dev
+          - main: <domain>
       middlewares:
         - strip
 
@@ -35,7 +35,7 @@ http:
       tls:
         certResolver: acme_default
         domains:
-          - main: olivia.leonlatsch.dev
+          - main: <domain>
       middlewares:
         - auth
 
@@ -55,8 +55,7 @@ http:
   middlewares:
     auth:
       basicAuth:
-        users:
-          - "admin:$2y$05$La.l7/vvIsLprQu1E2/1zehlpht.DM6LmvnNHBvbC3NMRi6ChKBn6"
+        usersFile: "/etc/traefik/users"
 
     strip:
       stripPrefix:

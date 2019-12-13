@@ -26,7 +26,7 @@ services:
   backend: # Pre built image of the backend
     container_name: olivia-backend
     restart: always
-    image: olivia-backend
+    image: leonlatsch/olivia-backend
     ports:
       - 8080:8080
 
@@ -71,3 +71,4 @@ services:
       - ./assets/traefik/config.yml:/etc/traefik/traefik.yml
       - ./assets/traefik/dynamic-config.yml:/etc/traefik/dynamic-config.yml
       - ./assets/traefik/acme.json:/etc/traefik/acme.json
+      - ./assets/traefik/users:/etc/traefik/users
