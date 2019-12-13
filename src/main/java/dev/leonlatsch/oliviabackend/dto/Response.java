@@ -4,6 +4,10 @@ import dev.leonlatsch.oliviabackend.constants.Formats;
 
 import java.sql.Timestamp;
 
+/**
+ * @author Leon Latsch
+ * @since 1.0.0
+ */
 public class Response {
 
     private int code;

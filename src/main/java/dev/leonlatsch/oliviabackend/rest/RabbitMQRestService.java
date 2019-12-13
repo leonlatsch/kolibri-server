@@ -8,6 +8,10 @@ import retrofit2.http.DELETE;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
+/**
+ * @author Leon Latsch
+ * @since 1.0.0
+ */
 public interface RabbitMQRestService {
 
     String USER_ENDPOINT = "api/users/{name}";

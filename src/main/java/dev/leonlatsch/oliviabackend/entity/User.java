@@ -3,6 +3,10 @@ package dev.leonlatsch.oliviabackend.entity;
 import javax.persistence.*;
 import java.sql.Blob;
 
+/**
+ * @author Leon Latsch
+ * @since 1.0.0
+ */
 @Entity
 @Table(name = "user")
 public class User {

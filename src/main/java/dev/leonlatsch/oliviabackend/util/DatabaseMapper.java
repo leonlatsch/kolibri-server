@@ -14,6 +14,10 @@ import java.sql.Timestamp;
 import java.text.ParseException;
 import java.util.Date;
 
+/**
+ * @author Leon Latsch
+ * @since 1.0.0
+ */
 public class DatabaseMapper {
 
     private static DatabaseMapper databaseMapper; // Singleton

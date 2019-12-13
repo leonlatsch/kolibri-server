@@ -10,6 +10,10 @@ import org.springframework.web.bind.annotation.*;
 
 import static dev.leonlatsch.oliviabackend.util.ControllerUtils.createResponseEntity;
 
+/**
+ * @author Leon Latsch
+ * @since 1.0.0
+ */
 @RestController
 @RequestMapping("/chat")
 public class ChatController {

@@ -7,6 +7,10 @@ import org.springframework.stereotype.Service;
 
 import static dev.leonlatsch.oliviabackend.constants.CommonResponses.*;
 
+/**
+ * @author Leon Latsch
+ * @since 1.0.0
+ */
 @Service
 public class MessageService {
 

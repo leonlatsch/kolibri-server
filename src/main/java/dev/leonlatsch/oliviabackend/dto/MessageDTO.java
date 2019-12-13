@@ -1,5 +1,9 @@
 package dev.leonlatsch.oliviabackend.dto;
 
+/**
+ * @author Leon Latsch
+ * @since 1.0.0
+ */
 public class MessageDTO {
 
     private String mid; // The unique message id

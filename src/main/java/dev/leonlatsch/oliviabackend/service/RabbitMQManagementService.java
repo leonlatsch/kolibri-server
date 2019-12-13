@@ -12,6 +12,10 @@ import retrofit2.Response;
 
 import java.io.IOException;
 
+/**
+ * @author Leon Latsch
+ * @since 1.0.0
+ */
 @Service
 public class RabbitMQManagementService {
 

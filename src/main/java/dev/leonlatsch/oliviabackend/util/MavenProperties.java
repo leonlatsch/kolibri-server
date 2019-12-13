@@ -8,6 +8,10 @@ import org.slf4j.LoggerFactory;
 
 import java.io.*;
 
+/**
+ * @author Leon Latsch
+ * @since 1.0.0
+ */
 public class MavenProperties {
 
     private static final Logger log = LoggerFactory.getLogger(MavenProperties.class);

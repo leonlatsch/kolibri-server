@@ -4,6 +4,10 @@ import dev.leonlatsch.oliviabackend.dto.Response;
 
 import static dev.leonlatsch.oliviabackend.constants.JsonResponse.*;
 
+/**
+ * @author Leon Latsch
+ * @since 1.0.0
+ */
 public class CommonResponses {
 
     public static final Response RES_UNAUTHORIZED = new Response(401, UNAUTHORIZED, null);

@@ -7,6 +7,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+/**
+ * @author Leon Latsch
+ * @since 1.0.0
+ */
 @Service
 public class AccessTokenService {
 

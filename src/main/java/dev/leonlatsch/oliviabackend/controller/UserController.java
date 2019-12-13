@@ -14,6 +14,10 @@ import static dev.leonlatsch.oliviabackend.util.ControllerUtils.createResponseEn
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * @author Leon Latsch
+ * @since 1.0.0
+ */
 @RestController
 @RequestMapping("/user")
 public class UserController {

@@ -22,6 +22,10 @@ import java.util.*;
 import static dev.leonlatsch.oliviabackend.constants.CommonResponses.*;
 import static dev.leonlatsch.oliviabackend.constants.JsonResponse.*;
 
+/**
+ * @author Leon Latsch
+ * @since 1.0.0
+ */
 @Service
 public class UserService {
 

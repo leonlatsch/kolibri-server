@@ -12,6 +12,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import static dev.leonlatsch.oliviabackend.util.ControllerUtils.createResponseEntity;
 
+/**
+ * @author Leon Latsch
+ * @since 1.0.0
+ */
 @RestController
 @RequestMapping("/")
 public class BaseController {

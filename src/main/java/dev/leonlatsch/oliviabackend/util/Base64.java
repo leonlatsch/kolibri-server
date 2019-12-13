@@ -7,6 +7,10 @@ import javax.sql.rowset.serial.SerialBlob;
 import java.sql.Blob;
 import java.sql.SQLException;
 
+/**
+ * @author Leon Latsch
+ * @since 1.0.0
+ */
 public class Base64 {
 
     private static final Logger log = LoggerFactory.getLogger(Base64.class);

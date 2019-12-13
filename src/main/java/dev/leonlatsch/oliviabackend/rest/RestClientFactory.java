@@ -8,6 +8,10 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
 
 import java.io.IOException;
 
+/**
+ * @author Leon Latsch
+ * @since 1.0.0
+ */
 @Component
 public class RestClientFactory {
 

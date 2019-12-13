@@ -1,5 +1,9 @@
 package dev.leonlatsch.oliviabackend.constants;
 
+/**
+ * @author Leon Latsch
+ * @since 1.0.0
+ */
 public class JsonResponse {
 
     public static final String OK = "OK";

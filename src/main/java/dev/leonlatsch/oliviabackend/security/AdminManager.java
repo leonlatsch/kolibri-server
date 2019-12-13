@@ -13,6 +13,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
 
+/**
+ * @author Leon Latsch
+ * @since 1.0.0
+ */
 @Component
 public class AdminManager {
 

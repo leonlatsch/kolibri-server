@@ -1,5 +1,9 @@
 package dev.leonlatsch.oliviabackend.dto.rabbitmq;
 
+/**
+ * @author Leon Latsch
+ * @since 1.0.0
+ */
 public class RMQUser {
 
     private String password;

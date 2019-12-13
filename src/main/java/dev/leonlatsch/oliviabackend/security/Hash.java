@@ -2,6 +2,10 @@ package dev.leonlatsch.oliviabackend.security;
 
 import java.security.MessageDigest;
 
+/**
+ * @author Leon Latsch
+ * @since 1.0.0
+ */
 public class Hash {
 
     private static final String MD5 = "MD5";

@@ -5,6 +5,10 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+/**
+ * @author Leon Latsch
+ * @since 1.0.0
+ */
 @Entity
 @Table(name = "access_token")
 public class AccessToken {

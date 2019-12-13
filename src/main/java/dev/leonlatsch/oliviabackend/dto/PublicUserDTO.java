@@ -1,5 +1,9 @@
 package dev.leonlatsch.oliviabackend.dto;
 
+/**
+ * @author Leon Latsch
+ * @since 1.0.0
+ */
 public class PublicUserDTO {
 
     private String uid;

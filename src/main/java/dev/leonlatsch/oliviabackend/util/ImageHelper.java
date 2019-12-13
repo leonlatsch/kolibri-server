@@ -11,6 +11,10 @@ import java.io.IOException;
 import java.sql.Blob;
 import java.sql.SQLException;
 
+/**
+ * @author Leon Latsch
+ * @since 1.0.0
+ */
 public class ImageHelper {
 
     private static final Logger log = LoggerFactory.getLogger(ImageHelper.class);

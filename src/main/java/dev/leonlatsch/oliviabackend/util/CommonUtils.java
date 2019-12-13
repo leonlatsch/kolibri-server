@@ -7,6 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.Random;
 import java.util.UUID;
 
+/**
+ * @author Leon Latsch
+ * @since 1.0.0
+ */
 public class CommonUtils {
 
     @Autowired
