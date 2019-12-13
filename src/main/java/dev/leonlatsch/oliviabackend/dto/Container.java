@@ -8,16 +8,17 @@ import java.sql.Timestamp;
  * @author Leon Latsch
  * @since 1.0.0
  */
-public class Response {
+public class Container {
 
     private int code;
     private String message;
     private String timestamp;
     private Object content;
 
-    public Response() {}
+    public Container() {
+    }
 
-    public Response(int code, String message, Object content) {
+    public Container(int code, String message, Object content) {
         this.code = code;
         this.message = message;
         this.content = content;

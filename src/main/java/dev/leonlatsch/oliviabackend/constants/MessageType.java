@@ -1,6 +1,8 @@
 package dev.leonlatsch.oliviabackend.constants;
 
 /**
+ * Message types for a {@link dev.leonlatsch.oliviabackend.dto.MessageDTO}
+ *
  * @author Leon Latsch
  * @since 1.0.0
  */

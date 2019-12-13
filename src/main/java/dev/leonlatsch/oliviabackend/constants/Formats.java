@@ -3,6 +3,8 @@ package dev.leonlatsch.oliviabackend.constants;
 import java.text.SimpleDateFormat;
 
 /**
+ * Static formats
+ *
  * @author Leon Latsch
  * @since 1.0.0
  */

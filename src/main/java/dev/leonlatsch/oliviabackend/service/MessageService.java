@@ -1,7 +1,7 @@
 package dev.leonlatsch.oliviabackend.service;
 
 import dev.leonlatsch.oliviabackend.dto.MessageDTO;
-import dev.leonlatsch.oliviabackend.dto.Response;
+import dev.leonlatsch.oliviabackend.dto.Container;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +23,7 @@ public class MessageService {
     @Autowired
     private UserService userService;
 
-    public Response createAndSendMessage(String accessToken, MessageDTO message) {
+    public Container createAndSendMessage(String accessToken, MessageDTO message) {
         String uid = accessTokenService.getUserForToken(accessToken);
         if (!uid.equals(message.getFrom())) {
             return RES_UNAUTHORIZED;

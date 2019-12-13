@@ -2,7 +2,7 @@ package dev.leonlatsch.oliviabackend.service;
 
 import dev.leonlatsch.oliviabackend.constants.Formats;
 import dev.leonlatsch.oliviabackend.dto.PublicUserDTO;
-import dev.leonlatsch.oliviabackend.dto.Response;
+import dev.leonlatsch.oliviabackend.dto.Container;
 import dev.leonlatsch.oliviabackend.dto.UserDTO;
 import dev.leonlatsch.oliviabackend.entity.AccessToken;
 import dev.leonlatsch.oliviabackend.entity.User;
@@ -45,7 +45,7 @@ public class UserService {
 
     private DatabaseMapper mapper = DatabaseMapper.getInstance();
 
-    public Response getAllUsers(String accessToken) {
+    public Container getAllUsers(String accessToken) {
         if (!AdminManager.getAdminAccessToken().equals(accessToken)) {
             return null;
         }
@@ -55,19 +55,19 @@ public class UserService {
             rmProfilePic(user);
         }
 
-        return new Response(200, OK, list);
+        return new Container(200, OK, list);
     }
 
-    public Response getPublicKey(String accessToken, String uid) {
+    public Container getPublicKey(String accessToken, String uid) {
         if (!accessTokenService.isTokenValid(accessToken)) {
             return RES_UNAUTHORIZED;
         }
         Optional<User> blob = userRepository.findPublicKeyByUid(uid);
-        return blob.isPresent() ? new Response(200, OK, Base64.convertToBase64(blob.get().getPublicKey())) : RES_ERROR;
+        return blob.isPresent() ? new Container(200, OK, Base64.convertToBase64(blob.get().getPublicKey())) : RES_ERROR;
     }
 
-    public Response updatePublicKey(String accessToken, String publicKey) {
-        Response response = new Response();
+    public Container updatePublicKey(String accessToken, String publicKey) {
+        Container container = new Container();
         String uid = accessTokenService.getUserForToken(accessToken);
         if (uid == null) {
             return RES_UNAUTHORIZED;
@@ -79,16 +79,16 @@ public class UserService {
                 userRepository.saveAndFlush(newUser);
                 return RES_OK;
             } else {
-                response.setCode(500); // Should never happen case
-                response.setMessage(ERROR);
-                response.setContent(null);
+                container.setCode(500); // Should never happen case
+                container.setMessage(ERROR);
+                container.setContent(null);
             }
         }
-        return response;
+        return container;
     }
 
-    public Response get(String accessToken) {
-        Response response = new Response();
+    public Container get(String accessToken) {
+        Container container = new Container();
         String uid = accessTokenService.getUserForToken(accessToken);
         if (uid == null) {
             return RES_UNAUTHORIZED;
@@ -96,36 +96,36 @@ public class UserService {
         Optional<User> user = userRepository.findById(uid);
         rmProfilePic(user);
         if (user.isPresent()) {
-            response.setCode(200);
-            response.setMessage(OK);
-            response.setContent(mapper.mapToTransferObject(user.get()));
-            return response;
+            container.setCode(200);
+            container.setMessage(OK);
+            container.setContent(mapper.mapToTransferObject(user.get()));
+            return container;
         } else {
             return RES_ERROR;
         }
     }
 
-    public Response get(String accessToken, String uid) {
-        Response response = new Response();
+    public Container get(String accessToken, String uid) {
+        Container container = new Container();
         if (accessTokenService.isTokenValid(accessToken)) {
             Optional<User> user = userRepository.findById(uid);
             if (user.isPresent()) {
-                response.setCode(200);
-                response.setMessage(OK);
-                response.setContent(mapper.mapToPublicUser(user.get()));
+                container.setCode(200);
+                container.setMessage(OK);
+                container.setContent(mapper.mapToPublicUser(user.get()));
             } else {
-                response.setContent(201);
-                response.setMessage(OK);
-                response.setContent(null);
+                container.setContent(201);
+                container.setMessage(OK);
+                container.setContent(null);
             }
-            return response;
+            return container;
         } else {
             return RES_UNAUTHORIZED;
         }
     }
 
-    public Response createUser(UserDTO user, String publicKey) {
-        Response response = new Response();
+    public Container createUser(UserDTO user, String publicKey) {
+        Container container = new Container();
         Optional<User> checkUser = userRepository.findByUsername(user.getUsername());
         if (checkUser.isPresent()) {
             return RES_ERROR;
@@ -161,13 +161,13 @@ public class UserService {
             return RES_ERROR;
         }
 
-        response.setMessage(OK);
-        response.setContent(rawToken);
-        response.setCode(200);
-        return response;
+        container.setMessage(OK);
+        container.setContent(rawToken);
+        container.setCode(200);
+        return container;
     }
 
-    public Response deleteUser(String accessToken) {
+    public Container deleteUser(String accessToken) {
         String uid = accessTokenService.getUserForToken(accessToken);
         if (uid == null) {
             return RES_ERROR;
@@ -182,40 +182,40 @@ public class UserService {
         return RES_OK;
     }
 
-    public Response isUsernameFree(String accessToken, String username) {
+    public Container isUsernameFree(String accessToken, String username) {
         String uid = accessTokenService.getUserForToken(accessToken);
         Optional<User> user = userRepository.findByUsername(username);
-        Response response = new Response();
-        response.setCode(200);
-        response.setContent(null);
+        Container container = new Container();
+        container.setCode(200);
+        container.setContent(null);
         if (!user.isPresent()) {
-            response.setMessage(FREE);
+            container.setMessage(FREE);
         } else if (user.get().getUid().equals(uid)) {
-            response.setMessage(TAKEN_BY_YOU);
+            container.setMessage(TAKEN_BY_YOU);
         } else {
-            response.setMessage(TAKEN);
+            container.setMessage(TAKEN);
         }
-        return response;
+        return container;
     }
 
-    public Response isEmailFree(String accessToken, String email) {
+    public Container isEmailFree(String accessToken, String email) {
         String uid = accessTokenService.getUserForToken(accessToken);
         Optional<User> user = userRepository.findByEmail(email);
-        Response response = new Response();
-        response.setCode(200);
-        response.setContent(null);
+        Container container = new Container();
+        container.setCode(200);
+        container.setContent(null);
         if (!user.isPresent()) {
-            response.setMessage(FREE);
+            container.setMessage(FREE);
         } else if (user.get().getUid().equals(uid)) {
-            response.setMessage(TAKEN_BY_YOU);
+            container.setMessage(TAKEN_BY_YOU);
         } else {
-            response.setMessage(TAKEN);
+            container.setMessage(TAKEN);
         }
-        return response;
+        return container;
     }
 
-    public Response updateUser(String accessToken, UserDTO userDTO) {
-        Response response = new Response();
+    public Container updateUser(String accessToken, UserDTO userDTO) {
+        Container container = new Container();
         String uid = accessTokenService.getUserForToken(accessToken);
 
         if (uid == null) {
@@ -235,7 +235,7 @@ public class UserService {
                 if (!rabbitMQManagementService.changeBrokerPassword(dbUser.get().getUid(), newToken)) {
                     return RES_ERROR;
                 }
-                response.setContent(newToken);
+                container.setContent(newToken);
             }
             if (user.getProfilePic() != null) {
                 dbUser.get().setProfilePic(user.getProfilePic());
@@ -244,15 +244,15 @@ public class UserService {
                 dbUser.get().setProfilePicTn(user.getProfilePicTn());
             }
             userRepository.saveAndFlush(dbUser.get());
-            response.setCode(200);
-            response.setMessage(OK);
-            return response;
+            container.setCode(200);
+            container.setMessage(OK);
+            return container;
         } else {
             return RES_ERROR;
         }
     }
 
-    public Response search(String accessToken, String username) {
+    public Container search(String accessToken, String username) {
         if (!accessTokenService.isTokenValid(accessToken)) {
             return RES_UNAUTHORIZED;
         }
@@ -260,12 +260,12 @@ public class UserService {
         String uid = accessTokenService.getUserForToken(accessToken);
         List<User> users = userRepository.findTop100ByUidNotAndUsernameContaining(uid, username);
 
-        return new Response(200, OK, mapToPublicUsers(mapToTransferObjects(users)));
+        return new Container(200, OK, mapToPublicUsers(mapToTransferObjects(users)));
     }
 
-    public Response authUserByEmail(String email, String hash) {
+    public Container authUserByEmail(String email, String hash) {
         Optional<User> user = userRepository.findByEmail(email);
-        Response response = new Response();
+        Container container = new Container();
 
         if (hash == null || !user.isPresent()) {
            return RES_UNAUTHORIZED;
@@ -273,16 +273,16 @@ public class UserService {
 
         String token = accessTokenService.getTokenForUser(user.get().getUid());
         if (user.get().getPassword().equals(hash) && token != null) {
-            response.setCode(200);
-            response.setMessage(AUTHORIZED);
-            response.setContent(token);
-            return response;
+            container.setCode(200);
+            container.setMessage(AUTHORIZED);
+            container.setContent(token);
+            return container;
         } else {
             return RES_UNAUTHORIZED;
         }
     }
 
-    public Response loadProfilePic(String accessToken, String uid) {
+    public Container loadProfilePic(String accessToken, String uid) {
         if (!accessTokenService.isTokenValid(accessToken)) {
             return RES_UNAUTHORIZED;
         }
@@ -290,7 +290,7 @@ public class UserService {
         Optional<User> user = userRepository.findById(uid);
         profilePic = user.isPresent() ? Base64.convertToBase64(user.get().getProfilePic()) : null;
 
-        return new Response(200, OK, profilePic);
+        return new Container(200, OK, profilePic);
     }
 
     public boolean userExists(String uid) {

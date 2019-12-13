@@ -11,6 +11,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
+ * Configuration for queue communication
+ *
  * @author Leon Latsch
  * @since 1.0.0
  */
