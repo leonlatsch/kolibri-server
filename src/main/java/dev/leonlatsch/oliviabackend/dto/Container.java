@@ -5,6 +5,9 @@ import dev.leonlatsch.oliviabackend.constants.Formats;
 import java.sql.Timestamp;
 
 /**
+ * DTO containing general information about a rest response and a variable return object.</br>
+ * Used for every request.
+ *
  * @author Leon Latsch
  * @since 1.0.0
  */

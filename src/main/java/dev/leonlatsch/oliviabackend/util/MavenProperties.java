@@ -9,6 +9,8 @@ import org.slf4j.LoggerFactory;
 import java.io.*;
 
 /**
+ * Static class to get values from pom.xml
+ *
  * @author Leon Latsch
  * @since 1.0.0
  */

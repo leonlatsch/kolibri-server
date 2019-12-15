@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Optional;
 
 /**
+ * JPA repository to access the user table
+ *
  * @author Leon Latsch
  * @since 1.0.0
  */

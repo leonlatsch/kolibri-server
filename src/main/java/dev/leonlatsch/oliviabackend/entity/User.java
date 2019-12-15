@@ -4,6 +4,8 @@ import javax.persistence.*;
 import java.sql.Blob;
 
 /**
+ * DB model for saving a user
+ *
  * @author Leon Latsch
  * @since 1.0.0
  */

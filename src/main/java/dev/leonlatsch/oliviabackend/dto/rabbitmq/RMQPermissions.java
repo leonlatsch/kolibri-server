@@ -1,6 +1,8 @@
 package dev.leonlatsch.oliviabackend.dto.rabbitmq;
 
 /**
+ * DTO containing permission settings for RabbitMQ
+ *
  * @author Leon Latsch
  * @since 1.0.0
  */

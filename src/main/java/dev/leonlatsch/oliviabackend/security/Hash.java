@@ -3,6 +3,8 @@ package dev.leonlatsch.oliviabackend.security;
 import java.security.MessageDigest;
 
 /**
+ * Static class to manage hashing
+ *
  * @author Leon Latsch
  * @since 1.0.0
  */

@@ -9,6 +9,8 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
 import java.io.IOException;
 
 /**
+ * Rest client factory to connect to RabbitMQ's http api and create the {@link RabbitMQRestService}
+ *
  * @author Leon Latsch
  * @since 1.0.0
  */
@@ -31,6 +33,11 @@ public class RestClientFactory {
     @Value("${spring.rabbitmq.password}")
     private String password;
 
+    /**
+     * Build the base url from the configuration.
+     *
+     * @return The built base url
+     */
     private String buildBaseUrl() {
         return "http://" + host + ":" + httpPort + "";
     }
@@ -58,6 +65,9 @@ public class RestClientFactory {
         return rabbitMQRestService;
     }
 
+    /**
+     * Interceptor to authenticate with the configured user.
+     */
     private static class AuthInterceptor implements Interceptor {
 
         private String user;

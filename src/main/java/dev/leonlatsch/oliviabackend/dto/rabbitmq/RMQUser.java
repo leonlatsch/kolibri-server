@@ -1,6 +1,8 @@
 package dev.leonlatsch.oliviabackend.dto.rabbitmq;
 
 /**
+ * DTO containing a RabbitMQ user
+ *
  * @author Leon Latsch
  * @since 1.0.0
  */

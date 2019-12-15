@@ -1,20 +1,23 @@
 package dev.leonlatsch.oliviabackend.dto;
 
 /**
+ * DTO containing a chat message.
+ *
  * @author Leon Latsch
  * @since 1.0.0
  */
 public class MessageDTO {
 
-    private String mid; // The unique message id
-    private String from; // user's uid that sent the message
-    private String to; // user's uid that will receive the message
-    private String content; // base64 encoded binary content
-    private String type; // The type of the message, used for mapping the content
-    private String timestamp; // The timestamp the message was sent
-    private String cid; // Chat FK to the chat
+    private String mid;
+    private String from;
+    private String to;
+    private String content;
+    private String type;
+    private String timestamp;
+    private String cid;
 
-    public MessageDTO() {}
+    public MessageDTO() {
+    }
 
     public MessageDTO(String mid, String from, String to, String content, String type, String timestamp, String cid) {
         this.mid = mid;

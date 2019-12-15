@@ -8,6 +8,8 @@ import java.sql.Blob;
 import java.sql.SQLException;
 
 /**
+ * Static class to convert base64 to various formats
+ *
  * @author Leon Latsch
  * @since 1.0.0
  */

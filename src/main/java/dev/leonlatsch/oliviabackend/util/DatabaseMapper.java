@@ -15,6 +15,8 @@ import java.text.ParseException;
 import java.util.Date;
 
 /**
+ * Mapper class to convert dtos to models and back
+ *
  * @author Leon Latsch
  * @since 1.0.0
  */
@@ -59,7 +61,7 @@ public class DatabaseMapper {
 
             if (userDTO.getProfilePic() != null) {
                 profilePic = new SerialBlob(Base64.convertToBlob(userDTO.getProfilePic()));
-                profilePicTn = new SerialBlob(ImageHelper.createThumbnail(profilePic));
+                profilePicTn = new SerialBlob(CommonUtils.createThumbnail(profilePic));
             }
             return new User(userDTO.getUid(), userDTO.getUsername(), userDTO.getEmail(), userDTO.getPassword(), profilePic, profilePicTn, null);
         } catch (SQLException e) {

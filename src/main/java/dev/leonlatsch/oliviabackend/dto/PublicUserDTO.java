@@ -1,6 +1,8 @@
 package dev.leonlatsch.oliviabackend.dto;
 
 /**
+ * DTO containing a user without the sensitive information.</br>
+ *
  * @author Leon Latsch
  * @since 1.0.0
  */

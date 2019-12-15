@@ -14,6 +14,8 @@ import java.io.IOException;
 import java.util.Properties;
 
 /**
+ * Static class to manage the admin access token
+ *
  * @author Leon Latsch
  * @since 1.0.0
  */

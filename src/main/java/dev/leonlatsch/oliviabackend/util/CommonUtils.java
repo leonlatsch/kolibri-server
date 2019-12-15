@@ -2,16 +2,29 @@ package dev.leonlatsch.oliviabackend.util;
 
 import dev.leonlatsch.oliviabackend.repository.AccessTokenRepository;
 import dev.leonlatsch.oliviabackend.repository.UserRepository;
+import net.coobird.thumbnailator.Thumbnails;
+import org.apache.commons.io.output.ByteArrayOutputStream;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.sql.rowset.serial.SerialBlob;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.sql.Blob;
+import java.sql.SQLException;
 import java.util.Random;
 import java.util.UUID;
 
 /**
+ * Common util functions
+ *
  * @author Leon Latsch
  * @since 1.0.0
  */
 public class CommonUtils {
+
+    private static Logger log = LoggerFactory.getLogger(CommonUtils.class);
 
     @Autowired
     private static UserRepository userRepository;
@@ -70,5 +83,25 @@ public class CommonUtils {
         return token.toString();
     }
 
-    private CommonUtils() {}
+    public static Blob createThumbnail(Blob original) {
+        try {
+            byte[] bytes = original.getBytes(1L, (int) original.length());
+
+            ByteArrayInputStream inputStream = new ByteArrayInputStream(bytes);
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
+            Thumbnails.of(inputStream)
+                    .size(256, 256)
+                    .toOutputStream(outputStream);
+            bytes = outputStream.toByteArray();
+
+            return new SerialBlob(bytes);
+        } catch (SQLException | IOException e) {
+            log.error("" + e);
+            return null;
+        }
+    }
+
+    private CommonUtils() {
+    }
 }

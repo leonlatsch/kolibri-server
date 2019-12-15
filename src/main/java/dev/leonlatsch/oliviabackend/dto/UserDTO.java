@@ -1,6 +1,8 @@
 package dev.leonlatsch.oliviabackend.dto;
 
 /**
+ * DTO containing a user with all it's information
+ *
  * @author Leon Latsch
  * @since 1.0.0
  */

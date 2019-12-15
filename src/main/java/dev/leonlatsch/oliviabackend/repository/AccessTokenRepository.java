@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 /**
+ * JPA repository to access the access_token table
+ *
  * @author Leon Latsch
  * @since 1.0.0
  */

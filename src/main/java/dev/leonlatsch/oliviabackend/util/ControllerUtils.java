@@ -5,6 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 /**
+ * Static functions used in all controllers to create a {@link ResponseEntity} from a {@link Container}
+ *
  * @author Leon Latsch
  * @since 1.0.0
  */

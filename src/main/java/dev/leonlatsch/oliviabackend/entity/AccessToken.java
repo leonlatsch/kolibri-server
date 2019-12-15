@@ -6,6 +6,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
+ * DB model for saving access tokens of a user.
+ *
  * @author Leon Latsch
  * @since 1.0.0
  */
