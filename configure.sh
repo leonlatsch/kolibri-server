@@ -3,6 +3,10 @@
 INPUT="" # Input cache
 DOCKER_COMPOSE="docker-compose.yml" # Docker compose file
 APP_CONFIG="config/application.yml" # App config file
+RABBITMQ_CONFIG="assets/rabbitmq/rabbitmq.conf" # RabbitMQ Config file
+TRAEFIK_CONFIG="assets/traefik/config.yml" # Traefik static config file
+TRAEFIK_DYN_CONFIG="assets/traefik/dynamic-config.yml"# Traefik dynamic config
+TRAEFIK_USERS="assets/traefik/users" # Traefik users file
 
 
 # $1 text
@@ -48,11 +52,28 @@ function password_generate() {
     echo
 }
 
-# $1 search
-# $2 replace
-# $3 file
-function persist() {
-    sed -i "s/$1/$2/g" $3
+function reset() {
+    print "Initial Config will reset your current config. Press Ctl+C to calcel"
+    print "[ENTER]"
+    read
+
+    print "Resetting config ..."
+
+    git checkout -- $APP_CONFIG &> /dev/null
+    git checkout -- $DOCKER_COMPOSE &> /dev/null
+    git checkout -- $RABBITMQ_CONFIG &> /dev/null
+    git checkout -- $TRAEFIK_CONFIG &> /dev/null
+    git checkout -- $TRAEFIK_DYN_CONFIG &> /dev/null
+    git checkout -- $TRAEFIK_USERS &> /dev/null
+
+    print
+}
+
+# $1 file
+# $2 find
+# $3 replace
+function replace() {
+    sed -i "s/$2/$3/g" $1
 }
 
 # $1 file
@@ -72,17 +93,44 @@ function save_db_config() {
     write $APP_CONFIG "spring.datasource.password" $2
 }
 
+# $1 username
+# $2 password
+# $3 broker port
+function save_rabbitmq_config() {
+    replace $RABBITMQ_CONFIG "default_user = olivia" "default_user = $1"
+    replace $RABBITMQ_CONFIG "default_pass = olivia" "default_pass = $2"
+    replace $RABBITMQ_CONFIG "listeners.tcp.default = 5672" "listeners.tcp.default = $3"
+
+    write $APP_CONFIG "spring.rabbitmq.username" $1
+    write $APP_CONFIG "spring.rabbitmq.password" $2
+    write $APP_CONFIG "spring.rabbitmq.port" $3
+}
+
 function initial_config() {
     print "Starting Initial Config ..."
     print
 
+    reset
+
+    print "Database"
     input_default "Enter a database user" "olivia"
     DB_USER=$INPUT
-
     password_generate "Enter a database password"
     DB_PASSWORD=$INPUT
-
     save_db_config $DB_USER $DB_PASSWORD
+
+    print
+    print "RabbitMQ"
+
+    input_default "Enter a rabbitmq username" "olivia"
+    RMQ_USER=$INPUT
+    password_generate "Enter a rabbitmq password"
+    RMQ_PASSWORD=$INPUT
+    input_default "Enter a broker tcp port" "5672"
+    RMQ_PORT=$INPUT
+    save_rabbitmq_config $RMQ_USER $RMQ_PASSWORD $RMQ_PORT
+
+    print "Finished Initial Config"
 }
 
 print "Olivia Backend Configuration Script"
