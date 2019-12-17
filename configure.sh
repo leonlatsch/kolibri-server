@@ -27,7 +27,7 @@ function input() {
 # $1 prompt
 # $2 default value
 function input_default() {
-    read -p "[*] $1 [$2]:" INPUT
+    read -p "[*] $1 [$2]: " INPUT
     INPUT=${INPUT:-$2}
 }
 
@@ -127,6 +127,12 @@ function save_traefik_config() {
     fi
 }
 
+# $1 username
+# $2 password
+function add_traefik_user() {
+    htpasswd -Bb $TRAEFIK_USERS $1 $2 &> /dev/null
+}
+
 function initial_config() {
     print "Initial Config Requieres a config reset"
     reset
@@ -172,6 +178,13 @@ function initial_config() {
     fi
 
     print
+    input_default "Enter a admin user for the traefik dashboard" "admin"
+    DASHBOARD_USER=$INPUT
+    password_default "Enter a password for the traefik admin" "admin"
+    DASHBOARD_PASS=$INPUT
+    add_traefik_user $DASHBOARD_USER $DASHBOARD_PASS
+
+    print
     print "Finished Initial Config"
 }
 
@@ -187,6 +200,10 @@ function check_deps() {
     fi
     if ! [ "$(command -v pwgen)" ]; then
       print "Error: pwgen not installed"
+      exit 0
+    fi
+    if ! [ "$(command -v htpasswd)" ]; then
+      print "Error: htpasswd not installed"
       exit 0
     fi
 }
