@@ -4,12 +4,12 @@ FROM openjdk:8-jdk-alpine
 # Expose 8080 for tomcat webserver
 EXPOSE 8080
 
-ARG JAR=target/olivia-backend-1.0-SNAPSHOT.jar
+ARG JAR=target/olivia-backend-*.jar
 ARG SH=assets/entrypoint.sh
 ARG INST=assets/install.sh
 
 # Add files
-ADD ${JAR} olivia-backend-1.0-SNAPSHOT.jar
+ADD ${JAR} olivia-backend-*.jar
 ADD ${SH} entrypoint.sh
 ADD ${INST} install.sh
 
