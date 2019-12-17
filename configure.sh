@@ -5,7 +5,7 @@ DOCKER_COMPOSE="docker-compose.yml" # Docker compose file
 APP_CONFIG="config/application.yml" # App config file
 RABBITMQ_CONFIG="assets/rabbitmq/rabbitmq.conf" # RabbitMQ Config file
 TRAEFIK_CONFIG="assets/traefik/config.yml" # Traefik static config file
-TRAEFIK_DYN_CONFIG="assets/traefik/dynamic-config.yml"# Traefik dynamic config
+TRAEFIK_DYN_CONFIG="assets/traefik/dynamic-config.yml" # Traefik dynamic config
 TRAEFIK_USERS="assets/traefik/users" # Traefik users file
 
 
