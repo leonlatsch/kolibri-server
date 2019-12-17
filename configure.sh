@@ -53,7 +53,7 @@ function password_generate() {
 }
 
 function reset() {
-    print "Initial Config will reset your current config. Press Ctl+C to calcel"
+    print "About to reset your current configuration. Press Ctl+C to cancel"
     print "[ENTER]"
     read
 
@@ -107,10 +107,11 @@ function save_rabbitmq_config() {
 }
 
 function initial_config() {
+    print "Initial Config Requieres a config reset"
+    reset
+
     print "Starting Initial Config ..."
     print
-
-    reset
 
     print "Database"
     input_default "Enter a database user" "olivia"
@@ -136,4 +137,10 @@ function initial_config() {
 print "Olivia Backend Configuration Script"
 print
 
-initial_config
+if [ "$1" == "init" ]; then
+    initial_config
+elif [ "$1" == "reset" ]; then
+    reset
+else
+    print "Use one of the following options: init, reset"
+fi
