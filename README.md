@@ -1,6 +1,9 @@
 # Olivia Backend System
 
-![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/leonlatsch/olivia-backend?include_prereleases&label=version)![GitHub Workflow Status](https://img.shields.io/github/workflow/status/leonlatsch/olivia-backend/Java CI)![GitHub](https://img.shields.io/github/license/leonlatsch/olivia-backend)![Maintenance](https://img.shields.io/maintenance/yes/2019)
+![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/leonlatsch/olivia-backend?include_prereleases&label=version)
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/leonlatsch/olivia-backend/Java+CI)
+![GitHub](https://img.shields.io/github/license/leonlatsch/olivia-backend)
+![Maintenance](https://img.shields.io/maintenance/yes/2019)
 
 
 
