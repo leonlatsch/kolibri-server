@@ -9,10 +9,10 @@ spring:
   jpa:
     generate-ddl: true
     hibernate:
-        ddl-auto: none
+      ddl-auto: none
     properties:
-        hibernate:
-          dialect: org.hibernate.dialect.MySQL5Dialect
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5Dialect
     open-in-view: true # default setting to remove warning
 
   rabbitmq:

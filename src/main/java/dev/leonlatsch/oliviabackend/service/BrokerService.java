@@ -2,7 +2,10 @@ package dev.leonlatsch.oliviabackend.service;
 
 import dev.leonlatsch.oliviabackend.constants.Formats;
 import dev.leonlatsch.oliviabackend.dto.MessageDTO;
-import org.springframework.amqp.core.*;
+import org.springframework.amqp.core.AmqpAdmin;
+import org.springframework.amqp.core.AmqpTemplate;
+import org.springframework.amqp.core.Binding;
+import org.springframework.amqp.core.Queue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -14,5 +14,6 @@ public class Formats {
     public static final String USER_QUEUE_PREFIX = "queue.user.";
     public static final String USER_PREFIX = "user.";
 
-    private Formats() {}
+    private Formats() {
+    }
 }

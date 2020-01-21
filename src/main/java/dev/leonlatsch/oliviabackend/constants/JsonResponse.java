@@ -19,5 +19,6 @@ public class JsonResponse {
     public static final String AUTHORIZED = "AUTHORIZED";
     public static final String UNAUTHORIZED = "UNAUTHORIZED";
 
-    private JsonResponse() {}
+    private JsonResponse() {
+    }
 }

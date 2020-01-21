@@ -22,9 +22,16 @@ import java.util.Date;
  */
 public class DatabaseMapper {
 
+    private static final Logger log = LoggerFactory.getLogger(DatabaseMapper.class);
     private static DatabaseMapper databaseMapper; // Singleton
 
-    private static final Logger log = LoggerFactory.getLogger(DatabaseMapper.class);
+    public static DatabaseMapper getInstance() {
+        if (databaseMapper == null) {
+            databaseMapper = new DatabaseMapper();
+        }
+
+        return databaseMapper;
+    }
 
     public UserDTO mapToTransferObject(User user, boolean withPassword) {
         if (user == null) {
@@ -85,14 +92,6 @@ public class DatabaseMapper {
         publicUserDTO.setProfilePicTn(dto.getProfilePicTn());
 
         return publicUserDTO;
-    }
-
-    public static DatabaseMapper getInstance() {
-        if (databaseMapper == null) {
-            databaseMapper = new DatabaseMapper();
-        }
-
-        return databaseMapper;
     }
 
     private Timestamp stringToTimestamp(String timestamp) {

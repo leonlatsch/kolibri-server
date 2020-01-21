@@ -32,6 +32,9 @@ public class CommonUtils {
     @Autowired
     private static AccessTokenRepository accessTokenRepository;
 
+    private CommonUtils() {
+    }
+
     public static String genSafeUid() {
         String uid = null;
 
@@ -50,6 +53,8 @@ public class CommonUtils {
         return genUUID();
     }
 
+    ///////////// MEMBER METHODS /////////////
+
     public static String genSafeAccessToken() {
         String accessToken = null;
 
@@ -63,8 +68,6 @@ public class CommonUtils {
 
         return accessToken;
     }
-
-    ///////////// MEMBER METHODS /////////////
 
     private static String genUUID() {
         UUID uuid = UUID.randomUUID();
@@ -100,8 +103,5 @@ public class CommonUtils {
             log.error("" + e);
             return null;
         }
-    }
-
-    private CommonUtils() {
     }
 }

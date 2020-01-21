@@ -1,8 +1,8 @@
 package dev.leonlatsch.oliviabackend.service;
 
 import dev.leonlatsch.oliviabackend.constants.Formats;
-import dev.leonlatsch.oliviabackend.dto.PublicUserDTO;
 import dev.leonlatsch.oliviabackend.dto.Container;
+import dev.leonlatsch.oliviabackend.dto.PublicUserDTO;
 import dev.leonlatsch.oliviabackend.dto.UserDTO;
 import dev.leonlatsch.oliviabackend.entity.AccessToken;
 import dev.leonlatsch.oliviabackend.entity.User;
@@ -17,7 +17,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Blob;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
 
 import static dev.leonlatsch.oliviabackend.constants.CommonResponses.*;
 import static dev.leonlatsch.oliviabackend.constants.JsonResponse.*;
@@ -268,7 +271,7 @@ public class UserService {
         Container container = new Container();
 
         if (hash == null || !user.isPresent()) {
-           return RES_UNAUTHORIZED;
+            return RES_UNAUTHORIZED;
         }
 
         String token = accessTokenService.getTokenForUser(user.get().getUid());

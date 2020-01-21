@@ -9,10 +9,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import static dev.leonlatsch.oliviabackend.util.ControllerUtils.createResponseEntity;
-
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+
+import static dev.leonlatsch.oliviabackend.util.ControllerUtils.createResponseEntity;
 
 /**
  * Rest Controller to manage user accounts

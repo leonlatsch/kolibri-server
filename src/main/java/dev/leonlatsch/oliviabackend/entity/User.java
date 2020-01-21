@@ -48,7 +48,8 @@ public class User {
         this.publicKey = publicKey;
     }
 
-    public User() {}
+    public User() {
+    }
 
     public String getUid() {
         return uid;

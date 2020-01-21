@@ -12,7 +12,8 @@ public class PublicUserDTO {
     private String username;
     private String profilePicTn;
 
-    public PublicUserDTO() {}
+    public PublicUserDTO() {
+    }
 
     public PublicUserDTO(String uid, String username, String profilePicTn) {
         this.uid = uid;

@@ -25,7 +25,8 @@ public class AccessToken {
     @Column(name = "valid")
     private boolean valid;
 
-    public AccessToken() {}
+    public AccessToken() {
+    }
 
     public AccessToken(String token, String uid, boolean valid) {
         this.token = token;

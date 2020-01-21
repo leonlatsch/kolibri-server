@@ -14,5 +14,6 @@ public class MessageType {
     public static final String VIDEO = "VIDEO";
     public static final String AUDIO = "AUDIO";
 
-    private MessageType () {}
+    private MessageType() {
+    }
 }

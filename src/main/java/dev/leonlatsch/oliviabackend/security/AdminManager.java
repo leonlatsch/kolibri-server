@@ -23,11 +23,10 @@ import java.util.Properties;
 public class AdminManager {
 
     private static final Logger log = LoggerFactory.getLogger(AdminManager.class);
-
-    private static String ADMIN_ACCESS_TOKEN;
     private static final String AAT_FILE = "admin-access-token.properties";
     private static final String PROPERTY_KEY = "admin.access_token";
     private static final String PROPERTY_COMMENT = "Use this token to use admin features";
+    private static String ADMIN_ACCESS_TOKEN;
 
     @EventListener(ContextRefreshedEvent.class)
     public static String getAdminAccessToken() {
