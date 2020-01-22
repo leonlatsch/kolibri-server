@@ -21,6 +21,7 @@ import static dev.leonlatsch.oliviabackend.util.ControllerUtils.createResponseEn
  * @since 1.0.0
  */
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/user")
 public class UserController {
 

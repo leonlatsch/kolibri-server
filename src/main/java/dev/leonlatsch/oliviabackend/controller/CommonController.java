@@ -6,6 +6,7 @@ import dev.leonlatsch.oliviabackend.util.MavenProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,6 +20,7 @@ import static dev.leonlatsch.oliviabackend.util.ControllerUtils.createResponseEn
  * @since 1.0.0
  */
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/")
 public class CommonController {
 
