@@ -14,6 +14,7 @@ import dev.leonlatsch.oliviabackend.util.DatabaseMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.sql.Blob;
@@ -47,6 +48,7 @@ public class UserService {
     private RabbitMQManagementService rabbitMQManagementService;
 
     private DatabaseMapper mapper = DatabaseMapper.getInstance();
+    private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public Container getAllUsers(String accessToken) {
         if (!AdminManager.getAdminAccessToken().equals(accessToken)) {
@@ -144,6 +146,7 @@ public class UserService {
         String uid = CommonUtils.genSafeUid();
         entity.setUid(uid);
         entity.setPublicKey(publicKeyBlob);
+        entity.setPassword(passwordEncoder.encode(entity.getPassword()));
         if (userRepository.saveAndFlush(entity) == null) {
             log.error("Error saving user: " + uid);
             return RES_ERROR;
@@ -233,7 +236,7 @@ public class UserService {
                 dbUser.get().setEmail(user.getEmail());
             }
             if (user.getPassword() != null) {
-                dbUser.get().setPassword(user.getPassword());
+                dbUser.get().setPassword(passwordEncoder.encode(user.getPassword()));
                 String newToken = updateAccessToken(dbUser.get().getUid());
                 if (!rabbitMQManagementService.changeBrokerPassword(dbUser.get().getUid(), newToken)) {
                     return RES_ERROR;
@@ -266,16 +269,16 @@ public class UserService {
         return new Container(200, OK, mapToPublicUsers(mapToTransferObjects(users)));
     }
 
-    public Container authUserByEmail(String email, String hash) {
+    public Container authUserByEmail(String email, String password) {
         Optional<User> user = userRepository.findByEmail(email);
         Container container = new Container();
 
-        if (hash == null || !user.isPresent()) {
+        if (password == null || !user.isPresent()) {
             return RES_UNAUTHORIZED;
         }
 
         String token = accessTokenService.getTokenForUser(user.get().getUid());
-        if (user.get().getPassword().equals(hash) && token != null) {
+        if (passwordEncoder.matches(password, user.get().getPassword()) && token != null) {
             container.setCode(200);
             container.setMessage(AUTHORIZED);
             container.setContent(token);
