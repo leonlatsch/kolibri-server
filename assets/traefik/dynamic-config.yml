@@ -55,7 +55,8 @@ http:
   middlewares:
     auth:
       basicAuth:
-        usersFile: "/etc/traefik/users"
+        users:
+          - "olivia:$2y$05$ngVIzd0/4.YMfe7pJEk5ye0jJXDYmr1AP4u2Hll28A.9kBP1yY3Q6" # Default user olivia
 
     strip:
       stripPrefix:

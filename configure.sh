@@ -129,8 +129,9 @@ function save_traefik_config() {
 
 # $1 username
 # $2 password
-function add_traefik_user() {
-    htpasswd -Bb $TRAEFIK_USERS $1 $2 &> /dev/null
+function set_traefik_user() {
+    HASH=$(htpasswd -Bbn $1 $2)
+    write $TRAEFIK_DYN_CONFIG "http.middlewares.auth.basicAuth.users[0]" $HASH
 }
 
 function initial_config() {
@@ -182,7 +183,7 @@ function initial_config() {
     DASHBOARD_USER=$INPUT
     password_default "Enter a password for the traefik admin" "admin"
     DASHBOARD_PASS=$INPUT
-    add_traefik_user $DASHBOARD_USER $DASHBOARD_PASS
+    set_traefik_user $DASHBOARD_USER $DASHBOARD_PASS
 
     print
     print "Finished Initial Config"
