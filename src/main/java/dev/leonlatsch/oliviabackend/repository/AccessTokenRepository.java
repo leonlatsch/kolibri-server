@@ -13,5 +13,11 @@ import java.util.Optional;
  */
 public interface AccessTokenRepository extends JpaRepository<AccessToken, String> {
 
+    /**
+     * Find a valid access token by uid
+     *
+     * @param uid
+     * @return
+     */
     Optional<AccessToken> findByUidAndValidTrue(String uid);
 }
