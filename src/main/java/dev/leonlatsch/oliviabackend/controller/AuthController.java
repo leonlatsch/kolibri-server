@@ -3,6 +3,8 @@ package dev.leonlatsch.oliviabackend.controller;
 import dev.leonlatsch.oliviabackend.constants.Headers;
 import dev.leonlatsch.oliviabackend.dto.Container;
 import dev.leonlatsch.oliviabackend.dto.UserDTO;
+import dev.leonlatsch.oliviabackend.entity.Admin;
+import dev.leonlatsch.oliviabackend.service.AdminService;
 import dev.leonlatsch.oliviabackend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +25,9 @@ public class AuthController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private AdminService adminService;
 
     /**
      * Endpoint to login with an email address and a password hash.
@@ -45,5 +50,16 @@ public class AuthController {
     @RequestMapping(method = RequestMethod.POST, value = "/register")
     public ResponseEntity<Container> register(@RequestBody UserDTO dto, @RequestHeader(value = Headers.PUBLIC_KEY) String publicKey) {
         return createResponseEntity(userService.createUser(dto, publicKey));
+    }
+
+    /**
+     * Endpoint to login with configured the admin user
+     *
+     * @param dto A {@link Admin} with a username and a password
+     * @return A Container with the access token of the admin
+     */
+    @RequestMapping(method = RequestMethod.POST, value = "/admin/login")
+    public ResponseEntity<Container> authAdmin(@RequestBody Admin dto) {
+        return createResponseEntity(adminService.auth(dto.getUsername(), dto.getPassword()));
     }
 }

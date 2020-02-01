@@ -1,6 +1,7 @@
 package dev.leonlatsch.oliviabackend.service;
 
 import antlr.ASdebug.IASDebugStream;
+import dev.leonlatsch.oliviabackend.dto.Container;
 import dev.leonlatsch.oliviabackend.entity.Admin;
 import dev.leonlatsch.oliviabackend.repository.AdminRepository;
 import dev.leonlatsch.oliviabackend.util.CommonUtils;
@@ -12,6 +13,8 @@ import org.springframework.context.event.EventListener;
 import org.springframework.core.env.Environment;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import static dev.leonlatsch.oliviabackend.constants.JsonResponse.*;
 
 import java.util.Optional;
 
@@ -34,10 +37,10 @@ public class AdminService {
 
     private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    public String auth(String username, String password) {
+    public Container auth(String username, String password) {
         initAdmin();
         Optional<Admin> admin = adminRepository.findById(username);
-        return admin.isPresent() && passwordEncoder.matches(password, admin.get().getPassword()) ? admin.get().getToken() : null;
+        return admin.isPresent() && passwordEncoder.matches(password, admin.get().getPassword()) ? new Container(200, AUTHORIZED, admin.get().getToken()) : new Container(401, UNAUTHORIZED, null);
     }
 
     public boolean auth(String token) {
