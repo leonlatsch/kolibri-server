@@ -50,5 +50,3 @@ buildNumber.properties
 .mvn/timing.properties
 
 \.idea/*
-
-admin-access-token.properties
