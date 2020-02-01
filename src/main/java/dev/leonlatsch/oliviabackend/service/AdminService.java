@@ -49,8 +49,11 @@ public class AdminService {
         if (adminRepository.findAll().isEmpty()) {
             String username = env.getProperty("admin.initial-username");
             String password = env.getProperty("admin.initial-password");
-
-            adminRepository.save(new Admin(username, password, CommonUtils.genSafeAccessToken()));
+            if (username != null && password != null) {
+                String hashedPassword = passwordEncoder.encode(password);
+                adminRepository.save(new Admin(username, hashedPassword, CommonUtils.genSafeAccessToken()));
+                log.info("Generated new admin user from initial config");
+            }
         }
     }
 }

@@ -44,15 +44,18 @@ public class UserService {
     private BrokerService brokerService;
 
     @Autowired
+    private AdminService adminService;
+
+    @Autowired
     private RabbitMQManagementService rabbitMQManagementService;
 
     private DatabaseMapper mapper = DatabaseMapper.getInstance();
     private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public Container getAllUsers(String accessToken) {
-        //if (!AdminManager.getAdminAccessToken().equals(accessToken)) {
-        //return null;
-        //}
+        if (!adminService.auth(accessToken)) {
+            return null;
+        }
         List<UserDTO> list = mapToTransferObjects(userRepository.findAll());
 
         for (UserDTO user : list) {

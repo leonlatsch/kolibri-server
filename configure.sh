@@ -129,9 +129,16 @@ function save_traefik_config() {
 
 # $1 username
 # $2 password
-function set_traefik_user() {
+function save_traefik_user() {
     HASH=$(htpasswd -Bbn $1 $2)
     write $TRAEFIK_DYN_CONFIG "http.middlewares.auth.basicAuth.users[0]" $HASH
+}
+
+# $1 username
+# $2 password
+function save_init_admin_user() {
+    write $APP_CONFIG "admin.initial-username" $1
+    write $APP_CONFIG "admin.initial-password" $2
 }
 
 function initial_config() {
@@ -179,11 +186,12 @@ function initial_config() {
     fi
 
     print
-    input_default "Enter a admin user for the traefik dashboard" "admin"
-    DASHBOARD_USER=$INPUT
-    password_default "Enter a password for the traefik admin" "admin"
-    DASHBOARD_PASS=$INPUT
-    set_traefik_user $DASHBOARD_USER $DASHBOARD_PASS
+    input_default "Enter a admin user" "admin"
+    ADMIN_USER=$INPUT
+    password_default "Enter a password for the admin user" "admin"
+    ADMIN_PASSWORD=$INPUT
+    save_traefik_user $ADMIN_USER $ADMIN_PASSWORD
+    save_init_admin_user $ADMIN_USER $ADMIN_PASSWORD
 
     print
     print "Finished Initial Config"
