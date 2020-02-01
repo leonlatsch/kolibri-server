@@ -7,7 +7,6 @@ import dev.leonlatsch.oliviabackend.dto.UserDTO;
 import dev.leonlatsch.oliviabackend.entity.AccessToken;
 import dev.leonlatsch.oliviabackend.entity.User;
 import dev.leonlatsch.oliviabackend.repository.UserRepository;
-import dev.leonlatsch.oliviabackend.security.AdminManager;
 import dev.leonlatsch.oliviabackend.util.Base64;
 import dev.leonlatsch.oliviabackend.util.CommonUtils;
 import dev.leonlatsch.oliviabackend.util.DatabaseMapper;
@@ -51,9 +50,9 @@ public class UserService {
     private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public Container getAllUsers(String accessToken) {
-        if (!AdminManager.getAdminAccessToken().equals(accessToken)) {
-            return null;
-        }
+        //if (!AdminManager.getAdminAccessToken().equals(accessToken)) {
+        //return null;
+        //}
         List<UserDTO> list = mapToTransferObjects(userRepository.findAll());
 
         for (UserDTO user : list) {

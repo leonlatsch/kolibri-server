@@ -21,3 +21,7 @@ spring:
     username: olivia
     port: 5672
     http-port: 15672
+
+admin: # default: admin:admin
+  initial-username: admin
+  initial-password: $2y$05$Y0kWfz9.B4VYy46fD5C9Hep993hKwYDLdKoB.dp5mZ6fy75GzbJgy
