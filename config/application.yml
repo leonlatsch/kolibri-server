@@ -22,6 +22,6 @@ spring:
     port: 5672
     http-port: 15672
 
-admin: # default
+admin: # default admin:admin
   initial-username: admin
-  initial-password: admin
+  initial-password: $2y$05$.LjyA.CP5WnfJdjWN/dUyOilK4divZtfw4EaJpNtLMVoShiRjJ.8C

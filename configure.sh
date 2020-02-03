@@ -73,30 +73,30 @@ function reset() {
 # $2 find
 # $3 replace
 function replace() {
-    sed -i "s/$2/$3/g" $1
+    sed -i "s/$2/$3/g" "$1"
 }
 
 # $1 file
 # $2 key
 # $3 value
 function write() {
-    yq w -i $1 $2 $3
+    yq w -i "$1" "$2" "$3"
 }
 
 # $1 file
 # $2 key
 function delete() {
-    yq d -i $1 $2
+    yq d -i "$1" "$2"
 }
 
 # $1 user
 # $2 password
 function save_db_config() {
-    write $DOCKER_COMPOSE "services.database.environment.MYSQL_USER" $1
-    write $APP_CONFIG "spring.datasource.username" $1
+    write $DOCKER_COMPOSE "services.database.environment.MYSQL_USER" "$1"
+    write $APP_CONFIG "spring.datasource.username" "$1"
 
-    write $DOCKER_COMPOSE "services.database.environment.MYSQL_PASSWORD" $2
-    write $APP_CONFIG "spring.datasource.password" $2
+    write $DOCKER_COMPOSE "services.database.environment.MYSQL_PASSWORD" "$2"
+    write $APP_CONFIG "spring.datasource.password" "$2"
 }
 
 # $1 username
@@ -107,9 +107,9 @@ function save_rabbitmq_config() {
     replace $RABBITMQ_CONFIG "default_pass = olivia" "default_pass = $2"
     replace $RABBITMQ_CONFIG "listeners.tcp.default = 5672" "listeners.tcp.default = $3"
 
-    write $APP_CONFIG "spring.rabbitmq.username" $1
-    write $APP_CONFIG "spring.rabbitmq.password" $2
-    write $APP_CONFIG "spring.rabbitmq.port" $3
+    write $APP_CONFIG "spring.rabbitmq.username" "$1"
+    write $APP_CONFIG "spring.rabbitmq.password" "$2"
+    write $APP_CONFIG "spring.rabbitmq.port" "$3"
 }
 
 # $1 domain
@@ -122,23 +122,25 @@ function save_traefik_config() {
       write $TRAEFIK_DYN_CONFIG "http.routers.mq-dashboard-router.tls" "{}"
       replace $TRAEFIK_DYN_CONFIG "'{}'" "{}"
     else
-      replace $TRAEFIK_CONFIG "<email-address>" $2
-      replace $TRAEFIK_DYN_CONFIG "<domain>" $1
+      replace $TRAEFIK_CONFIG "<email-address>" "$2"
+      replace $TRAEFIK_DYN_CONFIG "<domain>" "$1"
     fi
 }
 
 # $1 username
 # $2 password
 function save_traefik_user() {
-    HASH=$(htpasswd -Bbn $1 $2)
-    write $TRAEFIK_DYN_CONFIG "http.middlewares.auth.basicAuth.users[0]" $HASH
+    HASH=$(htpasswd -Bbn "$1" "$2")
+    write $TRAEFIK_DYN_CONFIG "http.middlewares.auth.basicAuth.users[0]" "$HASH"
 }
 
 # $1 username
 # $2 password
 function save_init_admin_user() {
-    write $APP_CONFIG "admin.initial-username" $1
-    write $APP_CONFIG "admin.initial-password" $2
+    HASH=$(htpasswd -Bbn "$1" "$2")
+    IFS=":" read -ra ADDR <<< "$HASH"
+    write $APP_CONFIG "admin.initial-username" "$1"
+    write $APP_CONFIG "admin.initial-password" "${ADDR[1]}"
 }
 
 function initial_config() {
@@ -154,7 +156,7 @@ function initial_config() {
     DB_USER=$INPUT
     password_generate "Enter a database password"
     DB_PASSWORD=$INPUT
-    save_db_config $DB_USER $DB_PASSWORD
+    save_db_config "$DB_USER" "$DB_PASSWORD"
 
     print
     print "RabbitMQ"
@@ -165,7 +167,7 @@ function initial_config() {
     RMQ_PASSWORD=$INPUT
     input_default "Enter a broker tcp port" "5672"
     RMQ_PORT=$INPUT
-    save_rabbitmq_config $RMQ_USER $RMQ_PASSWORD $RMQ_PORT
+    save_rabbitmq_config "$RMQ_USER" "$RMQ_PASSWORD" "$RMQ_PORT"
 
     print
     print "Traefik"
@@ -179,7 +181,7 @@ function initial_config() {
         input "Enter a valid email address to register the Let's Encrypt SSL Certificates"
         EMAIL=$INPUT
       done
-      save_traefik_config $DOMAIN $EMAIL
+      save_traefik_config "$DOMAIN" "$EMAIL"
     else
       print "Using no Domain. Traefik will generate a self signed certificate"
       save_traefik_config "None" "None"
@@ -190,8 +192,8 @@ function initial_config() {
     ADMIN_USER=$INPUT
     password_default "Enter a password for the admin user" "admin"
     ADMIN_PASSWORD=$INPUT
-    save_traefik_user $ADMIN_USER $ADMIN_PASSWORD
-    save_init_admin_user $ADMIN_USER $ADMIN_PASSWORD
+    save_traefik_user "$ADMIN_USER" "$ADMIN_PASSWORD"
+    save_init_admin_user "$ADMIN_USER" "$ADMIN_PASSWORD"
 
     print
     print "Finished Initial Config"

@@ -1,6 +1,5 @@
 package dev.leonlatsch.oliviabackend.service;
 
-import antlr.ASdebug.IASDebugStream;
 import dev.leonlatsch.oliviabackend.dto.Container;
 import dev.leonlatsch.oliviabackend.entity.Admin;
 import dev.leonlatsch.oliviabackend.repository.AdminRepository;
@@ -14,9 +13,10 @@ import org.springframework.core.env.Environment;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import static dev.leonlatsch.oliviabackend.constants.JsonResponse.*;
-
 import java.util.Optional;
+
+import static dev.leonlatsch.oliviabackend.constants.JsonResponse.AUTHORIZED;
+import static dev.leonlatsch.oliviabackend.constants.JsonResponse.UNAUTHORIZED;
 
 /**
  * Service to initialize and authenticate the admin
@@ -53,8 +53,7 @@ public class AdminService {
             String username = env.getProperty("admin.initial-username");
             String password = env.getProperty("admin.initial-password");
             if (username != null && password != null) {
-                String hashedPassword = passwordEncoder.encode(password);
-                adminRepository.save(new Admin(username, hashedPassword, CommonUtils.genSafeAccessToken()));
+                adminRepository.save(new Admin(username, password, CommonUtils.genSafeAccessToken()));
                 log.info("Generated new admin user from initial config");
             }
         }
