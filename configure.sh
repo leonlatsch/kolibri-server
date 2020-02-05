@@ -195,25 +195,29 @@ function initial_config() {
 }
 
 function check_deps() {
+  missing="false"
   if ! [ "$(command -v yq)" ]; then
     error "yq not installed"
-    print "See https://mikefarah.github.io/yq/" >&2
-    exit 0
+    print "See https://mikefarah.gitbook.io/yq/" >&2
+    print
+    missing="true"
   fi
   if ! [ "$(command -v git)" ]; then
     error "git not installed"
-    exit 0
+    print
+    missing="true"
   fi
   if ! [ "$(command -v pwgen)" ]; then
     error "pwgen not installed"
-    exit 0
-  fi
-  if ! [ "$(command -v htpasswd)" ]; then
-    error "htpasswd not installed"
-    exit 0
+    print
+    missing="true"
   fi
   if ! [ "$(command -v sha256sum)" ]; then
     error "sha256sum not installed"
+    print
+    missing="true"
+  fi
+  if [ "$missing" == "true" ]; then
     exit 0
   fi
 }
