@@ -86,12 +86,9 @@ public class UserService {
                 userRepository.saveAndFlush(newUser);
                 return RES_OK;
             } else {
-                container.setCode(500); // Should never happen case
-                container.setMessage(ERROR);
-                container.setContent(null);
+                return RES_INTERNAL_ERROR; // Should never happen case.
             }
         }
-        return container;
     }
 
     public Container get(String accessToken) {
