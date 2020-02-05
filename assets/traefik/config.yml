@@ -15,3 +15,10 @@ providers:
     watch: true
     filename: /etc/traefik/dynamic-config.yml
 
+certificatesResolvers:
+  acme_default:
+    acme:
+      email: <email-address>
+      storage: /etc/traefik/acme.json
+      httpChallenge:
+        entryPoint: http
