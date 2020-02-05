@@ -140,7 +140,7 @@ function save_traefik_user() {
 # $2 password
 function save_init_admin_user() {
   HASH=$(htpasswd -Bbn "$1" "$2")
-  PASSWORD=$(echo -n $2 | sha256sum)
+  PASSWORD=($(echo -n $2 | sha256sum))
   write $APP_CONFIG "admin.initial-username" "$1"
   write $APP_CONFIG "admin.initial-password" "$PASSWORD"
 }
