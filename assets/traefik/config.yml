@@ -8,7 +8,7 @@ entryPoints:
 log:
   level: INFO # DEBUG ERROR
 
-accessLog: {} # debug
+#accessLog: {} # debug
 
 providers:
   file:
