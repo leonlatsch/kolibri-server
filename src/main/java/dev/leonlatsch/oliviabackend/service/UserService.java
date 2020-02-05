@@ -54,7 +54,7 @@ public class UserService {
 
     public Container getAllUsers(String accessToken) {
         if (!adminService.auth(accessToken)) {
-            return null;
+            return RES_ERROR;
         }
         List<UserDTO> list = mapToTransferObjects(userRepository.findAll());
 
