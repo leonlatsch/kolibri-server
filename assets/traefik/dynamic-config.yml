@@ -4,7 +4,7 @@ http:
       entryPoints:
         - https
         - http
-      rule: "PathPrefix(`/backend`)"
+      rule: "PathPrefix(`/`)"
       service: backend-service
       tls:
         certResolver: acme_default
@@ -26,19 +26,6 @@ http:
       middlewares:
         - strip
 
-    proxy-router:
-      entryPoints:
-        - https
-        - http
-      rule: "PathPrefix(`/api`) || PathPrefix(`/dashboard`)"
-      service: api@internal
-      tls:
-        certResolver: acme_default
-        domains:
-          - main: <domain>
-      middlewares:
-        - auth
-
   services:
     backend-service:
       loadBalancer:
@@ -53,13 +40,8 @@ http:
           - url: "http://olivia-queue:15672"
 
   middlewares:
-    auth:
-      basicAuth:
-        users:
-          - "olivia:$2y$05$ngVIzd0/4.YMfe7pJEk5ye0jJXDYmr1AP4u2Hll28A.9kBP1yY3Q6" # Default user olivia
 
     strip:
       stripPrefix:
         prefixes:
-          - "/backend"
           - "/mq"

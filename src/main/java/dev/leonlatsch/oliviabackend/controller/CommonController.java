@@ -21,11 +21,8 @@ import static dev.leonlatsch.oliviabackend.util.ControllerUtils.createResponseEn
  */
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping("/")
+@RequestMapping("/api/v1")
 public class CommonController {
-
-    @Autowired
-    private Environment env;
 
     /**
      * Endpoint for a healthcheck
@@ -38,19 +35,6 @@ public class CommonController {
     }
 
     /**
-     * Endpoint just used for an overview.
-     *
-     * @return A String with the artifact id, the version and a hint to Github.
-     */
-    @RequestMapping
-    public String overview() {
-        String artifact = MavenProperties.getArtifactId();
-        String version = MavenProperties.getVersion();
-        return "Running " + artifact + " Version " + version + " \n\n" +
-                "See the GitHub Wiki for Documentation";
-    }
-
-    /**
      * Endpoint to get the version number of the running instance
      *
      * @return The plain version number
@@ -58,15 +42,5 @@ public class CommonController {
     @RequestMapping(value = "version", method = RequestMethod.GET)
     public String version() {
         return MavenProperties.getVersion();
-    }
-
-    /**
-     * Endpoint to get the configured broker port
-     *
-     * @return The plain broker port
-     */
-    @RequestMapping(value = "broker-port", method = RequestMethod.GET)
-    public String brokerPort() {
-        return env.getProperty("spring.rabbitmq.port");
     }
 }
