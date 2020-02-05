@@ -14,7 +14,7 @@ function print() {
 
 # $1 text
 function error() {
-  echo "[!] $1"
+  echo "[!] Error: $1"
 }
 
 # $1 prompt
@@ -140,9 +140,9 @@ function save_traefik_user() {
 # $2 password
 function save_init_admin_user() {
   HASH=$(htpasswd -Bbn "$1" "$2")
-  IFS=":" read -ra ADDR <<<"$HASH"
+  PASSWORD=$(echo -n $2 | sha256sum)
   write $APP_CONFIG "admin.initial-username" "$1"
-  write $APP_CONFIG "admin.initial-password" "${ADDR[1]}"
+  write $APP_CONFIG "admin.initial-password" "$PASSWORD"
 }
 
 function initial_config() {
@@ -205,20 +205,24 @@ function initial_config() {
 
 function check_deps() {
   if ! [ "$(command -v yq)" ]; then
-    print "Error: yq not installed"
+    error "yq not installed"
     print "See https://mikefarah.github.io/yq/" >&2
     exit 0
   fi
   if ! [ "$(command -v git)" ]; then
-    print "Error: git not installed"
+    error "git not installed"
     exit 0
   fi
   if ! [ "$(command -v pwgen)" ]; then
-    print "Error: pwgen not installed"
+    error "pwgen not installed"
     exit 0
   fi
   if ! [ "$(command -v htpasswd)" ]; then
-    print "Error: htpasswd not installed"
+    error "htpasswd not installed"
+    exit 0
+  fi
+  if ! [ "$(command -v sha256sum)" ]; then
+    error "sha256sum not installed"
     exit 0
   fi
 }
