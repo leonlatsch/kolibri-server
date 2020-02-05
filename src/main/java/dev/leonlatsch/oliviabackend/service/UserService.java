@@ -175,13 +175,13 @@ public class UserService {
     public Container deleteUser(String accessToken) {
         String uid = accessTokenService.getUserForToken(accessToken);
         if (uid == null) {
-            return RES_ERROR;
+            return RES_UNAUTHORIZED;
         }
         userRepository.deleteById(uid);
         accessTokenService.disableAccessToken(accessToken);
         brokerService.deleteQueue(Formats.USER_QUEUE_PREFIX + uid);
         if (!rabbitMQManagementService.deleteUser(uid)) {
-            return RES_ERROR;
+            return RES_INTERNAL_ERROR;
         }
 
         return RES_OK;
