@@ -224,7 +224,7 @@ public class UserService {
         String uid = accessTokenService.getUserForToken(accessToken);
 
         if (uid == null) {
-            return RES_ERROR;
+            return RES_UNAUTHORIZED;
         }
         User user = mapper.mapToEntity(userDTO);
         user.setUid(uid);
