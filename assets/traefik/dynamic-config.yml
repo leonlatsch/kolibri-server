@@ -4,7 +4,7 @@ http:
       entryPoints:
         - https
         - http
-      rule: "PathPrefix(`/backend`)"
+      rule: "PathPrefix(`/`)"
       service: backend-service
       tls:
         certResolver: acme_default
@@ -30,7 +30,7 @@ http:
       entryPoints:
         - https
         - http
-      rule: "PathPrefix(`/api`) || PathPrefix(`/dashboard`)"
+      rule: "PathPrefix(`/proxy`)"
       service: api@internal
       tls:
         certResolver: acme_default
@@ -38,6 +38,7 @@ http:
           - main: <domain>
       middlewares:
         - auth
+        - strip
 
   services:
     backend-service:
@@ -61,5 +62,6 @@ http:
     strip:
       stripPrefix:
         prefixes:
-          - "/backend"
+          - "/proxy"
+          - "/api"
           - "/mq"
