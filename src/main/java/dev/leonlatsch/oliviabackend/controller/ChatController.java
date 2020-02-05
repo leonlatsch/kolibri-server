@@ -18,7 +18,7 @@ import static dev.leonlatsch.oliviabackend.util.ControllerUtils.createResponseEn
  */
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping("/chat")
+@RequestMapping("/api/v1/chat")
 public class ChatController {
 
     @Autowired
