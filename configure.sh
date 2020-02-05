@@ -132,7 +132,7 @@ function save_traefik_config() {
 # $1 username
 # $2 password
 function save_init_admin_user() {
-  PASSWORD=$(echo -n "$2" | sha256sum)
+  PASSWORD=($(echo -n $2 | sha256sum))
   write $APP_CONFIG "admin.initial-username" "$1"
   write $APP_CONFIG "admin.initial-password" "$PASSWORD"
 }
