@@ -108,7 +108,7 @@ public class UserService {
             container.setContent(mapper.mapToTransferObject(user.get()));
             return container;
         } else {
-            return RES_ERROR;
+            return RES_INTERNAL_ERROR;
         }
     }
 

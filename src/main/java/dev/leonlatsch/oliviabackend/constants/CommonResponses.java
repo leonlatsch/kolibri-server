@@ -15,6 +15,7 @@ public class CommonResponses {
     public static final Container RES_UNAUTHORIZED = new Container(401, UNAUTHORIZED, null);
     public static final Container RES_OK = new Container(200, OK, null);
     public static final Container RES_ERROR = new Container(400, ERROR, null);
+    public static final Container RES_INTERNAL_ERROR = new Container(500, ERROR, null);
 
     private CommonResponses() {
     }
