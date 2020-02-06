@@ -1,7 +1,7 @@
 package dev.leonlatsch.oliviabackend.service;
 
-import dev.leonlatsch.oliviabackend.dto.Container;
-import dev.leonlatsch.oliviabackend.dto.MessageDTO;
+import dev.leonlatsch.oliviabackend.model.dto.Container;
+import dev.leonlatsch.oliviabackend.model.dto.MessageDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,6 +39,10 @@ public class MessageService {
         }
 
         if (!userService.userExists(message.getTo())) {
+            return RES_BAD_REQUEST;
+        }
+
+        if (message.validate()) {
             return RES_BAD_REQUEST;
         }
 

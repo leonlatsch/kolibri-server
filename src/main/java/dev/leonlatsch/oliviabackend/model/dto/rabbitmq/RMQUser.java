@@ -1,4 +1,6 @@
-package dev.leonlatsch.oliviabackend.dto.rabbitmq;
+package dev.leonlatsch.oliviabackend.model.dto.rabbitmq;
+
+import dev.leonlatsch.oliviabackend.model.ValidatedModel;
 
 /**
  * DTO containing a RabbitMQ user
@@ -6,7 +8,7 @@ package dev.leonlatsch.oliviabackend.dto.rabbitmq;
  * @author Leon Latsch
  * @since 1.0.0
  */
-public class RMQUser {
+public class RMQUser extends ValidatedModel {
 
     private String password;
 
@@ -18,6 +20,11 @@ public class RMQUser {
     public RMQUser(String password, String tags) {
         this.password = password;
         this.tags = tags;
+    }
+
+    @Override
+    public boolean validate() {
+        return password != null && tags != null;
     }
 
     public String getPassword() {

@@ -1,4 +1,6 @@
-package dev.leonlatsch.oliviabackend.entity;
+package dev.leonlatsch.oliviabackend.model.entity;
+
+import dev.leonlatsch.oliviabackend.model.ValidatedModel;
 
 import javax.persistence.*;
 import java.sql.Blob;
@@ -11,7 +13,7 @@ import java.sql.Blob;
  */
 @Entity
 @Table(name = "user")
-public class User {
+public class User extends ValidatedModel {
 
     @Id
     @Column(name = "uid", length = 36)
@@ -38,6 +40,9 @@ public class User {
     @Column(name = "public_key")
     private Blob publicKey;
 
+    public User() {
+    }
+
     public User(String uid, String username, String email, String password, Blob profilePic, Blob profilePicTn, Blob publicKey) {
         this.uid = uid;
         this.username = username;
@@ -48,7 +53,9 @@ public class User {
         this.publicKey = publicKey;
     }
 
-    public User() {
+    @Override
+    public boolean validate() {
+        return uid != null && username != null && email != null && password != null && publicKey != null;
     }
 
     public String getUid() {

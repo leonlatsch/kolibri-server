@@ -1,6 +1,6 @@
 package dev.leonlatsch.oliviabackend.util;
 
-import dev.leonlatsch.oliviabackend.dto.Container;
+import dev.leonlatsch.oliviabackend.model.dto.Container;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 

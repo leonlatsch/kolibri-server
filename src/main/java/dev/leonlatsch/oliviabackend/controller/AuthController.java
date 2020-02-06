@@ -1,9 +1,9 @@
 package dev.leonlatsch.oliviabackend.controller;
 
 import dev.leonlatsch.oliviabackend.constants.Headers;
-import dev.leonlatsch.oliviabackend.dto.Container;
-import dev.leonlatsch.oliviabackend.dto.UserDTO;
-import dev.leonlatsch.oliviabackend.entity.Admin;
+import dev.leonlatsch.oliviabackend.model.dto.Container;
+import dev.leonlatsch.oliviabackend.model.dto.UserDTO;
+import dev.leonlatsch.oliviabackend.model.entity.Admin;
 import dev.leonlatsch.oliviabackend.service.AdminService;
 import dev.leonlatsch.oliviabackend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

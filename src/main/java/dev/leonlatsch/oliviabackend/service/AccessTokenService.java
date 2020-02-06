@@ -1,6 +1,6 @@
 package dev.leonlatsch.oliviabackend.service;
 
-import dev.leonlatsch.oliviabackend.entity.AccessToken;
+import dev.leonlatsch.oliviabackend.model.entity.AccessToken;
 import dev.leonlatsch.oliviabackend.repository.AccessTokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,7 +40,11 @@ public class AccessTokenService {
     }
 
     public AccessToken saveAccessToken(AccessToken accessToken) {
-        return accessTokenRepository.saveAndFlush(accessToken);
+        if (accessToken.validate()) {
+            return accessTokenRepository.saveAndFlush(accessToken);
+        } else {
+            return null;
+        }
     }
 
     public boolean isTokenValid(String accessToken) {

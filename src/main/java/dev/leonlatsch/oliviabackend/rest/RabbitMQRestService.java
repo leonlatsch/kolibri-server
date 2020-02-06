@@ -1,7 +1,7 @@
 package dev.leonlatsch.oliviabackend.rest;
 
-import dev.leonlatsch.oliviabackend.dto.rabbitmq.RMQPermissions;
-import dev.leonlatsch.oliviabackend.dto.rabbitmq.RMQUser;
+import dev.leonlatsch.oliviabackend.model.dto.rabbitmq.RMQPermissions;
+import dev.leonlatsch.oliviabackend.model.dto.rabbitmq.RMQUser;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;

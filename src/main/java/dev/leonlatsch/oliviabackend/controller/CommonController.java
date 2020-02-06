@@ -1,10 +1,8 @@
 package dev.leonlatsch.oliviabackend.controller;
 
 import dev.leonlatsch.oliviabackend.constants.CommonResponses;
-import dev.leonlatsch.oliviabackend.dto.Container;
+import dev.leonlatsch.oliviabackend.model.dto.Container;
 import dev.leonlatsch.oliviabackend.util.MavenProperties;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;

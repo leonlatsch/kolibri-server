@@ -1,4 +1,6 @@
-package dev.leonlatsch.oliviabackend.entity;
+package dev.leonlatsch.oliviabackend.model.entity;
+
+import dev.leonlatsch.oliviabackend.model.ValidatedModel;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,7 +15,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "admin")
-public class Admin {
+public class Admin extends ValidatedModel {
 
     @Id
     @Column(name = "username", length = 36)
@@ -32,6 +34,11 @@ public class Admin {
         this.username = username;
         this.password = password;
         this.token = token;
+    }
+
+    @Override
+    public boolean validate() {
+        return username != null && password != null;
     }
 
     public String getUsername() {

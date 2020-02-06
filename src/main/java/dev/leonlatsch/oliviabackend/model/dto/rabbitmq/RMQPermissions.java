@@ -1,4 +1,6 @@
-package dev.leonlatsch.oliviabackend.dto.rabbitmq;
+package dev.leonlatsch.oliviabackend.model.dto.rabbitmq;
+
+import dev.leonlatsch.oliviabackend.model.ValidatedModel;
 
 /**
  * DTO containing permission settings for RabbitMQ
@@ -6,7 +8,7 @@ package dev.leonlatsch.oliviabackend.dto.rabbitmq;
  * @author Leon Latsch
  * @since 1.0.0
  */
-public class RMQPermissions {
+public class RMQPermissions extends ValidatedModel {
 
     private String configure;
 
@@ -21,6 +23,11 @@ public class RMQPermissions {
         this.configure = configure;
         this.write = write;
         this.read = read;
+    }
+
+    @Override
+    public boolean validate() {
+        return configure != null && write != null && read != null;
     }
 
     public String getConfigure() {

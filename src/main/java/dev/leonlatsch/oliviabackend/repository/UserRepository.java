@@ -1,6 +1,6 @@
 package dev.leonlatsch.oliviabackend.repository;
 
-import dev.leonlatsch.oliviabackend.entity.User;
+import dev.leonlatsch.oliviabackend.model.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,4 +1,6 @@
-package dev.leonlatsch.oliviabackend.dto;
+package dev.leonlatsch.oliviabackend.model.dto;
+
+import dev.leonlatsch.oliviabackend.model.ValidatedModel;
 
 /**
  * DTO containing a chat message.
@@ -6,7 +8,7 @@ package dev.leonlatsch.oliviabackend.dto;
  * @author Leon Latsch
  * @since 1.0.0
  */
-public class MessageDTO {
+public class MessageDTO extends ValidatedModel {
 
     private String mid;
     private String from;
@@ -27,6 +29,11 @@ public class MessageDTO {
         this.type = type;
         this.timestamp = timestamp;
         this.cid = cid;
+    }
+
+    @Override
+    public boolean validate() {
+        return mid != null && from != null && to != null && content != null && type != null && timestamp != null;
     }
 
     public String getMid() {

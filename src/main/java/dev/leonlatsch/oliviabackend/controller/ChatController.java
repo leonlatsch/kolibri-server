@@ -1,8 +1,8 @@
 package dev.leonlatsch.oliviabackend.controller;
 
 import dev.leonlatsch.oliviabackend.constants.Headers;
-import dev.leonlatsch.oliviabackend.dto.Container;
-import dev.leonlatsch.oliviabackend.dto.MessageDTO;
+import dev.leonlatsch.oliviabackend.model.dto.Container;
+import dev.leonlatsch.oliviabackend.model.dto.MessageDTO;
 import dev.leonlatsch.oliviabackend.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

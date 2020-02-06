@@ -1,4 +1,6 @@
-package dev.leonlatsch.oliviabackend.dto;
+package dev.leonlatsch.oliviabackend.model.dto;
+
+import dev.leonlatsch.oliviabackend.model.ValidatedModel;
 
 /**
  * DTO containing a user without the sensitive information.</br>
@@ -6,7 +8,7 @@ package dev.leonlatsch.oliviabackend.dto;
  * @author Leon Latsch
  * @since 1.0.0
  */
-public class PublicUserDTO {
+public class PublicUserDTO extends ValidatedModel {
 
     private String uid;
     private String username;
@@ -19,6 +21,11 @@ public class PublicUserDTO {
         this.uid = uid;
         this.username = username;
         this.profilePicTn = profilePicTn;
+    }
+
+    @Override
+    public boolean validate() {
+        return uid != null && username != null;
     }
 
     public String getUid() {

@@ -1,7 +1,7 @@
 package dev.leonlatsch.oliviabackend.service;
 
-import dev.leonlatsch.oliviabackend.dto.Container;
-import dev.leonlatsch.oliviabackend.entity.Admin;
+import dev.leonlatsch.oliviabackend.model.dto.Container;
+import dev.leonlatsch.oliviabackend.model.entity.Admin;
 import dev.leonlatsch.oliviabackend.repository.AdminRepository;
 import dev.leonlatsch.oliviabackend.util.CommonUtils;
 import org.slf4j.Logger;
@@ -54,8 +54,13 @@ public class AdminService {
             String password = env.getProperty("admin.initial-password");
             if (username != null && password != null) {
                 password = passwordEncoder.encode(password);
-                adminRepository.save(new Admin(username, password, CommonUtils.genSafeAccessToken()));
-                log.info("Generated new admin user from initial config");
+                Admin admin = new Admin(username, password, CommonUtils.genSafeAccessToken());
+                if (admin.validate()) {
+                    adminRepository.save(new Admin(username, password, CommonUtils.genSafeAccessToken()));
+                    log.info("Generated new admin user from initial config");
+                } else {
+                    log.error("Error creating new admin from initial config");
+                }
             }
         }
     }

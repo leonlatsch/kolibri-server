@@ -1,8 +1,8 @@
 package dev.leonlatsch.oliviabackend.service;
 
 import dev.leonlatsch.oliviabackend.constants.Formats;
-import dev.leonlatsch.oliviabackend.dto.rabbitmq.RMQPermissions;
-import dev.leonlatsch.oliviabackend.dto.rabbitmq.RMQUser;
+import dev.leonlatsch.oliviabackend.model.dto.rabbitmq.RMQPermissions;
+import dev.leonlatsch.oliviabackend.model.dto.rabbitmq.RMQUser;
 import dev.leonlatsch.oliviabackend.rest.RestClientFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

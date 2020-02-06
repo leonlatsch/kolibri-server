@@ -1,9 +1,9 @@
 package dev.leonlatsch.oliviabackend.util;
 
 import dev.leonlatsch.oliviabackend.constants.Formats;
-import dev.leonlatsch.oliviabackend.dto.PublicUserDTO;
-import dev.leonlatsch.oliviabackend.dto.UserDTO;
-import dev.leonlatsch.oliviabackend.entity.User;
+import dev.leonlatsch.oliviabackend.model.dto.PublicUserDTO;
+import dev.leonlatsch.oliviabackend.model.dto.UserDTO;
+import dev.leonlatsch.oliviabackend.model.entity.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

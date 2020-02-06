@@ -1,4 +1,4 @@
-package dev.leonlatsch.oliviabackend.dto;
+package dev.leonlatsch.oliviabackend.model.dto;
 
 import dev.leonlatsch.oliviabackend.constants.Formats;
 

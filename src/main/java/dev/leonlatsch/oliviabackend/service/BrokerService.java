@@ -1,7 +1,7 @@
 package dev.leonlatsch.oliviabackend.service;
 
 import dev.leonlatsch.oliviabackend.constants.Formats;
-import dev.leonlatsch.oliviabackend.dto.MessageDTO;
+import dev.leonlatsch.oliviabackend.model.dto.MessageDTO;
 import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.core.Binding;

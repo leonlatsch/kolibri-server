@@ -1,6 +1,6 @@
 package dev.leonlatsch.oliviabackend.constants;
 
-import dev.leonlatsch.oliviabackend.dto.Container;
+import dev.leonlatsch.oliviabackend.model.dto.Container;
 
 /**
  * Json Responses for the message property of a {@link Container}

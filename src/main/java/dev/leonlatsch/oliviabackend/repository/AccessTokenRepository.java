@@ -1,6 +1,6 @@
 package dev.leonlatsch.oliviabackend.repository;
 
-import dev.leonlatsch.oliviabackend.entity.AccessToken;
+import dev.leonlatsch.oliviabackend.model.entity.AccessToken;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

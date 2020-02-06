@@ -1,11 +1,11 @@
 package dev.leonlatsch.oliviabackend.service;
 
 import dev.leonlatsch.oliviabackend.constants.Formats;
-import dev.leonlatsch.oliviabackend.dto.Container;
-import dev.leonlatsch.oliviabackend.dto.PublicUserDTO;
-import dev.leonlatsch.oliviabackend.dto.UserDTO;
-import dev.leonlatsch.oliviabackend.entity.AccessToken;
-import dev.leonlatsch.oliviabackend.entity.User;
+import dev.leonlatsch.oliviabackend.model.dto.Container;
+import dev.leonlatsch.oliviabackend.model.dto.PublicUserDTO;
+import dev.leonlatsch.oliviabackend.model.dto.UserDTO;
+import dev.leonlatsch.oliviabackend.model.entity.AccessToken;
+import dev.leonlatsch.oliviabackend.model.entity.User;
 import dev.leonlatsch.oliviabackend.repository.UserRepository;
 import dev.leonlatsch.oliviabackend.util.Base64;
 import dev.leonlatsch.oliviabackend.util.CommonUtils;
@@ -150,6 +150,11 @@ public class UserService {
         entity.setUid(uid);
         entity.setPublicKey(publicKeyBlob);
         entity.setPassword(passwordEncoder.encode(entity.getPassword()));
+
+        if (!entity.validate()) {
+            return RES_INTERNAL_ERROR;
+        }
+
         userRepository.saveAndFlush(entity);
 
         // Generate a access token and save it to the database
@@ -158,6 +163,9 @@ public class UserService {
         token.setUid(uid);
         token.setValid(true);
         token.setToken(rawToken);
+        if (!token.validate()) {
+            return RES_INTERNAL_ERROR;
+        }
         accessTokenService.saveAccessToken(token);
 
         // Create a queue for the user
@@ -256,6 +264,10 @@ public class UserService {
             }
             if (user.getProfilePicTn() != null) {
                 dbUser.get().setProfilePicTn(user.getProfilePicTn());
+            }
+
+            if (!dbUser.get().validate()) {
+                return RES_BAD_REQUEST;
             }
             userRepository.saveAndFlush(dbUser.get());
             container.setCode(200);
