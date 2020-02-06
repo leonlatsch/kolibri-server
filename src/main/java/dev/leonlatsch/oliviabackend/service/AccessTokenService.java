@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 /**
+ * Service to manage access tokens.
+ *
  * @author Leon Latsch
  * @since 1.0.0
  */

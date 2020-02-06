@@ -13,6 +13,9 @@ import retrofit2.Response;
 import java.io.IOException;
 
 /**
+ * Service to manage users in RabbitMQ.
+ * Will be replaced soon.
+ *
  * @author Leon Latsch
  * @since 1.0.0
  */

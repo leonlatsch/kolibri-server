@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import static dev.leonlatsch.oliviabackend.constants.CommonResponses.*;
 
 /**
+ * Service to handle Messages.
+ *
  * @author Leon Latsch
  * @since 1.0.0
  */
@@ -23,6 +25,13 @@ public class MessageService {
     @Autowired
     private UserService userService;
 
+    /**
+     * Validate an incomming message and forward it to the queue.
+     *
+     * @param accessToken The sending users access token
+     * @param message A {@link MessageDTO}
+     * @return A Container with a result
+     */
     public Container createAndSendMessage(String accessToken, MessageDTO message) {
         String uid = accessTokenService.getUserForToken(accessToken);
         if (!uid.equals(message.getFrom())) {

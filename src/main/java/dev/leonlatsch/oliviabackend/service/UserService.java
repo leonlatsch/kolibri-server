@@ -26,6 +26,9 @@ import static dev.leonlatsch.oliviabackend.constants.CommonResponses.*;
 import static dev.leonlatsch.oliviabackend.constants.JsonResponse.*;
 
 /**
+ * Service to manage users.
+ * Also handles authorisation for normal users.
+ *
  * @author Leon Latsch
  * @since 1.0.0
  */
@@ -134,12 +137,14 @@ public class UserService {
             return RES_BAD_REQUEST;
         }
 
+        // Convert the provided public key into a blob
         Blob publicKeyBlob = Base64.convertToBlob(publicKey);
         if (publicKeyBlob == null) {
             log.error("Error decoding public key: " + publicKey);
             return RES_BAD_REQUEST;
         }
 
+        // Save the user to the database
         User entity = mapper.mapToEntity(user);
         String uid = CommonUtils.genSafeUid();
         entity.setUid(uid);
@@ -147,6 +152,7 @@ public class UserService {
         entity.setPassword(passwordEncoder.encode(entity.getPassword()));
         userRepository.saveAndFlush(entity);
 
+        // Generate a access token and save it to the database
         AccessToken token = new AccessToken();
         String rawToken = CommonUtils.genSafeAccessToken();
         token.setUid(uid);
@@ -154,6 +160,7 @@ public class UserService {
         token.setToken(rawToken);
         accessTokenService.saveAccessToken(token);
 
+        // Create a queue for the user
         String queueName = Formats.USER_QUEUE_PREFIX + entity.getUid();
         brokerService.createQueue(queueName, true);
         if (!rabbitMQManagementService.createUser(uid, rawToken)) {
@@ -171,9 +178,13 @@ public class UserService {
         if (uid == null) {
             return RES_UNAUTHORIZED;
         }
+
+        // Delete the user, disable its access token and delete its queue
         userRepository.deleteById(uid);
         accessTokenService.disableAccessToken(accessToken);
         brokerService.deleteQueue(Formats.USER_QUEUE_PREFIX + uid);
+
+        // Delete the RabbitMQ user
         if (!rabbitMQManagementService.deleteUser(uid)) {
             return RES_INTERNAL_ERROR;
         }
@@ -187,6 +198,7 @@ public class UserService {
         Container container = new Container();
         container.setCode(200);
         container.setContent(null);
+
         if (!user.isPresent()) {
             container.setMessage(FREE);
         } else if (user.get().getUid().equals(uid)) {
@@ -203,6 +215,7 @@ public class UserService {
         Container container = new Container();
         container.setCode(200);
         container.setContent(null);
+
         if (!user.isPresent()) {
             container.setMessage(FREE);
         } else if (user.get().getUid().equals(uid)) {
@@ -225,10 +238,12 @@ public class UserService {
 
         Optional<User> dbUser = userRepository.findById(uid);
         if (dbUser.isPresent()) {
+
+            // Check all fields that can be changed
             if (user.getEmail() != null) {
                 dbUser.get().setEmail(user.getEmail());
             }
-            if (user.getPassword() != null) {
+            if (user.getPassword() != null) { // If there is a new password, generate a new access token and change the broker password
                 dbUser.get().setPassword(passwordEncoder.encode(user.getPassword()));
                 String newToken = updateAccessToken(dbUser.get().getUid());
                 if (!rabbitMQManagementService.changeBrokerPassword(dbUser.get().getUid(), newToken)) {
