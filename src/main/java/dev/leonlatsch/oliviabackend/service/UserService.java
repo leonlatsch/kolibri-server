@@ -70,11 +70,10 @@ public class UserService {
             return RES_UNAUTHORIZED;
         }
         Optional<User> blob = userRepository.findPublicKeyByUid(uid);
-        return blob.isPresent() ? new Container(200, OK, Base64.convertToBase64(blob.get().getPublicKey())) : RES_ERROR;
+        return blob.isPresent() ? new Container(200, OK, Base64.convertToBase64(blob.get().getPublicKey())) : RES_BAD_REQUEST;
     }
 
     public Container updatePublicKey(String accessToken, String publicKey) {
-        Container container = new Container();
         String uid = accessTokenService.getUserForToken(accessToken);
         if (uid == null) {
             return RES_UNAUTHORIZED;
@@ -118,7 +117,7 @@ public class UserService {
                 container.setMessage(OK);
                 container.setContent(mapper.mapToPublicUser(user.get()));
             } else {
-                container.setContent(201);
+                container.setContent(204);
                 container.setMessage(OK);
                 container.setContent(null);
             }
@@ -132,13 +131,13 @@ public class UserService {
         Container container = new Container();
         Optional<User> checkUser = userRepository.findByUsername(user.getUsername());
         if (checkUser.isPresent()) {
-            return RES_ERROR;
+            return RES_BAD_REQUEST;
         }
 
         Blob publicKeyBlob = Base64.convertToBlob(publicKey);
         if (publicKeyBlob == null) {
             log.error("Error decoding public key: " + publicKey);
-            return RES_ERROR;
+            return RES_BAD_REQUEST;
         }
 
         User entity = mapper.mapToEntity(user);
@@ -146,24 +145,19 @@ public class UserService {
         entity.setUid(uid);
         entity.setPublicKey(publicKeyBlob);
         entity.setPassword(passwordEncoder.encode(entity.getPassword()));
-        if (userRepository.saveAndFlush(entity) == null) {
-            log.error("Error saving user: " + uid);
-            return RES_ERROR;
-        }
+        userRepository.saveAndFlush(entity);
+
         AccessToken token = new AccessToken();
         String rawToken = CommonUtils.genSafeAccessToken();
         token.setUid(uid);
         token.setValid(true);
         token.setToken(rawToken);
-        if (accessTokenService.saveAccessToken(token) == null) {
-            log.error("Error saving access token for user: " + uid);
-            return RES_ERROR;
-        }
+        accessTokenService.saveAccessToken(token);
 
         String queueName = Formats.USER_QUEUE_PREFIX + entity.getUid();
         brokerService.createQueue(queueName, true);
         if (!rabbitMQManagementService.createUser(uid, rawToken)) {
-            return RES_ERROR;
+            return RES_INTERNAL_ERROR;
         }
 
         container.setMessage(OK);
@@ -238,7 +232,7 @@ public class UserService {
                 dbUser.get().setPassword(passwordEncoder.encode(user.getPassword()));
                 String newToken = updateAccessToken(dbUser.get().getUid());
                 if (!rabbitMQManagementService.changeBrokerPassword(dbUser.get().getUid(), newToken)) {
-                    return RES_ERROR;
+                    return RES_INTERNAL_ERROR;
                 }
                 container.setContent(newToken);
             }
@@ -253,7 +247,7 @@ public class UserService {
             container.setMessage(OK);
             return container;
         } else {
-            return RES_ERROR;
+            return RES_INTERNAL_ERROR; // Should never happen case
         }
     }
 

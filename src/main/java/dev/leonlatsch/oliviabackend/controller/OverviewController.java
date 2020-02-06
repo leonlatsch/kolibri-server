@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
  * Rest Controller to display an overview at the main page.
  * WILL BE REPLACED WITH A DASHBOARD!
  *
- * @author Leon Latscj
+ * @author Leon Latsch
  * @since 1.0.0
  */
 @RequestMapping("/")

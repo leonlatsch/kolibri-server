@@ -30,7 +30,7 @@ public class MessageService {
         }
 
         if (!userService.userExists(message.getTo())) {
-            return RES_ERROR;
+            return RES_BAD_REQUEST;
         }
 
         brokerService.send(message);

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * Rest Controller for accessing configuration.
  *
- * @author Leon Latscj
+ * @author Leon Latsch
  * @since 1.0.0
  */
 @RestController
