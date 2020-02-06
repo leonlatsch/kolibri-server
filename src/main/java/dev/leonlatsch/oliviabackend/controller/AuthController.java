@@ -47,7 +47,7 @@ public class AuthController {
      * @param publicKey Public key to encrypt incomming messages
      * @return A Container with a access token
      */
-    @RequestMapping(method = RequestMethod.POST, value = "/register")
+    @RequestMapping(method = RequestMethod.PUT, value = "/register")
     public ResponseEntity<Container> register(@RequestBody UserDTO dto, @RequestHeader(value = Headers.PUBLIC_KEY) String publicKey) {
         return createResponseEntity(userService.createUser(dto, publicKey));
     }

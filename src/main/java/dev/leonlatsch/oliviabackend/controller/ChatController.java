@@ -31,7 +31,7 @@ public class ChatController {
      * @param message     {@link MessageDTO} to be sent
      * @return An empty {@link Container} to indicate failure or success
      */
-    @RequestMapping(method = RequestMethod.POST, value = "/send")
+    @RequestMapping(method = RequestMethod.PUT, value = "/send")
     public ResponseEntity<Container> send(@RequestHeader(value = Headers.ACCESS_TOKEN) String accessToken, @RequestBody MessageDTO message) {
         return createResponseEntity(messageService.createAndSendMessage(accessToken, message));
     }

@@ -83,7 +83,7 @@ public class UserController {
      * @param publicKey   The base64 public key
      * @return An empty {@link Container}
      */
-    @RequestMapping(method = RequestMethod.PUT, value = "/public-key/update")
+    @RequestMapping(method = RequestMethod.PATCH, value = "/public-key/update")
     public ResponseEntity<Container> updatePublicKey(@RequestHeader(Headers.ACCESS_TOKEN) String accessToken, @RequestHeader(Headers.PUBLIC_KEY) String publicKey) {
         return createResponseEntity(userService.updatePublicKey(accessToken, publicKey));
     }
@@ -130,7 +130,7 @@ public class UserController {
      * @param user        A {@link UserDTO} with the new values
      * @return An empty {@link Container}
      */
-    @RequestMapping(method = RequestMethod.PUT, value = "/update", produces = "application/json")
+    @RequestMapping(method = RequestMethod.PATCH, value = "/update", produces = "application/json")
     public ResponseEntity<Container> update(@RequestHeader(value = Headers.ACCESS_TOKEN) String accessToken, @RequestBody UserDTO user) {
         return createResponseEntity(userService.updateUser(accessToken, user));
     }
