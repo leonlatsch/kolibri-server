@@ -1,5 +1,6 @@
 package dev.leonlatsch.oliviabackend.service;
 
+import dev.leonlatsch.oliviabackend.model.MessageType;
 import dev.leonlatsch.oliviabackend.model.dto.Container;
 import dev.leonlatsch.oliviabackend.model.dto.MessageDTO;
 import org.springframework.beans.factory.annotation.Autowired;

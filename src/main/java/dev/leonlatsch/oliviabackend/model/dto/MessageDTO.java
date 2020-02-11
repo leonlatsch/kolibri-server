@@ -1,5 +1,6 @@
 package dev.leonlatsch.oliviabackend.model.dto;
 
+import dev.leonlatsch.oliviabackend.model.MessageType;
 import dev.leonlatsch.oliviabackend.model.ValidatedModel;
 
 /**
@@ -14,14 +15,14 @@ public class MessageDTO extends ValidatedModel {
     private String from;
     private String to;
     private String content;
-    private String type;
+    private MessageType type;
     private String timestamp;
     private String cid;
 
     public MessageDTO() {
     }
 
-    public MessageDTO(String mid, String from, String to, String content, String type, String timestamp, String cid) {
+    public MessageDTO(String mid, String from, String to, String content, MessageType type, String timestamp, String cid) {
         this.mid = mid;
         this.from = from;
         this.to = to;
@@ -33,7 +34,7 @@ public class MessageDTO extends ValidatedModel {
 
     @Override
     public boolean validate() {
-        return mid != null && from != null && to != null && content != null && type != null && timestamp != null;
+        return mid != null && from != null && to != null && content != null && type != null && type != MessageType.UNDEFINED && timestamp != null;
     }
 
     public String getMid() {
@@ -68,11 +69,11 @@ public class MessageDTO extends ValidatedModel {
         this.content = content;
     }
 
-    public String getType() {
+    public MessageType getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(MessageType type) {
         this.type = type;
     }
 
