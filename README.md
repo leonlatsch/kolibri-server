@@ -31,7 +31,7 @@ It consists of the following components all tied up with docker-compose:
 
 ## Getting Started
 
-You can find all information about getting started in the [Wiki](https://github.com/leonlatsch/olivia-backend/wiki).
+You can find all information about getting started in the [Wiki](https://olivia.leonlatsch.dev).
 
 
 
