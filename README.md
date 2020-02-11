@@ -9,7 +9,7 @@
 
 ## About
 
-This repository provides a full server system used by the [Olivia app](https://github.com/leonlatsch/olivia).
+This repository provides a full server system needed to run the [Olivia App](https://github.com/leonlatsch/olivia).
 
 It consists of the following components all tied up with docker-compose:
 
