@@ -3,7 +3,7 @@ package dev.leonlatsch.oliviabackend.model.dto.rabbitmq;
 /**
  * Transfer object used by rabbitmq to define a requested resource
  *
- * @autor Leon Latsch
+ * @author Leon Latsch
  * @since 1.0.0
  */
 public class ResourceCheck {
