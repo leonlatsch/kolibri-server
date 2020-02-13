@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.sql.rowset.serial.SerialBlob;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.Random;
