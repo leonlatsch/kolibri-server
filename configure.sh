@@ -105,8 +105,6 @@ function save_db_config() {
 # $2 password
 # $3 broker port
 function save_rabbitmq_config() {
-  replace $RABBITMQ_CONFIG "default_user = olivia" "default_user = $1"
-  replace $RABBITMQ_CONFIG "default_pass = olivia" "default_pass = $2"
   replace $RABBITMQ_CONFIG "listeners.tcp.default = 5672" "listeners.tcp.default = $3"
 
   write $APP_CONFIG "spring.rabbitmq.username" "$1"

@@ -49,9 +49,6 @@ public class UserService {
     @Autowired
     private AdminService adminService;
 
-    @Autowired
-    private RabbitMQManagementService rabbitMQManagementService;
-
     private DatabaseMapper mapper = DatabaseMapper.getInstance();
     private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
@@ -171,9 +168,6 @@ public class UserService {
         // Create a queue for the user
         String queueName = Formats.USER_QUEUE_PREFIX + entity.getUid();
         brokerService.createQueue(queueName, true);
-        if (!rabbitMQManagementService.createUser(uid, rawToken)) {
-            return RES_INTERNAL_ERROR;
-        }
 
         container.setMessage(OK);
         container.setContent(rawToken);
@@ -191,11 +185,6 @@ public class UserService {
         userRepository.deleteById(uid);
         accessTokenService.disableAccessToken(accessToken);
         brokerService.deleteQueue(Formats.USER_QUEUE_PREFIX + uid);
-
-        // Delete the RabbitMQ user
-        if (!rabbitMQManagementService.deleteUser(uid)) {
-            return RES_INTERNAL_ERROR;
-        }
 
         return RES_OK;
     }
@@ -254,9 +243,6 @@ public class UserService {
             if (user.getPassword() != null) { // If there is a new password, generate a new access token and change the broker password
                 dbUser.get().setPassword(passwordEncoder.encode(user.getPassword()));
                 String newToken = updateAccessToken(dbUser.get().getUid());
-                if (!rabbitMQManagementService.changeBrokerPassword(dbUser.get().getUid(), newToken)) {
-                    return RES_INTERNAL_ERROR;
-                }
                 container.setContent(newToken);
             }
             if (user.getProfilePic() != null) {
