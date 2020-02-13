@@ -1,8 +1,40 @@
 package dev.leonlatsch.oliviabackend.model.dto.rabbitmq;
 
-public class ResourceCheck extends BaseCheck {
+public class ResourceCheck {
 
-    private String resource, name, permission;
+    private String username;
+
+    private String vhost;
+    private String resource;
+    private String name;
+    private String permission;
+
+    public ResourceCheck() {
+    }
+
+    public ResourceCheck(String username, String vhost, String resource, String name, String permission) {
+        this.username = username;
+        this.vhost = vhost;
+        this.resource = resource;
+        this.name = name;
+        this.permission = permission;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getVhost() {
+        return vhost;
+    }
+
+    public void setVhost(String vhost) {
+        this.vhost = vhost;
+    }
 
     public String getResource() {
         return resource;
@@ -26,14 +58,5 @@ public class ResourceCheck extends BaseCheck {
 
     public void setPermission(String permission) {
         this.permission = permission;
-    }
-
-    @Override
-    public String toString() {
-        return "ResourceCheck{" +
-                "resource='" + resource + '\'' +
-                ", name='" + name + '\'' +
-                ", permission='" + permission + '\'' +
-                "} " + super.toString();
     }
 }

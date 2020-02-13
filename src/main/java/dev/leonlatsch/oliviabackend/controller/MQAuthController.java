@@ -1,14 +1,9 @@
 package dev.leonlatsch.oliviabackend.controller;
 
 import dev.leonlatsch.oliviabackend.model.dto.rabbitmq.ResourceCheck;
-import dev.leonlatsch.oliviabackend.model.dto.rabbitmq.VirtualHostCheck;
+import dev.leonlatsch.oliviabackend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.event.ContextRefreshedEvent;
-import org.springframework.context.event.EventListener;
-import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.*;
-
-import javax.naming.Context;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -16,8 +11,10 @@ import javax.naming.Context;
 public class MQAuthController {
 
     private static final String ALLOW = "allow";
-    private static final String ALLOW_ADMIN = "allow administrator";
     private static final String DENY = "deny";
+
+    @Autowired
+    private UserService userService;
 
     @RequestMapping(value = "user", method = RequestMethod.POST)
     public String user(@RequestParam("username") String username, @RequestParam("password") String password) {
@@ -25,7 +22,7 @@ public class MQAuthController {
     }
 
     @RequestMapping(value = "vhost", method = RequestMethod.POST)
-    public String vhost(VirtualHostCheck check) {
+    public String vhost() {
         return ALLOW;
     }
 
