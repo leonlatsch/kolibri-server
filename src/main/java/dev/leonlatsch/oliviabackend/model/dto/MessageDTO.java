@@ -1,7 +1,10 @@
 package dev.leonlatsch.oliviabackend.model.dto;
 
+import dev.leonlatsch.oliviabackend.constants.Formats;
 import dev.leonlatsch.oliviabackend.model.MessageType;
 import dev.leonlatsch.oliviabackend.model.ValidatedModel;
+
+import java.text.ParseException;
 
 /**
  * DTO containing a chat message.
@@ -34,7 +37,14 @@ public class MessageDTO extends ValidatedModel {
 
     @Override
     public boolean validate() {
-        return mid != null && from != null && to != null && content != null && type != null && type != MessageType.UNDEFINED && timestamp != null;
+        boolean isTimestampValid;
+        try {
+            Formats.DATE_FORMAT.parse(timestamp);
+            isTimestampValid = true;
+        } catch (ParseException e) {
+            isTimestampValid = false;
+        }
+        return mid != null && from != null && to != null && content != null && type != null && type != MessageType.UNDEFINED && timestamp != null && isTimestampValid;
     }
 
     public String getMid() {
