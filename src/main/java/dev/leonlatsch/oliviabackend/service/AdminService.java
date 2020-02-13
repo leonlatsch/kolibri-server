@@ -12,7 +12,11 @@ import org.springframework.context.event.EventListener;
 import org.springframework.core.env.Environment;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.DigestUtils;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Optional;
 
 import static dev.leonlatsch.oliviabackend.constants.JsonResponse.AUTHORIZED;
@@ -41,6 +45,13 @@ public class AdminService {
         initAdmin();
         Optional<Admin> admin = adminRepository.findById(username);
         return admin.isPresent() && passwordEncoder.matches(password, admin.get().getPassword()) ? new Container(200, AUTHORIZED, admin.get().getToken()) : new Container(401, UNAUTHORIZED, null);
+    }
+
+    public boolean rawAuth(String username, String password) {
+        initAdmin();
+        String hashedPassword = CommonUtils.sha256(password);
+        Optional<Admin> admin = adminRepository.findById(username);
+        return admin.isPresent() && passwordEncoder.matches(hashedPassword, admin.get().getPassword());
     }
 
     public boolean auth(String token) {

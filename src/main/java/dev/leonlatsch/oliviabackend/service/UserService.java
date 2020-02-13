@@ -294,6 +294,27 @@ public class UserService {
         }
     }
 
+    /**
+     * Used for rabbitmq authorisation
+     *
+     * @param username
+     * @param token
+     * @return true or false
+     */
+    public boolean authByUsernameAndToken(String username, String token) {
+        String uid = accessTokenService.getUserForToken(token);
+        if (uid == null) {
+            return false;
+        }
+
+        Optional<User> user = userRepository.findByUsername(username);
+        if (user.isPresent()) {
+            return user.get().getUid().equals(uid) && accessTokenService.getTokenForUser(uid).equals(token);
+        } else {
+            return false; // Should never happen case
+        }
+    }
+
     public Container loadProfilePic(String accessToken, String uid) {
         if (!accessTokenService.isTokenValid(accessToken)) {
             return RES_UNAUTHORIZED;
