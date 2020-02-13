@@ -3,6 +3,7 @@ package dev.leonlatsch.oliviabackend.service;
 import dev.leonlatsch.oliviabackend.model.dto.Container;
 import dev.leonlatsch.oliviabackend.model.entity.Admin;
 import dev.leonlatsch.oliviabackend.repository.AdminRepository;
+import dev.leonlatsch.oliviabackend.security.Hash;
 import dev.leonlatsch.oliviabackend.util.CommonUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,7 +50,7 @@ public class AdminService {
 
     public boolean rawAuth(String username, String password) {
         initAdmin();
-        String hashedPassword = CommonUtils.sha256(password);
+        String hashedPassword = Hash.genSha256Hex(password);
         Optional<Admin> admin = adminRepository.findById(username);
         return admin.isPresent() && passwordEncoder.matches(hashedPassword, admin.get().getPassword());
     }
