@@ -307,7 +307,7 @@ public class UserService {
             return false;
         }
 
-        Optional<User> user = userRepository.findByUsername(username);
+        Optional<User> user = userRepository.findById(username);
         if (user.isPresent()) {
             return user.get().getUid().equals(uid) && accessTokenService.getTokenForUser(uid).equals(token);
         } else {

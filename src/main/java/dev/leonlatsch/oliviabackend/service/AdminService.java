@@ -58,6 +58,10 @@ public class AdminService {
         return adminRepository.findByToken(token).isPresent();
     }
 
+    public String getUsername() {
+        return env.getProperty("admin.initial-username");
+    }
+
     @EventListener(ContextRefreshedEvent.class)
     private void initAdmin() {
         if (adminRepository.findAll().isEmpty()) {

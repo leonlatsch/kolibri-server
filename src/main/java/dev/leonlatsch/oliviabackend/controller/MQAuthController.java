@@ -1,10 +1,13 @@
 package dev.leonlatsch.oliviabackend.controller;
 
+import dev.leonlatsch.oliviabackend.constants.Formats;
 import dev.leonlatsch.oliviabackend.model.dto.rabbitmq.ResourceCheck;
 import dev.leonlatsch.oliviabackend.service.AdminService;
 import dev.leonlatsch.oliviabackend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.swing.text.StyledEditorKit;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -31,7 +34,11 @@ public class MQAuthController {
 
     @RequestMapping(value = "resource", method = RequestMethod.POST)
     public String resource(ResourceCheck check) {
-        return ALLOW;
+        if (check.getUsername().equals(adminService.getUsername())) {
+            return ALLOW_ADMIN;
+        }
+        //TODO: prettify
+        return check.getUsername().equals(check.getName().replace(Formats.USER_QUEUE_PREFIX, "")) && check.getPermission().equals("read") && check.getResource().equals("queue") ? ALLOW : DENY;
     }
 
     @RequestMapping(value = "vhost", method = RequestMethod.POST)
