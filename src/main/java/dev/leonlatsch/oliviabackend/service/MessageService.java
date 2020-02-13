@@ -43,7 +43,7 @@ public class MessageService {
             return RES_BAD_REQUEST;
         }
 
-        if (message.validate()) {
+        if (!message.validate()) {
             return RES_BAD_REQUEST;
         }
 
