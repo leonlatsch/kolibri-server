@@ -11,7 +11,7 @@ import java.security.MessageDigest;
 public class Hash {
 
     private static final String MD5 = "MD5";
-    private static final String SHA256 = "SHA256";
+    private static final String SHA256 = "SHA-256";
 
     public static String genMd5Hex(String str) {
         try {
