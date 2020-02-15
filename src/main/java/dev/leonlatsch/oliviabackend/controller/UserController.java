@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static dev.leonlatsch.oliviabackend.util.ControllerUtils.createResponseEntity;
-
 /**
  * Rest Controller to manage user accounts
  *
@@ -23,7 +21,7 @@ import static dev.leonlatsch.oliviabackend.util.ControllerUtils.createResponseEn
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("/api/v1/user")
-public class UserController {
+public class UserController extends BaseController {
 
     @Autowired
     private UserService userService;

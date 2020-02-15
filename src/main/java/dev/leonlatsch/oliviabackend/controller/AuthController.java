@@ -10,8 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import static dev.leonlatsch.oliviabackend.util.ControllerUtils.createResponseEntity;
-
 /**
  * Rest Controller for handling the authentication
  *
@@ -21,7 +19,7 @@ import static dev.leonlatsch.oliviabackend.util.ControllerUtils.createResponseEn
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("/api/v1/auth")
-public class AuthController {
+public class AuthController extends BaseController {
 
     @Autowired
     private UserService userService;

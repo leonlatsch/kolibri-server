@@ -8,8 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import static dev.leonlatsch.oliviabackend.util.ControllerUtils.createResponseEntity;
-
 /**
  * Rest Controller to receive chat messages and route them to the queue
  *
@@ -19,7 +17,7 @@ import static dev.leonlatsch.oliviabackend.util.ControllerUtils.createResponseEn
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("/api/v1/chat")
-public class ChatController {
+public class ChatController extends BaseController {
 
     @Autowired
     private MessageService messageService;

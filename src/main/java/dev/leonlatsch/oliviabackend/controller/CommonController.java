@@ -4,12 +4,9 @@ import dev.leonlatsch.oliviabackend.constants.CommonResponses;
 import dev.leonlatsch.oliviabackend.model.dto.Container;
 import dev.leonlatsch.oliviabackend.util.MavenProperties;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
-
-import static dev.leonlatsch.oliviabackend.util.ControllerUtils.createResponseEntity;
+import org.springframework.messaging.handler.annotation.Header;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Rest Controller for common functions
@@ -20,7 +17,7 @@ import static dev.leonlatsch.oliviabackend.util.ControllerUtils.createResponseEn
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("/api/v1")
-public class CommonController {
+public class CommonController extends BaseController {
 
     /**
      * Endpoint for a healthcheck

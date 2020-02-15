@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RequestMapping("/")
 @RestController
-public class OverviewController {
+public class OverviewController extends BaseController {
 
     /**
      * Endpoint just used for an overview.

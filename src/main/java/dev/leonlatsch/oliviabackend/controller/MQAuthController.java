@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("api/v1/auth/mq")
-public class MQAuthController {
+public class MQAuthController extends BaseController {
 
     private static final String ALLOW = "allow";
     private static final String DENY = "deny";
