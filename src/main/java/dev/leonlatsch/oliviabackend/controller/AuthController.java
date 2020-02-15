@@ -37,7 +37,7 @@ public class AuthController {
      */
     @RequestMapping(method = RequestMethod.POST, value = "/login")
     public ResponseEntity<Container> login(@RequestBody UserDTO dto) {
-        return createResponseEntity(userService.authUserByEmail(dto.getEmail(), dto.getPassword()));
+        return createResponseEntity(userService.authWithPassword(dto.getUsername(), dto.getPassword()));
     }
 
     /**

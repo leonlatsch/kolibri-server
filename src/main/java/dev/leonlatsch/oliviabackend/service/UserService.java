@@ -275,8 +275,8 @@ public class UserService {
         return new Container(200, OK, mapToPublicUsers(mapToTransferObjects(users)));
     }
 
-    public Container authUserByEmail(String email, String password) {
-        Optional<User> user = userRepository.findByEmail(email);
+    public Container authWithPassword(String username, String password) {
+        Optional<User> user = userRepository.findByUsername(username);
         Container container = new Container();
 
         if (password == null || !user.isPresent()) {
@@ -301,7 +301,7 @@ public class UserService {
      * @param token
      * @return true or false
      */
-    public boolean authByUsernameAndToken(String username, String token) {
+    public boolean authWithToken(String username, String token) {
         String uid = accessTokenService.getUserForToken(token);
         if (uid == null) {
             return false;

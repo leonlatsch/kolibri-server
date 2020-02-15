@@ -33,7 +33,7 @@ public class MQAuthController {
         if (adminService.rawAuth(username, password)) {
             return ALLOW_ADMIN;
         }
-        return userService.authByUsernameAndToken(username, password) ? ALLOW : DENY;
+        return userService.authWithToken(username, password) ? ALLOW : DENY;
     }
 
     @RequestMapping(value = "resource", method = RequestMethod.POST)
