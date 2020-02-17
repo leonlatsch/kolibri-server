@@ -39,7 +39,7 @@ public class MQAuthController extends BaseController {
     @RequestMapping(value = "resource", method = RequestMethod.POST)
     public String resource(ResourceCheck check) {
         if (check.getUsername().equals(adminService.getUsername())) {
-            return ALLOW_ADMIN;
+            return ALLOW;
         }
 
         return check.getUsername().equals(check.getName().replace(Formats.USER_QUEUE_PREFIX, "")) // Check if the user accesses its own queue
