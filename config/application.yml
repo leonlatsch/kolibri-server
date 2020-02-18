@@ -2,9 +2,9 @@ spring:
 
   datasource:
     initialization-mode: always
-    password: olivia
-    url: jdbc:mysql://olivia-database:3306/oliviadb
-    username: olivia
+    password: kolibri
+    url: jdbc:mysql://kolibri-database:3306/kolibridb
+    username: kolibri
 
   jpa:
     generate-ddl: true
@@ -16,9 +16,9 @@ spring:
     open-in-view: true # default setting to remove warning
 
   rabbitmq:
-    host: olivia-queue
-    password: olivia
-    username: olivia
+    host: kolibri-broker
+    password: kolibri
+    username: kolibri
     port: 5672
     http-port: 15672
 

@@ -3,7 +3,7 @@
 # $1 tag
 function build_image() {
     echo "[*] Building Image ..."
-    sudo docker build -t leonlatsch/olivia-backend:$1 .
+    sudo docker build -t leonlatsch/kolibri-server:$1 .
 }
 
 function build_jar() {

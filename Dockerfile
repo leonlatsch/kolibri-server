@@ -4,12 +4,12 @@ FROM openjdk:8-jdk-alpine
 # Expose 8080 for tomcat webserver
 EXPOSE 8080
 
-ARG JAR=target/olivia-backend-*.jar
+ARG JAR=target/kolibri-server-*.jar
 ARG SH=assets/entrypoint.sh
 ARG INST=assets/install.sh
 
 # Add files
-ADD ${JAR} olivia-backend-*.jar
+ADD ${JAR} kolibri-server-*.jar
 ADD ${SH} entrypoint.sh
 ADD ${INST} install.sh
 

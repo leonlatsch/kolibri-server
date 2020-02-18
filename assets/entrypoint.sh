@@ -1,3 +1,3 @@
 #!/bin/sh
 
-java -jar /olivia-backend-*.jar
+java -jar /kolibri-server-*.jar
