@@ -1,19 +1,19 @@
-# Olivia Backend System
+# Kolibri Server
 
-![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/leonlatsch/olivia-backend?include_prereleases&label=version)
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/leonlatsch/olivia-backend/Java%20CI)
-![GitHub](https://img.shields.io/github/license/leonlatsch/olivia-backend)
+![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/leonlatsch/kolibri-server?include_prereleases&label=version)
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/leonlatsch/kolibri-server/Java%20CI)
+![GitHub](https://img.shields.io/github/license/leonlatsch/kolibri-server)
 ![Maintenance](https://img.shields.io/maintenance/yes/2020)
 
 
 
 ## About
 
-This repository provides a full server system needed to run the [Olivia App](https://github.com/leonlatsch/olivia).
+This repository provides a full server system needed to run the [Kolibri App](https://github.com/leonlatsch/kolibri).
 
 It consists of the following components all tied up with docker-compose:
 
-- [Olivia REST API](https://hub.docker.com/r/leonlatsch/olivia-backend)
+- [Kolibri REST API](https://hub.docker.com/r/leonlatsch/kolibri-server)
 - [A RabbitMQ Server](https://hub.docker.com/_/rabbitmq)
 - [A MySQL Database](https://hub.docker.com/_/mysql)
 - [A Traefik Reverse Proxy](https://hub.docker.com/_/traefik)
@@ -31,7 +31,7 @@ It consists of the following components all tied up with docker-compose:
 
 ## Getting Started
 
-You can find all information about getting started in the [Wiki](https://olivia.leonlatsch.dev).
+You can find all information about getting started in the [Wiki](https://kolibri.leonlatsch.dev/server).
 
 
 

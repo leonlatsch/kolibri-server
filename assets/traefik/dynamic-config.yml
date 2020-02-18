@@ -5,7 +5,7 @@ http:
         - https
         - http
       rule: "PathPrefix(`/`)"
-      service: backend-service
+      service: api-service
       tls:
         certResolver: acme_default
         domains:
@@ -27,17 +27,17 @@ http:
         - strip
 
   services:
-    backend-service:
+    api-service:
       loadBalancer:
         passHostHeader: true
         servers:
-          - url: "http://olivia-backend:8080"
+          - url: "http://kolibri-api:8080"
 
     mq-dashboard-service:
       passHostHeader: true
       loadBalancer:
         servers:
-          - url: "http://olivia-queue:15672"
+          - url: "http://kolibri-broker:15672"
 
   middlewares:
 

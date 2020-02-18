@@ -1,32 +1,32 @@
 version: '2'
 
 networks:
-  olivia-network:
+  kolibri-network:
     driver: bridge
 
 services:
 
   database: # MYSQL Database Server
-    container_name: olivia-database
+    container_name: kolibri-database
     restart: always
     image: mysql
     ports:
       - 3306:3306
 
     networks:
-      - olivia-network
+      - kolibri-network
 
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_USER: olivia
-      MYSQL_PASSWORD: olivia
-      MYSQL_DATABASE: oliviadb
+      MYSQL_USER: kolibri
+      MYSQL_PASSWORD: kolibri
+      MYSQL_DATABASE: kolibridb
 
 
-  backend: # Pre built image of the backend
-    container_name: olivia-backend
+  api: # Kolibri API
+    container_name: kolibri-api
     restart: always
-    image: leonlatsch/olivia-backend
+    image: leonlatsch/kolibri-server
     ports:
       - 8080:8080
 
@@ -35,13 +35,13 @@ services:
       - ./config:/config
 
     networks:
-      - olivia-network
+      - kolibri-network
 
     depends_on:
       - database
 
-  queue: # RabbitMQ Server
-    container_name: olivia-queue
+  broker: # RabbitMQ Server
+    container_name: kolibri-broker
     restart: always
     image: rabbitmq:management
     ports:
@@ -54,10 +54,10 @@ services:
       - ./assets/rabbitmq/enabled_plugins:/etc/rabbitmq/enabled_plugins
 
     networks:
-      - olivia-network
+      - kolibri-network
 
   proxy: # Traefik Reverse proxy
-    container_name: olivia-proxy
+    container_name: kolibri-proxy
     restart: always
     image: traefik:v2.0
     ports:
@@ -65,7 +65,7 @@ services:
       - 443:443
       - 8090:8090
     networks:
-      - olivia-network
+      - kolibri-network
 
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock

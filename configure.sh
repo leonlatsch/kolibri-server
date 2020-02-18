@@ -105,8 +105,8 @@ function save_db_config() {
 # $2 password
 # $3 broker port
 function save_rabbitmq_config() {
-  replace $RABBITMQ_CONFIG "default_user = olivia" "default_user = $1"
-  replace $RABBITMQ_CONFIG "default_pass = olivia" "default_pass = $2"
+  replace $RABBITMQ_CONFIG "default_user = kolibri" "default_user = $1"
+  replace $RABBITMQ_CONFIG "default_pass = kolibri" "default_pass = $2"
   replace $RABBITMQ_CONFIG "listeners.tcp.default = 5672" "listeners.tcp.default = $3"
 
   write $APP_CONFIG "spring.rabbitmq.username" "$1"
@@ -146,7 +146,7 @@ function initial_config() {
   print
   print "Database"
 
-  input_default "Enter a database user" "olivia"
+  input_default "Enter a database user" "kolibri"
   DB_USER=$INPUT
   password_generate "Enter a database password"
   DB_PASSWORD=$INPUT
@@ -157,7 +157,7 @@ function initial_config() {
   print
   print "RabbitMQ"
 
-  input_default "Enter a rabbitmq username" "olivia"
+  input_default "Enter a rabbitmq username" "kolibri"
   RMQ_USER=$INPUT
   password_generate "Enter a rabbitmq password"
   RMQ_PASSWORD=$INPUT
@@ -222,7 +222,7 @@ function check_deps() {
   fi
 }
 
-print "Olivia Backend Configuration Script"
+print "Kolibri Server Setup"
 print
 
 check_deps
