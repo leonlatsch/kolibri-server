@@ -20,19 +20,17 @@ public class MessageDTO extends ValidatedModel {
     private String content;
     private MessageType type;
     private String timestamp;
-    private String cid;
 
     public MessageDTO() {
     }
 
-    public MessageDTO(String mid, String from, String to, String content, MessageType type, String timestamp, String cid) {
+    public MessageDTO(String mid, String from, String to, String content, MessageType type, String timestamp) {
         this.mid = mid;
         this.from = from;
         this.to = to;
         this.content = content;
         this.type = type;
         this.timestamp = timestamp;
-        this.cid = cid;
     }
 
     @Override
@@ -93,13 +91,5 @@ public class MessageDTO extends ValidatedModel {
 
     public void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
-    }
-
-    public String getCid() {
-        return cid;
-    }
-
-    public void setCid(String cid) {
-        this.cid = cid;
     }
 }
