@@ -150,7 +150,7 @@ function initial_config() {
   DB_USER=$INPUT
   password_generate "Enter a database password"
   DB_PASSWORD=$INPUT
-  ROOT_PASSWORD=$(pwgen 16 -a)
+  ROOT_PASSWORD=$(pwgen 16 -1)
   print "Generated root password: $ROOT_PASSWORD"
   save_db_config "$DB_USER" "$DB_PASSWORD" "$ROOT_PASSWORD"
 
