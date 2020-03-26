@@ -3,7 +3,7 @@ spring:
   datasource:
     initialization-mode: always
     password: kolibri
-    url: jdbc:mysql://kolibri-database:3306/kolibridb
+    url: jdbc:mysql://localhost:3306/kolibridb
     username: kolibri
 
   jpa:
@@ -16,7 +16,7 @@ spring:
     open-in-view: true # default setting to remove warning
 
   rabbitmq:
-    host: kolibri-broker
+    host: localhost
     password: kolibri
     username: kolibri
     port: 5672

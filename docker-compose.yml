@@ -46,7 +46,7 @@ services:
     image: rabbitmq:management
     ports:
       - 15672:15672
-      - 5672:5672
+      - 5678:5678
 
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
@@ -63,7 +63,7 @@ services:
     ports:
       - 80:80
       - 443:443
-      - 8090:8090
+      - 5672:5672
     networks:
       - kolibri-network
 

@@ -5,20 +5,23 @@ entryPoints:
   https:
     address: ":443"
 
+  amqp:
+    address: ":5672"
+
 log:
   level: INFO # DEBUG ERROR
 
-#accessLog: {} # debug
+accessLog: {} # debug
 
 providers:
   file:
     watch: true
     filename: /etc/traefik/dynamic-config.yml
 
-certificatesResolvers:
-  acme_default:
-    acme:
-      email: <email-address>
-      storage: /etc/traefik/acme.json
-      httpChallenge:
-        entryPoint: http
+#certificatesResolvers:
+#  acme_default:
+#    acme:
+#      email: <email-address>
+#      storage: /etc/traefik/acme.json
+#      httpChallenge:
+#        entryPoint: http

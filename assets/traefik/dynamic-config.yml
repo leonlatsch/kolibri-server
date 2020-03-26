@@ -45,3 +45,22 @@ http:
       stripPrefix:
         prefixes:
           - "/mq"
+
+tcp:
+  routers:
+    broker-router:
+      entryPoints:
+        - "amqp"
+      rule: "HostSNI(`*`)"
+      service: broker-service
+      tls:
+        passthrough: true
+        certResolver: acme_default
+        domains:
+          - main: <domain>
+
+  services:
+    broker-service:
+      loadBalancer:
+        servers:
+          - address: "kolibri-broker:5678"
