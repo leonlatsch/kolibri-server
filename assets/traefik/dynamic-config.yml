@@ -54,7 +54,6 @@ tcp:
       rule: "HostSNI(`*`)"
       service: broker-service
       tls:
-        passthrough: true
         certResolver: acme_default
         domains:
           - main: <domain>
