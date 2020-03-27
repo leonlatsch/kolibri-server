@@ -1,5 +1,5 @@
-# Start from openjdk-8
-FROM openjdk:8-jdk-alpine
+# Start from openjdk-11
+FROM openjdk:11-jdk-slim
 
 # Expose 8080 for tomcat webserver
 EXPOSE 8080
