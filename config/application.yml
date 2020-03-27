@@ -19,7 +19,7 @@ spring:
     host: kolibri-broker
     password: kolibri
     username: kolibri
-    port: 5672
+    port: 5678
     http-port: 15672
 
 admin: # default admin:admin

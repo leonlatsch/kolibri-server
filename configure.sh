@@ -111,7 +111,6 @@ function save_rabbitmq_config() {
 
   write $APP_CONFIG "spring.rabbitmq.username" "$1"
   write $APP_CONFIG "spring.rabbitmq.password" "$2"
-  write $APP_CONFIG "spring.rabbitmq.port" "$3"
 }
 
 # $1 domain
