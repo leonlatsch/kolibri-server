@@ -16,7 +16,7 @@ spring:
     open-in-view: true # default setting to remove warning
 
   rabbitmq:
-    host: kolibri.broker
+    host: kolibri-broker
     password: kolibri
     username: kolibri
     port: 5672
