@@ -1,12 +1,12 @@
 entryPoints:
   http:
-    address: ":80"
+    address: :80
 
   https:
-    address: ":443"
+    address: :443
 
   amqp:
-    address: ":5672"
+    address: :5672
 
 log:
   level: INFO # DEBUG ERROR

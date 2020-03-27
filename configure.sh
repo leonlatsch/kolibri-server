@@ -107,7 +107,7 @@ function save_db_config() {
 function save_rabbitmq_config() {
   replace $RABBITMQ_CONFIG "default_user = kolibri" "default_user = $1"
   replace $RABBITMQ_CONFIG "default_pass = kolibri" "default_pass = $2"
-  write $TRAEFIK_CONFIG "entryPoints.amqp.address" "\":$3\""
+  write $TRAEFIK_CONFIG "entryPoints.amqp.address" ":$3"
 
   write $APP_CONFIG "spring.rabbitmq.username" "$1"
   write $APP_CONFIG "spring.rabbitmq.password" "$2"
