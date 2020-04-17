@@ -1,6 +1,6 @@
 package dev.leonlatsch.kolibriserver.service;
 
-import dev.leonlatsch.kolibriserver.constants.Formats;
+import dev.leonlatsch.kolibriserver.constants.FormatsAndFiles;
 import dev.leonlatsch.kolibriserver.model.dto.MessageDTO;
 import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.core.AmqpTemplate;
@@ -27,7 +27,7 @@ public class BrokerService {
     private AmqpAdmin admin;
 
     public void send(MessageDTO message) {
-        template.convertAndSend(Formats.USER_QUEUE_PREFIX + message.getTo(), message);
+        template.convertAndSend(FormatsAndFiles.USER_QUEUE_PREFIX + message.getTo(), message);
     }
 
     public void createQueue(String queueName, boolean durable) {
