@@ -1,8 +1,10 @@
 package dev.leonlatsch.kolibriserver.controller;
 
+import dev.leonlatsch.kolibriserver.model.dto.Container;
 import dev.leonlatsch.kolibriserver.service.ConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -33,5 +35,10 @@ public class ConfigController extends BaseController {
     @RequestMapping(value = "broker-port", method = RequestMethod.GET)
     public String brokerPort() {
         return env.getProperty("spring.rabbitmq.port");
+    }
+
+    @RequestMapping(value = "get", method = RequestMethod.GET)
+    public ResponseEntity<Container> get() {
+        return createResponseEntity(configService.get());
     }
 }

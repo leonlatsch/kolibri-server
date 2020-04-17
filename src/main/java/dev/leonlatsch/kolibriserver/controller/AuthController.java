@@ -41,13 +41,13 @@ public class AuthController extends BaseController {
     /**
      * Endpoint to register a new user
      *
-     * @param dto       A {@link UserDTO} with a username, email and a password hash
+     * @param dto A {@link UserDTO} with a username, email and a password hash
      * @param publicKey Public key to encrypt incomming messages
      * @return A Container with a access token
      */
     @RequestMapping(method = RequestMethod.PUT, value = "/register")
-    public ResponseEntity<Container> register(@RequestBody UserDTO dto, @RequestHeader(value = Headers.PUBLIC_KEY) String publicKey) {
-        return createResponseEntity(userService.createUser(dto, publicKey));
+    public ResponseEntity<Container> register(@RequestBody UserDTO dto, @RequestHeader(value = Headers.PUBLIC_KEY) String publicKey, @RequestHeader(value = Headers.ACCESS_TOKEN, required = false) String accessToken) {
+        return createResponseEntity(userService.createUser(dto, publicKey, accessToken));
     }
 
     /**

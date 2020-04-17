@@ -1,20 +1,21 @@
 package dev.leonlatsch.kolibriserver.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.leonlatsch.kolibriserver.constants.FormatsAndFiles;
+import dev.leonlatsch.kolibriserver.model.dto.Container;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PreDestroy;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
+
+import static dev.leonlatsch.kolibriserver.constants.JsonResponse.OK;
 
 /**
  * Service to manage configuration
@@ -30,6 +31,10 @@ public class ConfigService {
     private HashMap<String, Object> config;
     private ObjectMapper mapper = new ObjectMapper();
     private File configFile = new File(FormatsAndFiles.CONFIG_FILE);
+
+    public Container get() {
+        return new Container(200, OK, config);
+    }
 
     public String getString(String key, String defaultValue) {
         Object value = config.get(key);
