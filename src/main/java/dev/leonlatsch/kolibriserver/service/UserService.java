@@ -132,6 +132,7 @@ public class UserService {
     }
 
     public Container createUser(UserDTO user, String publicKey, String optionalAccessToken) {
+        // Check if registration is enabled. If not check for admin access
         if (!configService.getBoolean(Configs.ENABLE_REGISTRATION.getKey(), true)) {
             if (!adminService.auth(optionalAccessToken)) {
                 return RES_UNAUTHORIZED;

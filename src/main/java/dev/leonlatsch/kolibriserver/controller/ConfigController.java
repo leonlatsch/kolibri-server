@@ -36,16 +36,35 @@ public class ConfigController extends BaseController {
         return env.getProperty("spring.rabbitmq.port");
     }
 
+    /**
+     * Endpoint to get the config as json.
+     *
+     * @return A container with the config as json
+     */
     @RequestMapping(value = "get", method = RequestMethod.GET)
     public ResponseEntity<Container> get() {
         return createResponseEntity(configService.get());
     }
 
+    /**
+     * Endpoint to put a value in the config.
+     *
+     * @param configEntry A key and a value.
+     * @param accessToken The admin access token
+     * @return A Container indicating success or not
+     */
     @RequestMapping(value = "put", method = RequestMethod.PUT)
     public ResponseEntity<Container> put(@RequestBody ConfigEntry configEntry, @RequestHeader(Headers.ACCESS_TOKEN) String accessToken) {
         return createResponseEntity(configService.put(configEntry.getKey(), configEntry.getValue(), accessToken));
     }
 
+    /**
+     * Endpoint to reset a config value for a key
+     *
+     * @param accessToken The admin access token
+     * @param key The key to reset
+     * @return A container indicating success or not
+     */
     @RequestMapping(value = "reset/{key}", method = RequestMethod.PATCH)
     public ResponseEntity<Container> reset(@RequestHeader(Headers.ACCESS_TOKEN) String accessToken, @PathVariable("key") String key) {
         return createResponseEntity(configService.reset(key, accessToken));
