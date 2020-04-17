@@ -42,8 +42,8 @@ public class ConfigController extends BaseController {
      * @return A container with the config as json
      */
     @RequestMapping(value = "get", method = RequestMethod.GET)
-    public ResponseEntity<Container> get() {
-        return createResponseEntity(configService.get());
+    public ResponseEntity<Container> get(@RequestHeader(Headers.ACCESS_TOKEN) String accessToken) {
+        return createResponseEntity(configService.get(accessToken));
     }
 
     /**
