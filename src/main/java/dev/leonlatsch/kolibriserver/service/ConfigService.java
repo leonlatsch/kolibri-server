@@ -41,12 +41,8 @@ public class ConfigService {
     @Autowired
     private AccessTokenService accessTokenService;
 
-    public Container get(String accessToken) {
-        if (accessTokenService.isTokenValid(accessToken) || adminService.auth(accessToken)) {
-            return new Container(200, OK, config);
-        } else {
-            return RES_UNAUTHORIZED;
-        }
+    public Container get() {
+        return new Container(200, OK, config);
     }
 
     public Container put(String key, Object value, String accessToken) {
