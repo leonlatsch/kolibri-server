@@ -1,10 +1,12 @@
 package dev.leonlatsch.kolibriserver.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import dev.leonlatsch.kolibriserver.constants.Configs;
 import dev.leonlatsch.kolibriserver.constants.FormatsAndFiles;
 import dev.leonlatsch.kolibriserver.model.dto.Container;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
@@ -15,7 +17,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
 
-import static dev.leonlatsch.kolibriserver.constants.JsonResponse.OK;
+import static dev.leonlatsch.kolibriserver.constants.JsonResponse.*;
+import static dev.leonlatsch.kolibriserver.constants.CommonResponses.*;
 
 /**
  * Service to manage configuration
@@ -32,8 +35,31 @@ public class ConfigService {
     private ObjectMapper mapper = new ObjectMapper();
     private File configFile = new File(FormatsAndFiles.CONFIG_FILE);
 
+    @Autowired
+    private AdminService adminService;
+
     public Container get() {
         return new Container(200, OK, config);
+    }
+
+    public Container put(String key, Object value, String accessToken) {
+        if (adminService.auth(accessToken)) {
+            config.put(key, value);
+            saveConfig();
+            return RES_OK;
+        } else {
+            return RES_UNAUTHORIZED;
+        }
+    }
+
+    public Container reset(String key, String accessToken) {
+        if (adminService.auth(accessToken)) {
+            config.put(key, Configs.ENABLE_REGISTRATION.getValue());
+            saveConfig();
+            return RES_OK;
+        } else {
+            return RES_UNAUTHORIZED;
+        }
     }
 
     public String getString(String key, String defaultValue) {
@@ -63,21 +89,6 @@ public class ConfigService {
         }
     }
 
-    public void putString(String key, String value) {
-        config.put(key, value);
-        saveConfig();
-    }
-
-    public void putInt(String key, int value) {
-        config.put(key, value);
-        saveConfig();
-    }
-
-    public void putBoolean(String key, boolean value) {
-        config.put(key, value);
-        saveConfig();
-    }
-
     @EventListener(ContextRefreshedEvent.class)
     private void loadConfig() {
         try {
@@ -90,7 +101,7 @@ public class ConfigService {
 
     private boolean saveConfig() {
         try {
-            String json = mapper.writeValueAsString(config);
+            String json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(config);
             Files.writeString(Path.of(configFile.toURI()), json);
             return true;
         } catch (IOException e) {

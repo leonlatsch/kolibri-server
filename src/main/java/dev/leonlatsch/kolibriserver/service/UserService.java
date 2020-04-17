@@ -1,6 +1,6 @@
 package dev.leonlatsch.kolibriserver.service;
 
-import dev.leonlatsch.kolibriserver.constants.Config;
+import dev.leonlatsch.kolibriserver.constants.Configs;
 import dev.leonlatsch.kolibriserver.constants.FormatsAndFiles;
 import dev.leonlatsch.kolibriserver.model.dto.Container;
 import dev.leonlatsch.kolibriserver.model.dto.PublicUserDTO;
@@ -132,7 +132,7 @@ public class UserService {
     }
 
     public Container createUser(UserDTO user, String publicKey, String optionalAccessToken) {
-        if (!configService.getBoolean(Config.ENABLE_REGISTRATION, true)) {
+        if (!configService.getBoolean(Configs.ENABLE_REGISTRATION.getKey(), true)) {
             if (!adminService.auth(optionalAccessToken)) {
                 return RES_UNAUTHORIZED;
             }

@@ -1,14 +1,13 @@
 package dev.leonlatsch.kolibriserver.controller;
 
+import dev.leonlatsch.kolibriserver.constants.Headers;
+import dev.leonlatsch.kolibriserver.model.dto.ConfigEntry;
 import dev.leonlatsch.kolibriserver.model.dto.Container;
 import dev.leonlatsch.kolibriserver.service.ConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Rest Controller for accessing configuration.
@@ -40,5 +39,15 @@ public class ConfigController extends BaseController {
     @RequestMapping(value = "get", method = RequestMethod.GET)
     public ResponseEntity<Container> get() {
         return createResponseEntity(configService.get());
+    }
+
+    @RequestMapping(value = "put", method = RequestMethod.PUT)
+    public ResponseEntity<Container> put(@RequestBody ConfigEntry configEntry, @RequestHeader(Headers.ACCESS_TOKEN) String accessToken) {
+        return createResponseEntity(configService.put(configEntry.getKey(), configEntry.getValue(), accessToken));
+    }
+
+    @RequestMapping(value = "reset/{key}", method = RequestMethod.PATCH)
+    public ResponseEntity<Container> reset(@RequestHeader(Headers.ACCESS_TOKEN) String accessToken, @PathVariable("key") String key) {
+        return createResponseEntity(configService.reset(key, accessToken));
     }
 }
