@@ -1,6 +1,6 @@
 package dev.leonlatsch.kolibriserver.controller;
 
-import dev.leonlatsch.kolibriserver.constants.Formats;
+import dev.leonlatsch.kolibriserver.constants.FormatsAndFiles;
 import dev.leonlatsch.kolibriserver.model.dto.rabbitmq.ResourceCheck;
 import dev.leonlatsch.kolibriserver.service.AdminService;
 import dev.leonlatsch.kolibriserver.service.UserService;
@@ -42,7 +42,7 @@ public class MQAuthController extends BaseController {
             return ALLOW;
         }
 
-        return check.getUsername().equals(check.getName().replace(Formats.USER_QUEUE_PREFIX, "")) // Check if the user accesses its own queue
+        return check.getUsername().equals(check.getName().replace(FormatsAndFiles.USER_QUEUE_PREFIX, "")) // Check if the user accesses its own queue
                 && check.getPermission().equals("read") && check.getResource().equals("queue") ? ALLOW : DENY; // Only allow read access to queues
     }
 

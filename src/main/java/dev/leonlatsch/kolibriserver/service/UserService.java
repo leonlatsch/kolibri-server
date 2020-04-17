@@ -1,6 +1,6 @@
 package dev.leonlatsch.kolibriserver.service;
 
-import dev.leonlatsch.kolibriserver.constants.Formats;
+import dev.leonlatsch.kolibriserver.constants.FormatsAndFiles;
 import dev.leonlatsch.kolibriserver.model.dto.Container;
 import dev.leonlatsch.kolibriserver.model.dto.PublicUserDTO;
 import dev.leonlatsch.kolibriserver.model.dto.UserDTO;
@@ -166,7 +166,7 @@ public class UserService {
         accessTokenService.saveAccessToken(token);
 
         // Create a queue for the user
-        String queueName = Formats.USER_QUEUE_PREFIX + entity.getUid();
+        String queueName = FormatsAndFiles.USER_QUEUE_PREFIX + entity.getUid();
         brokerService.createQueue(queueName, true);
 
         container.setMessage(OK);
@@ -184,7 +184,7 @@ public class UserService {
         // Delete the user, disable its access token and delete its queue
         userRepository.deleteById(uid);
         accessTokenService.disableAccessToken(accessToken);
-        brokerService.deleteQueue(Formats.USER_QUEUE_PREFIX + uid);
+        brokerService.deleteQueue(FormatsAndFiles.USER_QUEUE_PREFIX + uid);
 
         return RES_OK;
     }

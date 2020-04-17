@@ -1,6 +1,6 @@
 package dev.leonlatsch.kolibriserver.model.dto;
 
-import dev.leonlatsch.kolibriserver.constants.Formats;
+import dev.leonlatsch.kolibriserver.constants.FormatsAndFiles;
 
 import java.sql.Timestamp;
 
@@ -57,6 +57,6 @@ public class Container {
 
     public void setTimestamp() {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        this.timestamp = Formats.DATE_FORMAT.format(timestamp);
+        this.timestamp = FormatsAndFiles.DATE_FORMAT.format(timestamp);
     }
 }

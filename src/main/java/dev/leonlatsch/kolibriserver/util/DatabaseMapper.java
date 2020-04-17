@@ -1,6 +1,6 @@
 package dev.leonlatsch.kolibriserver.util;
 
-import dev.leonlatsch.kolibriserver.constants.Formats;
+import dev.leonlatsch.kolibriserver.constants.FormatsAndFiles;
 import dev.leonlatsch.kolibriserver.model.dto.PublicUserDTO;
 import dev.leonlatsch.kolibriserver.model.dto.UserDTO;
 import dev.leonlatsch.kolibriserver.model.entity.User;
@@ -96,7 +96,7 @@ public class DatabaseMapper {
 
     private Timestamp stringToTimestamp(String timestamp) {
         try {
-            Date parsed = Formats.DATE_FORMAT.parse(timestamp);
+            Date parsed = FormatsAndFiles.DATE_FORMAT.parse(timestamp);
             return new Timestamp(parsed.getTime());
         } catch (ParseException e) {
             return null;
