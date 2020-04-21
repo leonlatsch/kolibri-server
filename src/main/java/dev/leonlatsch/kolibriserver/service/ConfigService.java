@@ -21,7 +21,7 @@ import static dev.leonlatsch.kolibriserver.constants.JsonResponse.*;
 import static dev.leonlatsch.kolibriserver.constants.CommonResponses.*;
 
 /**
- * Service to manage configuration
+ * Service to manage remote configuration
  *
  * @author Leon Latsch
  * @since 1.0.0
@@ -41,10 +41,23 @@ public class ConfigService {
     @Autowired
     private AccessTokenService accessTokenService;
 
+    /**
+     * Get the whole config.
+     *
+     * @return the #config in a Container
+     */
     public Container get() {
         return new Container(200, OK, config);
     }
 
+    /**
+     * Put a singe value in the config and save it.
+     *
+     * @param key The config key to be overwritten
+     * @param value The new value
+     * @param accessToken The admin access token
+     * @return A container indicating success
+     */
     public Container put(String key, Object value, String accessToken) {
         if (adminService.auth(accessToken)) {
             config.put(key, value);
