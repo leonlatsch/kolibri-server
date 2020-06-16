@@ -33,7 +33,7 @@ public class ConfigController extends BaseController {
      */
     @RequestMapping(value = "broker-port", method = RequestMethod.GET)
     public String brokerPort() {
-        return env.getProperty("spring.rabbitmq.port");
+        return env.getProperty("spring.rabbitmq.ext-port");
     }
 
     /**

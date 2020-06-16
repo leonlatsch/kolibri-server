@@ -20,6 +20,7 @@ spring:
     password: kolibri
     username: kolibri
     port: 5678
+    ext-port: 5672
     http-port: 15672
 
 admin: # default admin:admin
